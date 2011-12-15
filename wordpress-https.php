@@ -4,7 +4,7 @@
  Plugin URI: http://mvied.com/projects/wordpress-https/
  Description: WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
  Author: Mike Ems
- Version: 2.0.3
+ Version: 2.0.4
  Author URI: http://mvied.com/
  */
 
@@ -24,7 +24,7 @@ if ( !class_exists('WordPressHTTPS') ) {
 		 *
 		 * @var int
 		 */
-		public $version = '2.0.3';
+		public $version = '2.0.4';
 
 		/**
 		 * Debug Mode
@@ -499,11 +499,16 @@ if ( !class_exists('WordPressHTTPS') ) {
 			if ( $this->is_local($url_original) ) {
 				$url_parts = parse_url($url_original);
 				$url = str_replace($url_parts['host'], parse_url($this->https_url, PHP_URL_HOST), $url_original);
+
 				if ( $this->diff_host ) {
 					$https_url_path = parse_url($this->https_url, PHP_URL_PATH);
 					if ( strpos($url_parts['path'], $https_url_path) === false ) {
 						if ( $url_parts['path'] == '/' ) {
-							$url = rtrim('/', $url) . $https_url_path;
+							if ( isset($url_parts['query']) ) {
+								$url_query = '?' . $url_parts['query'];
+								$url = str_replace($url_query, '', $url);
+							}
+							$url = rtrim($url, '/') . $https_url_path . ((isset($url_query)) ? '/' . $url_query : '');
 						} else {
 							$url = str_replace($url_parts['path'], $https_url_path . $url_parts['path'], $url);
 						}
@@ -763,7 +768,7 @@ if ( !class_exists('WordPressHTTPS') ) {
 						// Always change links to HTTPS when logged in via different SSL Host
 						if ( $type == 'a' && get_option('wordpress-https_ssl_host_subdomain') == 0 && $this->diff_host && $this->ssl_admin && is_user_logged_in() ) {
 							$force_ssl = true;
-						} else if ( is_int($post) ) {
+						} else if ( (int) $post > 0 ) {
 							$force_ssl = (( !isset($force_ssl) ) ? get_post_meta($post, 'force_ssl', true) : $force_ssl);
 						}
 
@@ -848,7 +853,7 @@ if ( !class_exists('WordPressHTTPS') ) {
 		public function is_ssl() {
 			$https_url = parse_url($this->https_url);
 			// Some extra checks for proxies and Shared SSL
-			if ( is_ssl() && strpos($_SERVER['HTTP_HOST'], $https_url['host']) === false ) {
+			if ( is_ssl() && strpos($_SERVER['HTTP_HOST'], $https_url['host']) === false && $_SERVER['SERVER_ADDR'] != $_SERVER['HTTP_HOST'] ) {
 				return false;
 			} else if ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' ) {
 				return true;
@@ -922,11 +927,9 @@ if ( !class_exists('WordPressHTTPS') ) {
 				$url = false;
 			}
 			if ( $url ) {
-				$destination = $url['scheme'] . '://' . $url['host'] . (( isset($url['port']) ) ? ':' . $url['port'] : '') . (( $this->diff_host && isset($url['path']) ) ? $url['path'] : '') . $_SERVER['REQUEST_URI'];
+				$destination = $url['scheme'] . '://' . $url['host'] . (( isset($url['port']) ) ? ':' . $url['port'] : '') . (( isset($url['path']) && strpos($_SERVER['REQUEST_URI'], $url['path']) !== true ) ? $url['path'] : '') . $_SERVER['REQUEST_URI'];
 				if ( function_exists('wp_redirect') ) {
 					wp_redirect($destination, 301);
-
-				// The only time this is called is when forcing an SSL redirect to the login page from the __construct method
 				} else {
 					// End all output buffering and redirect
 					while(@ob_end_clean());
