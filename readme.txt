@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 2.7.0
 Tested up to: 3.3
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
