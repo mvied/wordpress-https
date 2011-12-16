@@ -1400,7 +1400,7 @@ if ( !class_exists('WordPressHTTPS') ) {
 }
 
 // Instantiate class if we're in WordPress
-if ( class_exists('WordPressHTTPS') && function_exists('get_bloginfo') ) {
+if ( class_exists('WordPressHTTPS') && function_exists('get_bloginfo') && !defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS();
 	register_activation_hook(__FILE__, array($wordpress_https, 'install'));
 }
