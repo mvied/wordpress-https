@@ -73,7 +73,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 == Changelog ==
 = 2.0.4 =
 * Bug Fix - Users using Shared SSL should no longer have broken URL's and redirects.
-* Bug Fix - Pages should correctly be identified as HTTPS if PHP returns an IP address for SERVER_ADDR in $_SERVER.
+* Bug Fix - Pages should correctly be identified as HTTPS if PHP returns an IP address for HTTP_HOST in $_SERVER.
 * Bug Fix - Users using the default permalink structure should now have URL's being properly changed to/from HTTPS.
 * Bug Fix - Uninstall should no longer be interrupted by plugin settings.
 = 2.0.3 =
