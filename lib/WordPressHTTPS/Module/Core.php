@@ -97,9 +97,6 @@ class WordPressHTTPS_Module_Core extends WordPressHTTPS_Module implements WordPr
 		if ( $this->get('https_url')->set('scheme', 'http') != $this->get('http_url') && $http_domain == $https_domain ) {
 			$this->updateSetting('ssl_host_subdomain', 1);
 		}
-		
-		// Update current version
-		$this->updateSetting('version', $this->get('version'));
 	}
 	/**
 	 * Is Local URL
