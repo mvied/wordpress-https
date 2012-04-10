@@ -97,63 +97,10 @@ class WordPressHTTPS_Module_Core extends WordPressHTTPS_Module implements WordPr
 		if ( $this->get('https_url')->set('scheme', 'http') != $this->get('http_url') && $http_domain == $https_domain ) {
 			$this->updateSetting('ssl_host_subdomain', 1);
 		}
-
-		// Run plugin updates
-		$this->update();
-	}
-
-	/**
-	 * Update
-	 *
-	 * @param none
-	 * @return void
-	 */
-	protected function update() {
-		// Remove deprecated options
-		$deprecated_options = array(
-			$this->get('slug') . '_sharedssl_site',
-			$this->get('slug') . '_internalurls',
-			$this->get('slug') . '_externalurls',
-			$this->get('slug') . '_external_urls',
-			$this->get('slug') . '_bypass',
-			$this->get('slug') . '_disable_autohttps'
-		);
-		foreach( $deprecated_options as $option ) {
-			delete_option($option);
-		}
-
-		// Upgrade from version < 2.0
-		if ( $this->get('sharedssl') ) {
-			$shared_ssl = (($this->get('sharedssl') == 1) ? true : false);
-
-			$options = array(
-				$this->get('slug') . '_sharedssl' =>		$this->get('sharedssl'),
-				$this->get('slug') . '_sharedssl_host' =>	$this->get('sharedssl_host'),
-				$this->get('slug') . '_sharedssl_admin' =>	$this->get('sharedssl_admin')
-			);
-
-			foreach( $options as $option => $value) {
-				if ( $shared_ssl && $value ) {
-					if ( $option == $this->get('slug') . '_sharedssl_host' ) {
-						if ( $ssl_port = parse_url($value, PHP_URL_PORT) ) {
-							update_option($this->get('slug') . '_ssl_port', $ssl_port);
-							$value = str_replace(':' . $ssl_port, '', $value);
-						}
-						update_option($this->get('slug') . '_ssl_host', $value);
-					}
-					if ( $option == $this->get('slug') . '_sharedssl_admin' ) {
-						update_option($this->get('slug') . '_ssl_admin', $value);
-						delete_option($option);
-					}
-				}
-				delete_option($option);
-			}
-		}
 		
 		// Update current version
-		update_option($this->get('slug') . '_version', $this->get('version'));
+		$this->updateSetting('version', $this->get('version'));
 	}
-
 	/**
 	 * Is Local URL
 	 * 
