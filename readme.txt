@@ -2,9 +2,9 @@
 Contributors: Mvied
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N9NFVADLVUR7A
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
-Requires at least: 2.7.0
-Tested up to: 3.4
-Stable tag: 2.0.4
+Requires at least: 2.9.0
+Tested up to: 3.3
+Stable tag: 2.1
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
@@ -71,11 +71,14 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.0 =
+* The plugin has been completely re-written.
+* Redirect loops should no longer be an issue.
+* Bugs are likely to occur.
 = 2.0.4 =
 * Bug Fix - Users using Shared SSL should no longer have broken URL's and redirects.
-* Bug Fix - Pages should correctly be identified as HTTPS if PHP returns an IP address for HTTP_HOST in $_SERVER.
+* Bug Fix - Pages should correctly be identified as HTTPS if PHP returns an IP address for SERVER_ADDR in $_SERVER.
 * Bug Fix - Users using the default permalink structure should now have URL's being properly changed to/from HTTPS.
-* Bug Fix - Uninstall should no longer be interrupted by plugin settings.
 = 2.0.3 =
 * Force SSL Admin will always be enabled when FORCE_SSL_ADMIN is true in wp-config.php.
 * Bug Fix - Users using Shared SSL should no longer have issues with the SSL Host path duplicating in URL's.

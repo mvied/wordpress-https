@@ -1,0 +1,90 @@
+#icon-options-https {
+	background: url(images/admin-icon32.png) no-repeat;
+}
+
+.meta-box-sortables {
+	margin: 0 8px;
+}
+
+#poststuff .column-primary {
+	width: 60%;
+}
+#poststuff .column-secondary {
+	width: 40%;
+	float: right;
+}
+
+.wphttps-message-wrap {
+	position: fixed;
+	bottom: 50%;
+	left: 50%;
+	margin-left: -25%;
+	width: 50%;
+	z-index: 10;
+	text-align: center;
+}
+
+#message {
+	margin: 15px 0 0 0;
+}
+#message p {
+	line-height: 100%;
+}
+
+img.loading {
+	display: block;
+	position: absolute;
+	top: 7px;
+	right: 7px;	
+}
+
+img.waiting {
+	display: none;
+}
+img#submit-waiting {
+	vertical-align: middle;
+	margin-left: 5px;
+}
+
+#wphttps-donate-link img {
+	display: block;
+	margin: 5px auto 13px auto;
+}
+
+#wordpress-https_settings input[type="text"] {
+	margin: -5px 0 0 0;
+}
+#wordpress-https_settings input[type="checkbox"] {
+	margin: 7px 0 0 0;
+	vertical-align: bottom;
+}
+#wordpress-https_settings table tr td,
+#wordpress-https_settings table tr th {
+	line-height: 1em;
+	padding: 10px;
+}
+#wordpress-https_settings table tr td {
+	padding: 2px 0 0 0;
+}
+#wordpress-https_settings table tr td:first-child {
+	padding-top: 0;
+}
+#wordpress-https_settings table th {
+	width: 140px;
+	line-height: 32px;
+	padding: 0;
+}
+#wordpress-https_settings #settings-reset {
+	float: left;
+	margin-right: 10px;
+}
+#wordpress-https_settings #ssl_port_label {
+	display: inline-block;
+	padding-top: 10px;	
+}
+#wordpress-https_settings #ssl_host {
+	width: 70%;
+}
+#exclusive_https_row label {
+	padding-top: 5px;	
+}

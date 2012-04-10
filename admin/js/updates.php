@@ -1,6 +1,10 @@
 <?php
-
-require_once('../wordpress-https.php');
+$include_paths = array(
+	realpath(dirname(__FILE__) . '/../../lib'),
+	get_include_path()
+);
+set_include_path(implode(PATH_SEPARATOR, $include_paths));
+require_once('WordPressHTTPS.php');
 
 // Disable errors
 error_reporting(0);
@@ -14,11 +18,9 @@ header('Cache-Control: post-check=0, pre-check=0', FALSE);
 header('Pragma: no-cache');
 header("Vary: Accept-Encoding");
  
-$url = 'http://mvied.com/wphttps-updates.html';
+$content = WordPressHTTPS::factory('Url')->fromString('http://mvied.com/wphttps-updates.html')->getContent();
 
-$content = WordPressHTTPS::get_file_contents($url);
-
-if ($content) {
+if ( $content ) {
 	echo $content;
 } else {
 	echo "<p class=\"error\">Unable to retrieve updates.</p>";
