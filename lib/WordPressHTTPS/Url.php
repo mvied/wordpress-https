@@ -89,7 +89,143 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 	 * @var string
 	 */
 	protected $_content;
-
+	
+	/**
+	 * Set Scheme
+	 * 
+	 * @param string $scheme
+	 * @return object $this
+	 */
+	public function setScheme( $scheme ) {
+		$this->_scheme = $scheme;
+		return $this;
+	}
+	
+	/**
+	 * Get Scheme
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getScheme() {
+		return $this->_scheme;
+	}
+	
+	/**
+	 * Set Host
+	 * 
+	 * @param string $host
+	 * @return object $this
+	 */
+	public function setHost( $host ) {
+		$this->_host = $host;
+		return $this;
+	}
+	
+	/**
+	 * Get Host
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getHost() {
+		return $this->_host;
+	}
+	
+	/**
+	 * Set Base Host
+	 * 
+	 * @param string $base_host
+	 * @return object $this
+	 */
+	public function setBaseHost( $base_host ) {
+		$this->_base_host = $base_host;
+		return $this;
+	}
+	
+	/**
+	 * Gets the base host of the URL
+	 *
+	 * @param none
+	 * @return string
+	 */
+	public function getBaseHost() {
+		$return_url = clone $this;
+		$test_url = clone $this;
+		$host_parts = explode('.', $test_url->getHost());
+		for ( $i = 0; $i <= sizeof($host_parts); $i++ ) {
+			if ( $test_url->setHost( str_replace($host_parts[$i] . '.', '', $test_url->getHost()) )->isValid() ) {
+				$return_url = clone $test_url;
+			} else {
+				break;
+			}
+		}
+		return $return_url->getHost();
+	}
+	
+	/**
+	 * Set Port
+	 * 
+	 * @param string $port
+	 * @return object $this
+	 */
+	public function setPort( $port ) {
+		$this->_port = $port;
+		return $this;
+	}
+	
+	/**
+	 * Get Port
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getPort() {
+		return $this->_port;
+	}
+	
+	/**
+	 * Set User
+	 * 
+	 * @param string $user
+	 * @return object $this
+	 */
+	public function setUser( $user ) {
+		$this->_user = $user;
+		return $this;
+	}
+	
+	/**
+	 * Get User
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getUser() {
+		return $this->_user;
+	}
+	
+	/**
+	 * Set Pass
+	 * 
+	 * @param string $pass
+	 * @return object $this
+	 */
+	public function setPass( $pass ) {
+		$this->_pass = $pass;
+		return $this;
+	}
+	
+	/**
+	 * Get Pass
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getPass() {
+		return $this->_pass;
+	}
+	
 	/**
 	 * Set Path
 	 * 
@@ -121,27 +257,60 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 
 		return $this->_path;
 	}
-
+	
 	/**
-	 * Returns the base host of the URL
-	 *
+	 * Set Filename
+	 * 
+	 * @param string $filename
+	 * @return object $this
+	 */
+	public function setFilename( $filename ) {
+		$this->_filename = $filename;
+		return $this;
+	}
+	
+	/**
+	 * Get Filename
+	 * 
 	 * @param none
 	 * @return string
 	 */
-	public function getBaseHost() {
-		$return_url = clone $this;
-		$test_url = clone $this;
-		$host_parts = explode('.', $test_url->get('host'));
-		for ( $i = 0; $i <= sizeof($host_parts); $i++ ) {
-			if ( $test_url->set('host', str_replace($host_parts[$i] . '.', '', $test_url->get('host')) )->isValid() ) {
-				$return_url = clone $test_url;
-			} else {
-				break;
-			}
-		}
-		return $return_url->get('host');
+	public function getFilename() {
+		return $this->_filename;
 	}
-
+	
+	/**
+	 * Set Extension
+	 * 
+	 * @param string $extension
+	 * @return object $this
+	 */
+	public function setExtension( $extension ) {
+		$this->_extension = $extension;
+		return $this;
+	}
+	
+	/**
+	 * Get Extension
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getExtension() {
+		return $this->_extension;
+	}
+	
+	/**
+	 * Set Content
+	 * 
+	 * @param string $content
+	 * @return object $this
+	 */
+	public function setContent( $content ) {
+		$this->_content = $content;
+		return $this;
+	}
+	
 	/**
 	 * Get the contents of the URL
 	 *
@@ -149,6 +318,10 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 	 * @return boolean
 	 */
 	public function getContent( $verify_ssl = false ) {
+		if ( $this->_content ) {
+			return $this->_content;
+		}
+		
 		if ( function_exists('curl_init') ) {
 			$ch = curl_init();
 
