@@ -120,7 +120,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function init() {
 		// Start output buffering
-		add_action('init', array(&$this, 'buffer_start'));
+		add_action('init', array(&$this, 'startOutputBuffering'));
 	}
 	
 	/**
@@ -132,16 +132,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function reset() {
 		delete_option($this->get('slug') . '_secure_external_urls');
 		delete_option($this->get('slug') . '_unsecure_external_urls');
-	}
-	
-	/**
-	 * Start output buffering
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function buffer_start() {
-		ob_start(array(&$this, 'process'));
 	}
 
 	/**
@@ -170,27 +160,35 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	}
 	
 	/**
-	 * Process
+	 * Parse HTML
 	 * 
-	 * Processes the output buffer to fix HTML output
+	 * Parses the output buffer to fix HTML output
 	 *
 	 * @param string $buffer
 	 * @return string $this->_html
 	 */
-	public function process( $buffer ) {
+	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
-		
 		
 		$this->fixExtensions();
 		$this->fixElements();
 		$this->fixLinksAndForms();
 
-		// Add debug console logging. It's not pretty, but it works.
 		if ( $this->getSetting('debug') == true ) {
 			$this->consoleLog();
 		}
 		
 		return $this->_html;
+	}
+	
+	/**
+	 * Start output buffering
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function startOutputBuffering() {
+		ob_start(array(&$this, 'parseHtml'));
 	}
 	
 	/**
@@ -361,7 +359,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 						} else if ( $updated == false && $url->get('scheme') == 'http' ) {
 							$this->log('[WARNING] Unsecure Element: <' . $type . '> - ' . $url);
 						}
-						break; // foreach
 					}
 				}
 			}
