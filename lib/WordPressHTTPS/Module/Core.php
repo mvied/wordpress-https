@@ -39,7 +39,7 @@ class WordPressHTTPS_Module_Core extends WordPressHTTPS_Module implements WordPr
 		$this->set('https_url', WordPressHTTPS::factory('Url')->fromString(home_url('/', 'https')));
 
 		// If using a different host for SSL
-		if ( $this->getSetting('ssl_host') && $this->getSetting('ssl_host')->get('host') != $this->get('https_url')->get('host') ) {
+		if ( $this->getSetting('ssl_host') && $this->getSetting('ssl_host') != $this->get('https_url')->get('host') ) {
 			// Assign HTTPS URL to SSL Host
 			$this->updateSetting('ssl_host_diff', 1);
 			$this->set('https_url', WordPressHTTPS::factory('Url')->fromString( $this->getSetting('ssl_host') ));
