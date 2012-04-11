@@ -57,7 +57,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function setSecureExternalUrls( $value ) {
 		$property = '_secure_external_urls';
 		$this->$property = $value;
-		update_option($this->get('slug') . $property, $value);
+		update_option($this->get('slug') . $property, $this->$property);
 		return $this;
 	}
 	
@@ -80,6 +80,23 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	}
 	
 	/**
+	 * Add Secure External URL
+	 * 
+	 * @param string $value
+	 * @return $this
+	 */
+	public function addSecureExternalUrl( $value ) {
+		if ( $value == '' ) {
+			return $this;
+		}
+		
+		$property = '_secure_external_urls';
+		array_push($this->$property, $value);
+		update_option($this->get('slug') . $property, $this->$property);
+		return $this;
+	}
+	
+	/**
 	 * Set Unsecure External URL's
 	 * 
 	 * Stores the value of this array in WordPress options.
@@ -87,10 +104,27 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @param array $value
 	 * @return $this
 	 */
-	public function setUnsecureExternalUrls( $value ) {
+	public function setUnsecureExternalUrls( $value = array() ) {
 		$property = '_unsecure_external_urls';
 		$this->$property = $value;
-		update_option($this->get('slug') . $property, $value);
+		update_option($this->get('slug') . $property, $this->$property);
+		return $this;
+	}
+	
+	/**
+	 * Add Unsecure External URL
+	 * 
+	 * @param string $value
+	 * @return $this
+	 */
+	public function addUnsecureExternalUrl( $value ) {
+		if ( $value == '' ) {
+			return $this;
+		}
+		
+		$property = '_unsecure_external_urls';
+		array_push($this->$property, $value);
+		update_option($this->get('slug') . $property, $this->$property);
 		return $this;
 	}
 	
@@ -239,6 +273,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 							$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 						}
 					} else {
+						$url = $this->factory('Url')->fromString($url);
 						// If local
 						if ( $this->is_local_url($url) ) {
 							$updated = $this->replace_http_url($url);
