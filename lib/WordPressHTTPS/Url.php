@@ -299,6 +299,27 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 	public function getExtension() {
 		return $this->_extension;
 	}
+
+	/**
+	 * Set Query
+	 * 
+	 * @param string $query
+	 * @return object $this
+	 */
+	public function setQuery( $query ) {
+		$this->_query = $query;
+		return $this;
+	}
+	
+	/**
+	 * Get Query
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getQuery() {
+		return $this->_query;
+	}
 	
 	/**
 	 * Set Content
@@ -346,6 +367,42 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 		} else if ( @ini_get('allow_url_fopen') ) {
 			if ( ($content = @file_get_contents($url)) !== false ) {
 				return $content;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Validates the existence of the URL with cURL or file_get_contents()
+	 *
+	 * @param boolean $verify_ssl
+	 * @return boolean
+	 */
+	public function isValid( $verify_ssl = false ) {
+		if ( function_exists('curl_init') ) {
+			$ch = curl_init();
+
+			curl_setopt($ch, CURLOPT_URL, $this->toString());
+			curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_ssl);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($ch, CURLOPT_FAILONERROR, true);
+			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+			curl_setopt($ch, CURLOPT_HEADER, false);
+			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
+
+			$content = curl_exec($ch);
+			$info = curl_getinfo($ch);
+			curl_close($ch);
+			
+			if ( !$info['http_code'] || ( $info['http_code'] == 0 || $info['http_code'] == 404 ) ) {
+				return false;
+			} else {
+				return true;
+			}
+		} else if ( @ini_get('allow_url_fopen') ) {
+			if ( @file_get_contents($url) !== false ) {
+				return true;
 			}
 		}
 		return false;
@@ -398,16 +455,6 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 	}
 
 	/**
-	 * Magic __toString method that is called when the object is casted to a string
-	 *
-	 * @param none
-	 * @return string
-	 */
-	public function __toString() {
-		return $this->toString();
-	}
-	
-	/**
 	 * Returns an array of all URL properties
 	 *
 	 * @param none
@@ -424,69 +471,24 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 	 * @return string
 	 */
 	public function toString() {
-		$string = ( $this->get('scheme') ? $this->get('scheme') . '://' : '' ) . 
-		( $this->get('user') ? $this->get('user') . ( $this->get('pass') ? ':' . $this->get('pass') : '' ) . '@' : '' ) . 
-		$this->get('host') .
-		( $this->get('port') ? ':' . $this->get('port') : '' ) . 
-		$this->get('path') . 
-		( $this->get('query') ? '?' . $this->get('query') : '' );
+		$string = ( $this->getScheme() ? $this->getScheme() . '://' : '' ) . 
+		( $this->getUser() ? $this->getUser() . ( $this->getPass() ? ':' . $this->getPass() : '' ) . '@' : '' ) . 
+		$this->getHost() .
+		( $this->getPort()  ? ':' . $this->getPort() : '' ) . 
+		$this->getPath() . 
+		( $this->getQuery() ? '?' . $this->getQuery() : '' );
 	
 		return $string;
 	}
-	
+
 	/**
-	 * Validates the existence of the URL with cURL or file_get_contents()
+	 * Magic __toString method that is called when the object is casted to a string
 	 *
-	 * @param boolean $verify_ssl
-	 * @return boolean
+	 * @param none
+	 * @return string
 	 */
-	public function isValid( $verify_ssl = false ) {
-		if ( function_exists('curl_init') ) {
-			$ch = curl_init();
-
-			curl_setopt($ch, CURLOPT_URL, $this->toString());
-			curl_setopt($ch, CURLOPT_USERAGENT, $_SERVER["HTTP_USER_AGENT"]);
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_ssl);
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($ch, CURLOPT_FAILONERROR, true);
-			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-			curl_setopt($ch, CURLOPT_HEADER, false);
-			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
-
-			$content = curl_exec($ch);
-			$info = curl_getinfo($ch);
-			curl_close($ch);
-			
-			if ( !$info['http_code'] || ( $info['http_code'] == 0 || $info['http_code'] == 404 ) ) {
-				return false;
-			} else {
-				return true;
-			}
-		} else if ( @ini_get('allow_url_fopen') ) {
-			if ( @file_get_contents($url) !== false ) {
-				return true;
-			}
-		}
-		return false;
+	public function __toString() {
+		return $this->toString();
 	}
 	
-	/**
-	 * Compares the current URL object to another URL object.
-	 *
-	 * @param string | array $parts URL Parts to match
-	 * @param WordPressHTTPS_Url $url
-	 * @return boolean
-	 */
-	public function match( $parts = array(), WordPressHTTPS_Url $url ) {
-		if ( ! is_array($parts) ) {
-			$parts = array( $parts );
-		}
-		foreach( $parts as $part ) {
-			if ( $this->get($part) != $url->get($part) ) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 }
