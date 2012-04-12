@@ -7,9 +7,8 @@
  *
  */
 
-interface WordPressHTTPS_Logger_Interface
-{
-	
+interface WordPressHTTPS_Logger_Interface {
+
 	/**
 	 * Get singleton instance
 	 *
@@ -29,7 +28,7 @@ interface WordPressHTTPS_Logger_Interface
 	/**
 	 * Adds a string to an array of log entries
 	 *
-	 * @param none
+	 * @param string $string
 	 * @return $this
 	 */
 	public function log( $string );

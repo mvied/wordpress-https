@@ -7,21 +7,22 @@
  *
  */
 
-interface WordPressHTTPS_Module_Interface
-{
-    /**
-     * Initializes the module
-     *
+interface WordPressHTTPS_Module_Interface {
+
+	/**
+	 * Initializes the module
+	 *
 	 * @param none
 	 * @return void
 	 */
-    public function init();
-    
+	public function init();
+	
 	/**
 	 * Runs when the plugin settings are reset.
 	 *
 	 * @param none
 	 * @return void
 	 */
-    public function reset();
+	public function reset();
+
 }
