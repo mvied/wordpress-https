@@ -153,7 +153,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
 					$_POST[$key] = 0;
-					$this->setSetting($key, $_POST[$key]);
+					$this->getPlugin()->setSetting($key, $_POST[$key]);
 				} else if ( array_key_exists($key, $_POST) ) {
 					if ( $key == 'ssl_host' ) {
 						if ( $_POST[$key] != '' ) {
