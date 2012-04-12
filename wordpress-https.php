@@ -11,9 +11,6 @@
 $include_paths = array(
 	dirname(__FILE__),
 	dirname(__FILE__) . '/lib',
-	dirname(__FILE__) . '/lib/WordPressHTTPS/Module/',
-	dirname(__FILE__) . '/lib/WordPressHTTPS/Module/Admin',
-	dirname(__FILE__) . '/lib/WordPressHTTPS/Module/Logger',
 	get_include_path()
 );
 set_include_path(implode(PATH_SEPARATOR, $include_paths));

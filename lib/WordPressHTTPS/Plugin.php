@@ -350,12 +350,9 @@ class WordPressHTTPS_Plugin {
 		}
 		$module_full = 'Module\\' . $module;
 
-		$filename = $base_class . '/' . str_replace('\\', '/', $module_full) . '.php';
 		$class = $base_class . '_' . str_replace('\\', '_', $module_full);
 		if ( ! isset($this->_modules[$class]) || ! is_object($this->_modules[$class]) || get_class($this->_modules[$class]) != $class ) {
 			try {
-				require_once($filename);
-
 				$object = new $class;
 				$this->setModule($module_full, $object);
 				$this->getModule($module)->setPlugin($this);
