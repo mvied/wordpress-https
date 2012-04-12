@@ -7,14 +7,22 @@
  *
  */
 
+<<<<<<< HEAD
 class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
+=======
+class WordPressHTTPS_Logger {
+>>>>>>> 23d88837eeef2be0b31e0062ce7fedb10c056d5e
 
 	/**
 	 * Instance
 	 *
 	 * @var WordPressHTTPS_Logger
 	 */
+<<<<<<< HEAD
 	private static $_instance;
+=======
+	protected $_instance;
+>>>>>>> 23d88837eeef2be0b31e0062ce7fedb10c056d5e
 
 	/**
 	 * Log Entries
@@ -35,7 +43,21 @@ class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
 		}
 		return self::$_instance;
 	}
+<<<<<<< HEAD
 
+=======
+	
+	/**
+	 * Construct
+	 *
+	 * @param none
+	 * @return void
+	 */
+	protected function __construct() {
+		throw new Exception('WordPressHTTPS_Logger can not be instantiated directly. Use WordPressHTTPS_Logger::getInstance()');
+	}
+	
+>>>>>>> 23d88837eeef2be0b31e0062ce7fedb10c056d5e
 	/**
 	 * Get Log
 	 *
