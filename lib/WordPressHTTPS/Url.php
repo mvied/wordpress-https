@@ -8,10 +8,7 @@
  * @package WordPressHTTPS
  *
  */
-
-require_once('Base.php');
-
-class WordPressHTTPS_Url extends WordPressHTTPS_Base {
+class WordPressHTTPS_Url {
 
 	/**
 	 * The scheme of a network host; for example, http or https
@@ -407,7 +404,7 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Factory object from an array provided by the parse_url function
 	 * 
@@ -422,8 +419,10 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 
 		foreach( $array as $key => $value ) {
 			$property = '_' . $key;
-			if ( property_exists($url, $property) ) {
-				$url->set($key, $value);
+			$camelCase = create_function('$c', 'return strtoupper($c[1]);');
+			$method = 'set' . preg_replace_callback('/_([a-z])/', $camelCase, $property);
+			if ( method_exists($url, $method) ) {
+				call_user_func(array($url, $method), $value);
 			}
 		}
 		return $url;
@@ -443,8 +442,10 @@ class WordPressHTTPS_Url extends WordPressHTTPS_Base {
 			if ( $url_parts = parse_url( $url_parts[0][0] ) ) {
 				foreach( $url_parts as $key => $value ) {
 					$property = '_' . $key;
-					if ( property_exists($url, $property) ) {
-						$url->set($key, $value);
+					$camelCase = create_function('$c', 'return strtoupper($c[1]);');
+					$method = 'set' . preg_replace_callback('/_([a-z])/', $camelCase, $property);
+					if ( method_exists($url, $method) ) {
+						call_user_func(array($url, $method), $value);
 					}
 				}
 				return $url;

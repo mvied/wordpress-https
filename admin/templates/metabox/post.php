@@ -6,7 +6,7 @@ if ( $post->ID ) {
 	$force_ssl_children = get_post_meta($post->ID, 'force_ssl_children', true);
 }
 
-wp_nonce_field($this->get('slug'), $this->get('slug'));
+wp_nonce_field($this->getPlugin()->getSlug(), $this->getPlugin()->getSlug());
 ?>
 <div class="misc-pub-section">
 	<label><input type="checkbox" value="1" name="force_ssl" id="force_ssl"<?php echo ( $force_ssl  ? ' checked="checked"' : '' ); ?> /> Secure post</label>

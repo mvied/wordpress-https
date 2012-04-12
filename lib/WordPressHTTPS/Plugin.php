@@ -8,10 +8,7 @@
  * @package WordPressHTTPS
  *
  */
-
-require_once('Base.php');
-
-class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
+class WordPressHTTPS_Plugin {
 
 	/**
 	 * Base directory
@@ -28,19 +25,19 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	protected $_module_directory;
 
 	/**
-	 * Log Entries
-	 *
-	 * @var array
-	 */
-	protected $_log = array();
-
-	/**
 	 * Loaded Modules
 	 *
 	 * @var array
 	 */
 	protected $_modules = array();
 
+	/**
+	 * Logger
+	 *
+	 * @var WordPressHTTPS_Logger
+	 */
+	protected $_logger;
+	
 	/**
 	 * Plugin URL
 	 *
@@ -72,17 +69,47 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	protected $_version;
 	
 	/**
-	 * Set Module
-	 *
-	 * @param string $module
-	 * @param object $object
-	 * @return $this
+	 * Set Directory
+	 * 
+	 * @param string $directory
+	 * @return object $this
 	 */
-	public function setModule( $module, $object ) {
-		$this->_modules[$module] = $object;
+	public function setDirectory( $directory ) {
+		$this->_directory = $directory;
 		return $this;
 	}
-
+	
+	/**
+	 * Get Directory
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getDirectory() {
+		return $this->_directory;
+	}
+	
+	/**
+	 * Set Module Directory
+	 * 
+	 * @param string $module_directory
+	 * @return object $this
+	 */
+	public function setModuleDirectory( $module_directory ) {
+		$this->_module_directory = $module_directory;
+		return $this;
+	}
+	
+	/**
+	 * Get Module Directory
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getModuleDirectory() {
+		return $this->_module_directory;
+	}
+	
 	/**
 	 * Get Available Modules
 	 *
@@ -91,13 +118,13 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	 */
 	public function getAvailableModules() {
 		$modules = array();
-		if ( is_dir($this->get('module_directory')) && $module_directory = opendir($this->get('module_directory')) ) {
+		if ( is_dir($this->getModuleDirectory()) && $module_directory = opendir($this->getModuleDirectory()) ) {
 			while ( false !== ($entry = readdir($module_directory)) ) {
 				if ( $entry != '.' && $entry != '..' ) {
 					$module = str_replace('.php', '', $entry);
 					if ( $module != 'Interface' ) {
 						$modules[] = $module;
-						if ( is_dir($this->get('module_directory') . $module) && $sub_module_directory = opendir($this->get('module_directory') . $module) ) {
+						if ( is_dir($this->getModuleDirectory() . $module) && $sub_module_directory = opendir($this->getModuleDirectory() . $module) ) {
 							while ( false !== ($entry = readdir($sub_module_directory)) ) {
 								if ( $entry != '.' && $entry != '..' ) {
 									$sub_module = str_replace('.php', '', $entry);
@@ -110,35 +137,6 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 			}
 		}
 		return $modules;
-	}
-	
-	/**
-	 * Getter
-	 *
-	 * @param string $property
-	 * @return mixed
-	 */
-	public function get( $property ) {
-		$property = '_' . ltrim($property, '_');
-		foreach( $this->getModules() as $module ) {
-			if ( property_exists($module, $property) ) {
-				return $module->get(ltrim($property, '_'));
-			}
-		}
-		return parent::get($property);
-	}
-
-	/**
-	 * Get Log
-	 *
-	 * @param none
-	 * @return array
-	 */
-	public function getLog() {
-		if ( ! is_array($this->_log) || sizeof($this->_log) == 0 ) {
-			$this->_log = array('No log entries.');
-		}
-		return $this->_log;
 	}
 
 	/**
@@ -155,7 +153,7 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 			}
 		}
 		
-		throw new Exception('Module not found: \'' . $module . '\'.');
+		die('Module not found: \'' . $module . '\'.');
 	}
 
 	/**
@@ -173,7 +171,65 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 		}
 		return $modules;
 	}
+	
+	/**
+	 * Set Module
+	 *
+	 * @param string $module
+	 * @param object $object
+	 * @return $this
+	 */
+	public function setModule( $module, $object ) {
+		$this->_modules[$module] = $object;
+		return $this;
+	}
 
+	/**
+	 * Set Logger
+	 * 
+	 * @param object $logger
+	 * @return object $this
+	 */
+	public function setLogger( $logger ) {
+		$this->_logger = $logger;		
+		return $this;
+	}
+	
+	/**
+	 * Get Logger
+	 * 
+	 * @param none
+	 * @return object
+	 */
+	public function getLogger() {
+		if ( ! isset($this->_logger) ) {
+			die(__CLASS__ . ' missing Logger dependency.');
+		}
+		
+		return $this->_logger;
+	}
+	
+	/**
+	 * Set Plugin Url
+	 * 
+	 * @param string $plugin_url
+	 * @return object $this
+	 */
+	public function setPluginUrl( $plugin_url ) {
+		$this->_plugin_url = $plugin_url;
+		return $this;
+	}
+	
+	/**
+	 * Get Plugin Url
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getPluginUrl() {
+		return $this->_plugin_url;
+	}
+	
 	/**
 	 * Get Plugin Setting
 	 *
@@ -181,10 +237,75 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	 * @return mixed
 	 */
 	public function getSetting( $setting ) {
-		$setting = $this->get('slug') . '_' . $setting;
+		$setting = $this->getSlug() . '_' . $setting;
 		return get_option($setting);
 	}
-
+	
+	/**
+	 * Get Plugin Settings
+	 *
+	 * @param none
+	 * @return array
+	 */
+	public function getSettings() {
+		return $this->_settings;
+	}
+	
+	/**
+	 * Set Plugin Setting
+	 *
+	 * @param string $setting
+	 * @param mixed $value
+	 * @return $this
+	 */
+	public function setSetting( $setting, $value ) {
+		$setting = $this->getSlug() . '_' . $setting;
+		update_option($setting, $value);
+		return $this;
+	}
+	
+	/**
+	 * Set Slug
+	 * 
+	 * @param string $slug
+	 * @return object $this
+	 */
+	public function setSlug( $slug ) {
+		$this->_slug = $slug;
+		return $this;
+	}
+	
+	/**
+	 * Get Slug
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getSlug() {
+		return $this->_slug;
+	}
+	
+	/**
+	 * Set Version
+	 * 
+	 * @param string $version
+	 * @return object $this
+	 */
+	public function setVersion( $version ) {
+		$this->_version = $version;
+		return $this;
+	}
+	
+	/**
+	 * Get Version
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getVersion() {
+		return $this->_version;
+	}
+	
 	/**
 	 * Init
 	 * 
@@ -202,61 +323,7 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	}
 
 	/**
-	 * If method does not exist, look in all modules
-	 *
-	 * @param string $method
-	 * @param array $args
-	 * @return mixed
-	 */
-	public function __call( $method, $args = array() ) {
-		$modules = array();
-		foreach( $this->getModules() as $module ) {
-			if ( method_exists($module, $method) ) {
-				$modules[] = $module;
-			}
-		}
-		
-		if ( sizeof($modules) >= 1 ) {
-			return call_user_func_array(array($modules[0], $method), $args);
-		}
-	}
-
-	/**
-	 * Object Factory
-	 *
-	 * @param string $class
-	 * @param array $args
-	 * @return object
-	 */
-	public static function factory( $class, $args = array() ) {
-		$base_class = 'WordPressHTTPS';
-		if ( strpos($class, $base_class) !== false ) {
-			$class = str_replace('\\', '_', $class);
-		} else {
-			$class = $base_class . '_' . str_replace('\\', '_', $class);
-		}
-		
-		$filename = str_replace('_', '/', $class);
-		$filename = $filename . '.php';
-		
-		try {
-			require_once($filename);
-		} catch ( Exception $e ) {
-			throw new Exception('Unable to load class: ' . $class);
-		}
-
-		if ( sizeof($args) > 0 ) {
-			$reflector = new ReflectionClass($class);
-			$object = $reflector->newInstanceArgs($args);
-		} else {
-			$object = new $class;
-		}
-
-		return $object;
-	}
-	
-	/**
-	 * Module Loaded?
+	 * Is Module Loaded?
 	 *
 	 * @param string $module
 	 * @return boolean
@@ -268,26 +335,14 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 			return false;
 		}
 	}
-	
-	/**
-	 * Adds a string to an array of log entries
-	 *
-	 * @param none
-	 * @return $this
-	 */
-	public function log( $string ) {
-		$this->_log[] = $string;
-		return $this;
-	}
 
 	/**
 	 * Load Module
 	 *
 	 * @param string $module
-	 * @param array $args
 	 * @return $this
 	 */
-	public function loadModule( $module, $args = array() ) {
+	public function loadModule( $module ) {
 		if ( strpos(get_class($this), '_') !== false ) {
 			$base_class = substr(get_class($this), 0, strpos(get_class($this), '_'));
 		} else {
@@ -295,18 +350,17 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 		}
 		$module_full = 'Module\\' . $module;
 
-		$filename = str_replace('\\', '/', $module_full) . '.php';
+		$filename = $base_class . '/' . str_replace('\\', '/', $module_full) . '.php';
 		$class = $base_class . '_' . str_replace('\\', '_', $module_full);
 		if ( ! isset($this->_modules[$class]) || ! is_object($this->_modules[$class]) || get_class($this->_modules[$class]) != $class ) {
-			require_once($filename);
+			try {
+				require_once($filename);
 
-			$object = WordPressHTTPS::factory($module_full, $args);
-			
-			if ( is_object($object) ) {
+				$object = new $class;
 				$this->setModule($module_full, $object);
-				$this->getModule($module)->set('plugin', $this);
-			} else {
-				throw new Exception('Unable to load module: \'' . $module . '\'.');
+				$this->getModule($module)->setPlugin($this);
+			} catch ( Exception $e ) {
+				die('Unable to load module: \'' . $module . '\'. ' . $e->getMessage());
 			}
 		}
 
@@ -325,15 +379,7 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 		if ( sizeof($modules) == 0 ) {
 			$modules = $this->getAvailableModules();
 		}
-		
-		// Load Core Module
-		if ( in_array('Core', $modules) ) {
-			$module = 'Core';
-			$this->loadModule( $module );
-			$this->getModule( $module )->set('plugin', $this);
-			unset($modules[$module]);
-		}
-		
+
 		foreach( $modules as $module ) {
 			$this->loadModule( $module );
 		}
@@ -364,27 +410,14 @@ class WordPressHTTPS_Plugin extends WordPressHTTPS_Base {
 	}
 	
 	/**
-	 * Update Plugin Setting
-	 *
-	 * @param string $setting
-	 * @param mixed $value
-	 * @return $this
-	 */
-	public function updateSetting( $setting, $value ) {
-		$setting = $this->get('slug') . '_' . $setting;
-		update_option($setting, $value);
-		return $this;
-	}
-	
-	/**
 	 * Resets all plugin options to the defaults
 	 *
 	 * @param none
 	 * @return $this
 	 */
 	public function reset() {
-		foreach ( $this->get('settings') as $option => $value ) {
-			update_option($this->get('slug') . '_' . $option, $value);
+		foreach ( $this->getPlugin()->getSettings() as $option => $value ) {
+			update_option($this->getSlug() . '_' . $option, $value);
 		}
 		
 		foreach( $this->getModules() as $module ) {

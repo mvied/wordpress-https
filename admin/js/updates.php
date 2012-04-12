@@ -18,7 +18,7 @@ header('Cache-Control: post-check=0, pre-check=0', FALSE);
 header('Pragma: no-cache');
 header("Vary: Accept-Encoding");
  
-$content = WordPressHTTPS::factory('Url')->fromString('http://mvied.com/wphttps-updates.html')->getContent();
+$content = WordPressHTTPS_Url::fromString('http://mvied.com/wphttps-updates.html')->getContent();
 
 if ( $content ) {
 	echo $content;

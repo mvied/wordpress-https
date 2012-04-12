@@ -25,7 +25,7 @@ if ( ! wp_verify_nonce($_POST['nonce'], $_POST['id']) ) {
 	exit;
 }
 
-$content = WordPressHTTPS::factory('Url')->fromString( $_POST['url'] )->getContent();
+$content = WordPressHTTPS_Url::fromString( $_POST['url'] )->getContent();
 
 if ( $content ) {
 	echo $content;

@@ -14,10 +14,10 @@ require_once('includes/template.php'); // WordPress Dashboard Functions
 ?>
 	<div id="poststuff" class="columns metabox-holder">
 		<div class="postbox-container column-primary">
-<?php do_meta_boxes('toplevel_page_' . $this->get('slug'), 'main', $this); ?>
+<?php do_meta_boxes('toplevel_page_' . $this->getPlugin()->getSlug(), 'main', $this); ?>
 		</div>
 		<div class="postbox-container column-secondary">
-<?php do_meta_boxes('toplevel_page_' . $this->get('slug'), 'side', $this); ?>
+<?php do_meta_boxes('toplevel_page_' . $this->getPlugin()->getSlug(), 'side', $this); ?>
 		</div>
 	</div>
 </div>

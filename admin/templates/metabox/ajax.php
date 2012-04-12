@@ -8,7 +8,7 @@ jQuery(document).ready(function($) {
 	$('#<?php echo $metabox['id']; ?> .handlediv .loading').fadeIn('fast');
 	$.ajax({
 		type: 'post',
-		url: '<?php echo parse_url((( $this->is_ssl() ) ? $this->replace_http_url($this->get('plugin_url')) : $this->get('plugin_url')), PHP_URL_PATH); ?>/admin/js/metabox.php',
+		url: '<?php echo parse_url((( $this->getPlugin()->isSsl() ) ? $this->getPlugin()->makeUrlHttps($this->getPlugin()->getPluginUrl()) : $this->getPlugin()->getPluginUrl()), PHP_URL_PATH); ?>/admin/js/metabox.php',
 		data: {
 			id : '<?php echo $metabox['id']; ?>',
 			url : '<?php echo $metabox['args']['url']; ?>',

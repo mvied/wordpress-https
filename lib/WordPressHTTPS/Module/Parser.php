@@ -57,7 +57,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function setSecureExternalUrls( $value ) {
 		$property = '_secure_external_urls';
 		$this->$property = $value;
-		update_option($this->get('slug') . $property, $this->$property);
+		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
 	}
 	
@@ -71,7 +71,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function getSecureExternalUrls() {
 		$property = '_secure_external_urls';
-		$option = get_option($this->get('slug') . $property);
+		$option = get_option($this->getPlugin()->getSlug() . $property);
 		if ( $option !== false ) {
 			return $option;
 		} else {
@@ -92,7 +92,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		
 		$property = '_secure_external_urls';
 		array_push($this->$property, $value);
-		update_option($this->get('slug') . $property, $this->$property);
+		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
 	}
 	
@@ -107,7 +107,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function setUnsecureExternalUrls( $value = array() ) {
 		$property = '_unsecure_external_urls';
 		$this->$property = $value;
-		update_option($this->get('slug') . $property, $this->$property);
+		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
 	}
 	
@@ -124,7 +124,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		
 		$property = '_unsecure_external_urls';
 		array_push($this->$property, $value);
-		update_option($this->get('slug') . $property, $this->$property);
+		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
 	}
 	
@@ -138,7 +138,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function getUnsecureExternalUrls() {
 		$property = '_unsecure_external_urls';
-		$option = get_option($this->get('slug') . $property);
+		$option = get_option($this->getPlugin()->getSlug() . $property);
 		if ( $option !== false ) {
 			return $option;
 		} else {
@@ -164,35 +164,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function reset() {
-		delete_option($this->get('slug') . '_secure_external_urls');
-		delete_option($this->get('slug') . '_unsecure_external_urls');
+		delete_option($this->getPlugin()->getSlug() . '_secure_external_urls');
+		delete_option($this->getPlugin()->getSlug() . '_unsecure_external_urls');
 	}
 
-	/**
-	 * Console Log
-	 * 
-	 * Output contents of the log to the browser's console.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function consoleLog() {
-		$code = "<script type=\"text/javascript\">\n\tif ( typeof console === 'object' ) {\n";
-		$log = $this->get('log');
-		array_unshift($log, '[BEGIN WordPress HTTPS Debug Log]');
-		array_push($log, '[END WordPress HTTPS Debug Log]');
-		foreach( $log as $log_entry ) {
-			if ( is_array($log_entry) ) {
-				$log_entry = json_encode($log_entry);
-			} else {
-				$log_entry = "'" . addslashes($log_entry) . "'";
-			}
-			$code .= "\t\tconsole.log(" . $log_entry . ");\n";
-		}
-		$code .= "\t}\n</script>\n";
-		$this->_html = str_replace("</body>", $code . "\n</body>", $this->_html);
-	}
-	
 	/**
 	 * Parse HTML
 	 * 
@@ -208,10 +183,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		$this->fixElements();
 		$this->fixLinksAndForms();
 
-		if ( $this->getSetting('debug') == true ) {
-			$this->consoleLog();
-		}
-		
 		return $this->_html;
 	}
 	
@@ -235,18 +206,18 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function fixElements() {
 		// Fix any occurrence of the HTTPS version of the regular domain when using different SSL Host
-		if ( $this->getSetting('ssl_host_diff') ) {
-			$url = clone $this->get('http_url');
-			$url->set('scheme', 'https');
+		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+			$url = clone $this->getPlugin()->getHttpUrl();
+			$url->setScheme('https');
 			
 			$count = substr_count($this->_html, $url);
 			if ( $count > 0 ) {
-				$this->log('[FIXED] Updated ' . $count . ' Occurrences of URL: ' . $url . ' => ' . $this->replace_https_url($url));
-				$this->_html = str_replace($url, $this->replace_https_url($url), $this->_html);
+				$this->getPlugin()->getLogger()->log('[FIXED] Updated ' . $count . ' Occurrences of URL: ' . $url . ' => ' . $this->getPlugin()->makeUrlHttp($url));
+				$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
 			}
 		}
 
-		if ( $this->is_ssl() ) {
+		if ( $this->getPlugin()->isSsl() ) {
 			if ( is_admin() ) {
 				preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 			} else {
@@ -268,21 +239,21 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				) {
 					// Fix image tags in the admin panel
 					if ( is_admin() && $type == 'img' ) {
-						if ( $this->is_local_url($url) && $this->is_ssl() ) {
-							$updated = $this->replace_http_url($url);
+						if ( $this->getPlugin()->isUrlLocal($url) && $this->getPlugin()->isSsl() ) {
+							$updated = $this->getPlugin()->makeUrlHttps($url);
 							$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 						}
 					} else {
-						$url = $this->factory('Url')->fromString($url);
+						$url = WordPressHTTPS_Url::fromString($url);
 						// If local
-						if ( $this->is_local_url($url) ) {
-							$updated = $this->replace_http_url($url);
+						if ( $this->getPlugin()->isUrlLocal($url) ) {
+							$updated = $this->getPlugin()->makeUrlHttps($url);
 							$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 						// If external and not HTTPS
 						} else if ( strpos($url, 'https') === false ) {
 							if ( @in_array($url, $this->getSecureExternalUrls()) == false && @in_array($url, $this->getUnsecureExternalUrls()) == false ) {
 								$test_url = clone $url;
-								$test_url->set('scheme', 'https');
+								$test_url->setScheme('https');
 								if ( $test_url->isValid() ) {
 									// Cache this URL as available over HTTPS for future reference
 									$this->addSecureExternalUrl($url);
@@ -294,19 +265,19 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 							if ( in_array($url, $this->getSecureExternalUrls()) ) {
 								$updated = clone $url;
-								$updated->set('scheme', 'https');
+								$updated->setScheme('https');
 								$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 							}
 						}
 
 						if ( $updated == false && strpos($url, 'https') === false ) {
-							$this->log('[WARNING] Unsecure Element: <' . $type . '> - ' . $url);
+							$this->getPlugin()->getLogger()->log('[WARNING] Unsecure Element: <' . $type . '> - ' . $url);
 						}
 					}
 				}
 
 				if ( $updated && $url != $updated ) {
-					$this->log('[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated);
+					$this->getPlugin()->getLogger()->log('[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated);
 				}
 			}
 
@@ -315,13 +286,13 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				$css = $matches[0][$i];
 				$url = $matches[2][$i];
-				$updated = $this->replace_http_url($url);
+				$updated = $this->getPlugin()->makeUrlHttps($url);
 				$this->_html = str_replace($css, str_replace($url, $updated, $css), $this->_html);
-				$this->log('[FIXED] CSS: ' . $url . ' => ' . $updated);
+				$this->getPlugin()->getLogger()->log('[FIXED] CSS: ' . $url . ' => ' . $updated);
 			}
 
 			// Look for any relative paths that should be udpated to the SSL Host path
-			if ( $this->get('http_url')->get('path') != $this->get('https_url')->get('path') ) {
+			if ( $this->getPlugin()->getHttpUrl()->getPath() != $this->getPlugin()->getHttpsUrl()->getPath() ) {
 				preg_match_all('/\<(script|link|img|input|form|embed|param|a)[^>]+(src|href|action|data|movie|image|value)=[\'"](\/[^\'"]*)[\'"][^>]*>/im', $this->_html, $matches);
 
 				for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -334,10 +305,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 						( $type == 'input' && $attr == 'image' ) ||
 						( $type == 'input' && strpos($html, '_wp_http_referer') !== false )
 					) {
-						$updated = clone $this->get('https_url');
-						$updated->set('path', $url_path);
+						$updated = clone $this->getPlugin()->getHttpsUrl();
+						$updated->setPath($url_path);
 						$this->_html = str_replace($html, str_replace($url_path, $updated, $html), $this->_html);
-						$this->log('[FIXED] Element: <' . $type . '> - ' . $url_path . ' => ' . $updated);
+						$this->getPlugin()->getLogger()->log('[FIXED] Element: <' . $type . '> - ' . $url_path . ' => ' . $updated);
 					}
 				}
 			}
@@ -354,7 +325,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return string $this->_html
 	 */
 	public function fixExtensions() {
-		if ( $this->is_ssl() ) {
+		if ( $this->getPlugin()->isSsl() ) {
 			@preg_match_all('/(http|https):\/\/[\/-\w\d\.,~#@^!\'()?=\+&%;:[\]]+/i', $this->_html, $matches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				$url = rtrim($matches[0][$i], '\'"');
@@ -364,14 +335,14 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	
 				foreach( $this->_extensions as $extension ) {
 					if ( strpos($filename, '.' . $extension) !== false ) {
-						$url = $this->factory('Url')->fromString($url);
-						if ( $this->is_local_url( $url ) ) {
-							$updated = $this->replace_http_url($url);
+						$url = WordPressHTTPS_Url::fromString($url);
+						if ( $this->getPlugin()->isUrlLocal( $url ) ) {
+							$updated = $this->getPlugin()->makeUrlHttps($url);
 							$this->_html = str_replace($url, $updated, $this->_html);
-						} else if ( $url->get('scheme') != 'https' ) {
+						} else if ( $url->getScheme() != 'https' ) {
 							if ( @in_array($url, $this->getSecureExternalUrls()) == false && @in_array($url, $this->getUnsecureExternalUrls()) == false ) {
 								$test_url = clone $url;
-								$test_url->set('scheme', 'https');
+								$test_url->setScheme('https');
 								if ( $test_url->isValid() ) {
 									// Cache this URL as available over HTTPS for future reference
 									$this->addSecureExternalUrl($url);
@@ -383,16 +354,16 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			
 							if ( in_array($url, $this->getSecureExternalUrls()) ) {
 								$updated = clone $url;
-								$updated->set('scheme', 'https');
+								$updated->setScheme('https');
 								$this->_html = str_replace($url, $updated, $this->_html);
 								$this->_html = str_replace(preg_quote($url), preg_quote($updated), $this->_html);
 							}
 						}
 		
 						if ( $updated && $url != $updated ) {
-							$this->log('[FIXED] Element: ' . $url . ' => ' . $updated);
-						} else if ( $updated == false && $url->get('scheme') == 'http' ) {
-							$this->log('[WARNING] Unsecure Element: <' . $type . '> - ' . $url);
+							$this->getPlugin()->getLogger()->log('[FIXED] Element: ' . $url . ' => ' . $updated);
+						} else if ( $updated == false && $url->getScheme() == 'http' ) {
+							$this->getPlugin()->getLogger()->log('[WARNING] Unsecure Element: <' . $type . '> - ' . $url);
 						}
 					}
 				}
@@ -419,12 +390,12 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 			unset($force_ssl);
 
-			if ( $this->is_local_url($url) ) {
+			if ( $this->getPlugin()->isUrlLocal($url) ) {
 				$url_parts = parse_url($url);
-				if ( $this->getSetting('ssl_host_diff') && $this->get('https_url')->get('path') != '/' ) {
-					$url_parts['path'] = str_replace($this->get('https_url')->get('path'), '', $url_parts['path']);
+				if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
 				}
-				$url_parts['path'] = str_replace($this->get('http_url')->get('path'), '', $url_parts['path']);
+				$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
 
 				if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 					$post = $postID[1];
@@ -433,19 +404,19 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				} else if ( $url_parts['path'] == '/' ) {
 					if ( get_option('show_on_front') == 'posts' ) {
 						$post = true;
-						$force_ssl = (( $this->getSetting('frontpage') == 1 ) ? true : false);
+						$force_ssl = (( $this->getPlugin()->getSetting('frontpage') == 1 ) ? true : false);
 					} else {
 						$post = get_option('page_on_front');
 					}
 				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-				} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->is_ssl() || $this->getSetting('ssl_admin') ) && ( !is_multisite() || ( is_multisite() && $url_parts['host'] == $this->get('https_url')->get('host') ) ) ) {
+				} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( !is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
 					$post = true;
 					$force_ssl = true;
 				}
 
 				if ( isset($post) ) {
 					// Always change links to HTTPS when logged in via different SSL Host
-					if ( $type == 'a' && $this->getSetting('ssl_host_subdomain') == 0 && $this->getSetting('ssl_host_diff') && $this->getSetting('ssl_admin') && is_user_logged_in() ) {
+					if ( $type == 'a' && $this->getPlugin()->getSetting('ssl_host_subdomain') == 0 && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
 						$force_ssl = true;
 					} else if ( (int) $post > 0 ) {
 						$force_ssl = (( !isset($force_ssl) ) ? get_post_meta($post, 'force_ssl', true) : $force_ssl);
@@ -463,16 +434,16 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					}
 
 					if ( $force_ssl == true ) {
-						$updated = $this->replace_http_url($url);
+						$updated = $this->getPlugin()->makeUrlHttps($url);
 						$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-					} else if ( $this->getSetting('exclusive_https') ) {
-						$updated = $this->replace_https_url($url);
+					} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
+						$updated = $this->getPlugin()->makeUrlHttp($url);
 						$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 					}
 				}
 
 				if ( $updated && $url != $updated ) {
-					$this->log('[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated);
+					$this->getPlugin()->getLogger()->log('[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated);
 				}
 			}
 		}

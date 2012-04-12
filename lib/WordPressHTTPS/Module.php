@@ -19,10 +19,7 @@
  * @package WordPressHTTPS
  *
  */
-
-require_once('Base.php');
-
-class WordPressHTTPS_Module extends WordPressHTTPS_Base {
+class WordPressHTTPS_Module {
 
 	/**
 	 * Plugin object that this module extends
@@ -32,56 +29,28 @@ class WordPressHTTPS_Module extends WordPressHTTPS_Base {
 	protected $_plugin;
 
 	/**
-	 * Getter
+	 * Set Plugin
 	 * 
-	 * Gets property from plugin object.
-	 * If property does not exist on the plugin object, the plugin object will check every module for the property.
-	 *
-	 * @param string $property
-	 * @return mixed
+	 * @param WordPressHTTPS_Plugin $plugin
+	 * @return object $this
 	 */
-	public function get( $property ) {
-		$property = '_' . ltrim($property, '_');
-		
-		if ( property_exists($this, $property) ) {
-			return parent::get($property);
-		} else {
-			return $this->_plugin->get(ltrim($property, '_'));
-		}
-	}
-
-	/**
-	 * Setter
-	 * 
-	 * Sets property on plugin object. Falls back to module.
-	 *
-	 * @param string $property
-	 * @param mixed $value
-	 * @return $this
-	 */
-	public function set( $property, $value = null ) {
-		$property = '_' . ltrim($property, '_');
-		
-		if ( property_exists($this, $property) ) {
-			parent::set($property, $value);
-		} else {
-			$this->_plugin->set(ltrim($property, '_'), $value);
-		}
-		
+	public function setPlugin( WordPressHTTPS_Plugin $plugin ) {
+		$this->_plugin = $plugin;		
 		return $this;
 	}
-
+	
 	/**
-	 * If method does not exist, look in plugin.
-	 *
-	 * @param string $method
-	 * @param array $args
-	 * @return mixed
+	 * Get Plugin
+	 * 
+	 * @param none
+	 * @return WordPressHTTPS_Plugin
 	 */
-	public function __call( $method, $args = array() ) {
-		if ( isset($this->_plugin) ) {
-	 		return call_user_func_array(array($this->_plugin, $method), $args);
+	public function getPlugin() {
+		if ( ! isset($this->_plugin) ) {
+			die('Module ' . __CLASS__ . ' missing Plugin dependency.');
 		}
+		
+		return $this->_plugin;
 	}
-
+	
 }

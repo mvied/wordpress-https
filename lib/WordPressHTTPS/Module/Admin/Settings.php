@@ -21,12 +21,12 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 	 * @return void
 	 */
 	public function init() {
-		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->get('slug')) !== false ) {
+		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'save' ) {
 				add_action('plugins_loaded', array(&$this, 'save'), 1);
 			}
 			
-			add_action('toplevel_page_' . $this->get('slug'), array(&$this, 'add_meta_boxes'));
+			add_action('toplevel_page_' . $this->getPlugin()->getSlug(), array(&$this, 'add_meta_boxes'));
 
 			// Add scripts
 			add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
@@ -52,46 +52,46 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 	 */
 	public function add_meta_boxes() {
 		add_meta_box(
-			$this->get('slug') . '_settings',
-			__( 'General Settings', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
-			'toplevel_page_' . $this->get('slug'),
+			$this->getPlugin()->getSlug() . '_settings',
+			__( 'General Settings', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
 			'core',
 			array( 'metabox' => 'settings' )
 		);
 		add_meta_box(
-			$this->get('slug') . '_updates',
-			__( 'Developer Updates', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
-			'toplevel_page_' . $this->get('slug'),
+			$this->getPlugin()->getSlug() . '_updates',
+			__( 'Developer Updates', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
 			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/updates.php' )
 		);
 		add_meta_box(
-			$this->get('slug') . '_donate',
-			__( 'Donate', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
-			'toplevel_page_' . $this->get('slug'),
+			$this->getPlugin()->getSlug() . '_donate',
+			__( 'Donate', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
 			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/donate.php' )
 		);
 		add_meta_box(
-			$this->get('slug') . '_support',
-			__( 'Support', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
-			'toplevel_page_' . $this->get('slug'),
+			$this->getPlugin()->getSlug() . '_support',
+			__( 'Support', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
 			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/support.php' )
 		);
 		add_meta_box(
-			$this->get('slug') . '_donate2',
-			__( 'Loading...', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
-			'toplevel_page_' . $this->get('slug'),
+			$this->getPlugin()->getSlug() . '_donate2',
+			__( 'Loading...', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
 			'core',
 			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/donate2.php' )
@@ -109,7 +109,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			wp_die( __('You do not have sufficient permissions to access this page.') );
 		}
 
-		$this->render();
+		self::render();
 	}
 
 	/**
@@ -120,7 +120,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style($this->get('slug') . '-admin-page', $this->get('plugin_url') . '/admin/css/settings.css', $this->get('version'), true);
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/settings.css', $this->getPlugin()->getVersion(), true);
 		wp_enqueue_script('jquery-form');
 		wp_enqueue_script('post');
 		
@@ -153,10 +153,10 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			$this->reset();
 			$reload = true;
 		} else {
-			foreach ($this->get('settings') as $key => $default) {
+			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
 					$_POST[$key] = 0;
-					$this->updateSetting($key, $_POST[$key]);
+					$this->setSetting($key, $_POST[$key]);
 				} else if ( array_key_exists($key, $_POST) ) {
 					if ( $key == 'ssl_host' ) {
 						if ( $_POST[$key] != '' ) {
@@ -165,34 +165,32 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 							if ( strpos($_POST[$key], 'http://') === false && strpos($_POST[$key], 'https://') === false ) {
 								$_POST[$key] = 'https://' . $_POST[$key];
 							}
-							$ssl_host = $this->factory('Url')->fromString($_POST[$key]);
+							$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
 							// Add Port
 							$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->port);
 							$port = (($port != 80 && $port != 443) ? $port : null);
-							$ssl_host->set('port', $port);
+							$ssl_host->setPort($port);
 
 							// Add Path
-							if ( strpos($ssl_host->toString(), $this->get('http_url')->get('path')) !== true ) {
-								$ssl_host->set('path', rtrim($ssl_host->get('path'), '/') . $this->get('http_url')->get('path'));
+							if ( strpos($ssl_host->toString(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
+								$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . $this->getPlugin()->getHttpUrl()->getPath());
 							}
 
-							if ( $ssl_host->toString() != $this->get('https_url')->toString() ) {
+							if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
 								// Ensure that the WordPress installation is accessible at this host
 								if ( $ssl_host->isValid(true) ) {
-									$this->log('[SETTINGS] Updated SSL Host: ' . $this->get('https_url') . ' => ' . $ssl_host);
-
 									// If secure domain has changed and currently on SSL, logout user
-									if ( $this->is_ssl() ) {
+									if ( $this->getPlugin()->isSsl() ) {
 										$logout = true;
 									}
-									$_POST[$key] = $ssl_host->set('port', '');
+									$_POST[$key] = $ssl_host->setPort('');
 								} else {
 									$errors[] = '<strong>SSL Host</strong> - Invalid WordPress installation at ' . $ssl_host;
 									$_POST[$key] = get_option($key);
 								}
 							} else {
-								$_POST[$key] = $this->get('https_url');
+								$_POST[$key] = $this->getPlugin()->getHttpsUrl();
 							}
 						} else {
 							$_POST[$key] = get_option($key);
@@ -202,22 +200,22 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 							$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN and FORCE_SSL_LOGIN can not be set to true in your wp-config.php.';
 							$_POST[$key] = 0;
 						// If forcing SSL Admin and currently not SSL, logout user
-						} else if ( $_POST[$key] == 1 && !$this->is_ssl() ) {
+						} else if ( $_POST[$key] == 1 && !$this->getPlugin()->isSsl() ) {
 							$logout = true;
 						}
 					} else if ( $key == 'ssl_host_subdomain' ) {
 						// Checks to see if the SSL Host is a subdomain
-						$http_domain = $this->get('http_url')->getBaseHost();
-						$https_domain = $this->get('https_url')->getBaseHost();
+						$http_domain = $this->getPlugin()->getHttpUrl()->getBaseHost();
+						$https_domain = $this->getPlugin()->getHttpsUrl()->getBaseHost();
 
-						if ( $ssl_host->set('scheme', 'http') != $this->get('http_url') && $http_domain == $https_domain ) {
+						if ( $ssl_host->setScheme('http') != $this->getPlugin()->getHttpUrl() && $http_domain == $https_domain ) {
 							$_POST[$key] = 1;
 						} else {
 							$_POST[$key] = 0;
 						}
 					}
 
-					$this->updateSetting($key, $_POST[$key]);
+					$this->getPlugin()->setSetting($key, $_POST[$key]);
 				}
 			}
 		}

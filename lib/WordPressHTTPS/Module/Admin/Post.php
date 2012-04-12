@@ -46,18 +46,18 @@ class WordPressHTTPS_Module_Admin_Post extends WordPressHTTPS_Module implements 
 	 */
 	public function add_meta_box_post() {
 		add_meta_box(
-			$this->get('slug'),
-			__( 'HTTPS', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
+			$this->getPlugin()->getSlug(),
+			__( 'HTTPS', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'post',
 			'side',
 			'high',
 			array( 'metabox' => 'post' )
 		);
 		add_meta_box(
-			$this->get('slug'),
-			__( 'HTTPS', $this->get('slug') ),
-			array(&$this, 'meta_box_render'),
+			$this->getPlugin()->getSlug(),
+			__( 'HTTPS', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'page',
 			'side',
 			'high',
@@ -72,8 +72,8 @@ class WordPressHTTPS_Module_Admin_Post extends WordPressHTTPS_Module implements 
 	 * @return int $post_id
 	 */
 	public function post_save( $post_id ) {
-		if ( array_key_exists($this->get('slug'), $_POST) ) {
-			if ( ! wp_verify_nonce($_POST[$this->get('slug')], $this->get('slug')) ) {
+		if ( array_key_exists($this->getPlugin()->getSlug(), $_POST) ) {
+			if ( ! wp_verify_nonce($_POST[$this->getPlugin()->getSlug()], $this->getPlugin()->getSlug()) ) {
 				return $post_id;
 			}
 

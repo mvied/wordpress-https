@@ -52,7 +52,7 @@ class WordPressHTTPS_Module_Admin extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style($this->get('slug') . '-admin-global', $this->get('plugin_url') . '/admin/css/admin.css', $this->get('version'), true);
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-global', $this->getPlugin()->getPluginUrl() . '/admin/css/admin.css', $this->getPlugin()->getVersion(), true);
 	}
 
 	/**
@@ -63,9 +63,9 @@ class WordPressHTTPS_Module_Admin extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function menu() {
-		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->get('slug'), array(&$this, 'dispatch'), '', 88);
-		//remove_submenu_page( $this->get('slug'), $this->get('slug') );
-		//add_submenu_page($this->get('slug') . '-menu', 'Updates', 'Updates', 'manage_options', $this->get('slug') . '-updates', array(&$this, 'dispatch'));
+		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'), '', 88);
+		//remove_submenu_page( $this->getPlugin()->getSlug(), $this->getPlugin()->getSlug() );
+		//add_submenu_page($this->getPlugin()->getSlug() . '-menu', 'Updates', 'Updates', 'manage_options', $this->getPlugin()->getSlug() . '-updates', array(&$this, 'dispatch'));
 	}
 
 	/**
@@ -90,7 +90,7 @@ class WordPressHTTPS_Module_Admin extends WordPressHTTPS_Module implements WordP
 	 * @return array $links
 	 */
 	public function plugin_links($links, $file) {
-		if ( strpos($file, basename( __FILE__)) === false ) {
+		if ( strpos($file, $this->getPlugin()->getSlug()) === false ) {
 			return $links;
 		}
 
