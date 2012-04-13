@@ -190,8 +190,8 @@ class WordPressHTTPS_Plugin {
 	 * @param object $logger
 	 * @return object $this
 	 */
-	public function setLogger( $logger ) {
-		$this->_logger = $logger;		
+	public function setLogger( WordPressHTTPS_Logger_Interface $logger ) {
+		$this->_logger = $logger;	
 		return $this;
 	}
 	
@@ -206,7 +206,7 @@ class WordPressHTTPS_Plugin {
 			die(__CLASS__ . ' missing Logger dependency.');
 		}
 		
-		return $this->_logger;
+		return $this->_logger->getInstance();
 	}
 	
 	/**

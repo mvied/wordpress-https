@@ -123,7 +123,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		
 		// Output logger contents to browsers console if in Debug Mode
 		if ( $this->getSetting('debug') == true ) {
-			add_action('wp_footer', array(WordPressHTTPS_Logger::getInstance(), 'consoleLog'));
+			add_action('wp_footer', array($this->getLogger(), 'consoleLog'));
 		}
 		
 		parent::init();
