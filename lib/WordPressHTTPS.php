@@ -273,7 +273,13 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			$url->setPath($url->getPath() . $_SERVER['REQUEST_URI']);
+			// Prepend secure URL path if it does not exist.
+			if ( strpos($url->getPath(), $_SERVER['REQUEST_URI']) != 0 ) {
+				$url->setPath($url->getPath() . $_SERVER['REQUEST_URI']);
+			} else {
+				$url->setPath($_SERVER['REQUEST_URI']);
+			}
+
 			// Use a cookie to detect redirect loops
 			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_int($_COOKIE['redirect_count']) ? $_COOKIE['redirect_count']++ : 1 );
 			setcookie('redirect_count', $redirect_count, 0, '/', '.' . $url->getHost());
