@@ -85,15 +85,23 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 */
 	public function redirect_check() {
 		global $post;
-		if ( is_front_page() && get_option('show_on_front') == 'posts' ) {
-			if ( $this->getPlugin()->getSetting('frontpage') && ! $this->getPlugin()->isSsl() ) {
-				$scheme = 'https';
-			} else if ( $this->getPlugin()->getSetting('frontpage') != 1 && $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
-				$scheme = 'http';
+		
+		if ( ( is_single() || is_page() || is_front_page() || is_home() ) && $post->ID > 0 ) {
+			// Secure Post
+			if ( get_post_meta($post->ID, 'force_ssl', true) ) {
+				$force_ssl = true;
 			}
-		} else if ( ( is_single() || is_page() || is_front_page() || is_home() ) && $post->ID > 0 ) {
-			$force_ssl = get_post_meta($post->ID, 'force_ssl', true);
-			
+
+			// Secure Front Page
+			if ( is_front_page() ) {
+				if ( $this->getPlugin()->getSetting('frontpage') && ! $this->getPlugin()->isSsl() ) {
+					$force_ssl = true;
+				} else if ( ! $this->getPlugin()->getSetting('frontpage') && ! isset($force_ssl) && $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
+					$force_ssl = false;
+				}
+			}
+
+			// Force SSL Children
 			$postParent = $post;
 			while ( $postParent->post_parent ) {
 				$postParent = get_post( $postParent->post_parent );
@@ -105,11 +113,12 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			
 			$force_ssl = apply_filters('force_ssl', $force_ssl, $post->ID );
 
-			if ( !$this->getPlugin()->isSsl() && $force_ssl ) {
+			if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 				$scheme = 'https';
-			} else if ( $this->getPlugin()->getSetting('exclusive_https') && ! $force_ssl && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
+			} else if ( $this->getPlugin()->getSetting('exclusive_https') && isset($force_ssl) && ! $force_ssl && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
 				$scheme = 'http';
 			}
+
 		}
 
 		if ( isset($scheme) ) {

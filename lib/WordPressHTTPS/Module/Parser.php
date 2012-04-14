@@ -409,7 +409,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 				if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 					$post = $postID[1];
-				} else if ( $url_parts['path'] == '/' ) {
+				} else if ( $url_parts['path'] == '' ) {
 					if ( get_option('show_on_front') == 'posts' ) {
 						$post = true;
 					} else {
