@@ -185,7 +185,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	public function makeUrlHttps( $string ) {
 		$url_original = WordPressHTTPS_Url::fromString( $string ); // URL in string to be replaced
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
-		if ( $this->isUrlLocal($url_original->toString()) ) {
+		if ( $url && $this->isUrlLocal($url_original->toString()) ) {
 			$url->setScheme('https');
 			$url->setHost($this->getHttpsUrl()->getHost());
 			$url->setPort($this->getHttpsUrl()->getPort());
@@ -200,11 +200,10 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					}
 				}
 			}
-		} else if ( $url_original == null ) {
-			$this->getLogger()->log('[ERROR] WordPressHTTPS->makeUrlHttps - Invalid input:' . $string);
+			return $url;
+		} else {
+			return $string;
 		}
-
-		return $url;
 	}
 
 	/**
@@ -216,7 +215,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	public function makeUrlHttp( $string ) {
 		$url_original = WordPressHTTPS_Url::fromString( $string ); // URL in string to be replaced
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
-		if ( $this->isUrlLocal($url_original) ) {
+		if ( $url && $this->isUrlLocal($url_original) ) {
 			$url->setScheme('http');
 			$url->setHost($this->getHttpUrl()->getHost());
 			$url->setPort($this->getHttpUrl()->getPort());
@@ -226,11 +225,10 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), '', $url->getPath()));
 				}
 			}
-		} else if ( $url_original == null ) {
-			$this->getLogger()->log('[ERROR] WordPressHTTPS->makeUrlHttp - Invalid input:' . $string);
+			return $url;
+		} else {
+			return $string;
 		}
-
-		return $url;
 	}
 
 	/**

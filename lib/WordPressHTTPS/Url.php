@@ -418,9 +418,12 @@ class WordPressHTTPS_Url {
 	 * @param array $array
 	 * @return $url WordPressHTTPS_Url
 	 */
-	public static function fromArray( $array ) {
+	public static function fromArray( $array = array() ) {
+		if ( sizeof($array) <= 1 ) {
+			return false;
+		}
+		
 		$url = new WordPressHTTPS_Url;
-
 		foreach( $array as $key => $value ) {
 			$property = '_' . $key;
 			$camelCase = create_function('$c', 'return strtoupper($c[1]);');
@@ -464,6 +467,8 @@ class WordPressHTTPS_Url {
 								
 				return $url;
 			}
+		} else {
+			 return false;
 		}
 		
 		return $url;
