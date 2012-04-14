@@ -238,7 +238,16 @@ class WordPressHTTPS_Plugin {
 	 */
 	public function getSetting( $setting ) {
 		$setting = $this->getSlug() . '_' . $setting;
-		return get_option($setting);
+		$setting = get_option($setting);
+		switch( $setting ) {
+			case "1":
+				$setting = true;
+			break;
+			case "0":
+				$setting = false;
+			break;
+		}
+		return $setting;
 	}
 	
 	/**

@@ -110,7 +110,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('HTTP URL: ' . $this->getHttpUrl());
 		$this->getLogger()->log('HTTPS URL: ' . $this->getHttpsUrl());
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
-		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') == 1 ? 'Yes' : 'No' ));
+		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Proxy: ' . ( isset($_COOKIE['https_proxy']) && $_COOKIE['https_proxy'] == 1 ? 'Yes' : 'No') );
 
 		// Redirect admin/login pages. This is not pluggable due to the redirect methods used in wp-login.php

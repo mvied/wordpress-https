@@ -86,9 +86,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	public function redirect_check() {
 		global $post;
 		if ( is_front_page() && get_option('show_on_front') == 'posts' ) {
-			if ( $this->getPlugin()->getSetting('frontpage') == 1 && ! $this->getPlugin()->isSsl() ) {
+			if ( $this->getPlugin()->getSetting('frontpage') && ! $this->getPlugin()->isSsl() ) {
 				$scheme = 'https';
-			} else if ( $this->getPlugin()->getSetting('frontpage') != 1 && $this->getPlugin()->getSetting('exclusive_https') == 1 && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
+			} else if ( $this->getPlugin()->getSetting('frontpage') != 1 && $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
 				$scheme = 'http';
 			}
 		} else if ( ( is_single() || is_page() || is_front_page() || is_home() ) && $post->ID > 0 ) {
@@ -107,7 +107,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 
 			if ( !$this->getPlugin()->isSsl() && $force_ssl ) {
 				$scheme = 'https';
-			} else if ( $this->getPlugin()->getSetting('exclusive_https') == 1 && ! $force_ssl && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
+			} else if ( $this->getPlugin()->getSetting('exclusive_https') && ! $force_ssl && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && !is_user_logged_in() ) ) ) {
 				$scheme = 'http';
 			}
 		}
@@ -160,10 +160,10 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->isSsl() ) {
 			// If SSL Host is a subdomain and we're setting an authentication cookie, the cookie does not need to be set
-			if ( $this->getPlugin()->getSetting('ssl_host_subdomain') == 1 && ( $scheme == 'auth' || $scheme == 'secure_auth' ) ) {
+			if ( $this->getPlugin()->getSetting('ssl_host_subdomain') && ( $scheme == 'auth' || $scheme == 'secure_auth' ) ) {
 				return;
 			// If SSL Host is a subdomain, make cookie domain a wildcard
-			} else if ( $this->getPlugin()->getSetting('ssl_host_subdomain') == 1 ) {
+			} else if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
 				$cookie_domain = '.' . $this->getPlugin()->getHttpsUrl()->getBaseHost();
 			// Otherwise, cookie domain set for different SSL Host
 			} else {
@@ -218,7 +218,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		$cookie_path_plugins = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . PLUGINS_COOKIE_PATH;
 		$cookie_path_admin = $cookie_path_site . 'wp-admin';
 
-		if ( $this->getPlugin()->getSetting('ssl_host_subdomain') == 1 ) {
+		if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
 			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path, $cookie_domain);
 			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path_site, $cookie_domain);
 		}

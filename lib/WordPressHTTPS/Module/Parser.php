@@ -407,7 +407,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					} else {
 						$post = get_option('page_on_front');
 					}
-					if ( $this->getPlugin()->getSetting('frontpage') == 1 ) {
+					if ( $this->getPlugin()->getSetting('frontpage') ) {
 						$force_ssl = true;
 					}
 				} else if ( $post = get_page_by_path($url_parts['path']) ) {
@@ -420,7 +420,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 				if ( isset($post) ) {
 					// Always change links to HTTPS when logged in via different SSL Host
-					if ( $type == 'a' && $this->getPlugin()->getSetting('ssl_host_subdomain') == 0 && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+					if ( $type == 'a' && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
 						$force_ssl = true;
 					} else if ( (int) $post > 0 ) {
 						$force_ssl = (( !isset($force_ssl) ) ? get_post_meta($post, 'force_ssl', true) : $force_ssl);
