@@ -250,8 +250,8 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * 
 	 * Fixes schemes on DOM elements.
 	 *
-	 * @param string $buffer
-	 * @return string $this->_html
+	 * @param none
+	 * @return void
 	 */
 	public function fixElements() {
 		// Fix any occurrence of the HTTPS version of the regular domain when using different SSL Host
@@ -302,7 +302,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	/**
 	 * Fix CSS background images or imports.
 	 *
-	 * @param string $url
+	 * @param none
 	 * @return void
 	 */
 	public function fixCssElements() {
@@ -317,7 +317,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	/**
 	 * Fix elements that are being referenced relatively.
 	 *
-	 * @param string $url
+	 * @param none
 	 * @return void
 	 */
 	public function fixRelativeElements() {
@@ -348,8 +348,8 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * 
 	 * Fixes schemes on DOM elements with extensions specified in $this->_extensions
 	 *
-	 * @param string $buffer
-	 * @return string $this->_html
+	 * @param none
+	 * @return void
 	 */
 	public function fixExtensions() {
 		if ( $this->getPlugin()->isSsl() ) {

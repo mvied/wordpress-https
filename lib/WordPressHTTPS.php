@@ -200,11 +200,11 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					}
 				}
 			}
-
-			return str_replace($url_original, $url, $string);
 		} else if ( $url_original == null ) {
 			$this->getLogger()->log('[ERROR] WordPressHTTPS->makeUrlHttps - Invalid input:' . $string);
 		}
+
+		return $url;
 	}
 
 	/**
