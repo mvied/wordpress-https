@@ -176,6 +176,9 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
 		
+		$this->getPlugin()->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getSecureExternalUrls()) . ' ]');
+		$this->getPlugin()->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getUnsecureExternalUrls()) . ' ]');
+		
 		$this->fixLinksAndForms();
 		$this->fixExtensions();
 		$this->fixElements();
@@ -204,9 +207,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * Secure element
 	 *
 	 * @param string $url
+	 * @param string $type
 	 * @return void
 	 */
-	public function secureElement( $url ) {
+	public function secureElement( $url, $type = '' ) {
 		$updated = false;
 		$url = WordPressHTTPS_Url::fromString($url);
 		// If local
@@ -236,7 +240,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
-			$log = '[FIXED] Element: ' . $url . ' => ' . $updated;
+			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
 		} else if ( $updated == false && $url->getScheme() == 'http' ) {
 			$log = '[WARNING] Unsecure Element: <' . $type . '> - ' . $url;
 		}
@@ -289,10 +293,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					// In admin panel, only fix image tags
 					if ( is_admin() ) {
 						if ( $type == 'img' ) {
-							$this->secureElement($url);
+							$this->secureElement($url, $type);
 						}
 					} else {
-						$this->secureElement($url);
+						$this->secureElement($url, $type);
 					}
 				}
 			}
@@ -310,7 +314,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$css = $matches[0][$i];
 			$url = $matches[2][$i];
-			$this->secureElement($url);
+			$this->secureElement($url, 'style');
 		}
 	}
 	
@@ -360,8 +364,17 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				$scheme = $matches[1][$i];
 	
 				foreach( $this->_extensions as $extension ) {
+					if ( $extension == 'js' ) {
+						$type = 'script';
+					} else if ( $extension == 'css' ) {
+						$type = 'style';
+					} else if ( in_array($extension, array('jpg', 'jpeg', 'png', 'gif')) ) {
+						$type = 'img';
+					} else {
+						$type = '';
+					}
 					if ( strpos($filename, '.' . $extension) !== false ) {
-						$this->secureElement($url);
+						$this->secureElement($url, $type);
 					}
 				}
 			}

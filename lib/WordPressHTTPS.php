@@ -226,11 +226,11 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), '', $url->getPath()));
 				}
 			}
-
-			return str_replace($url_original, $url, $string);
 		} else if ( $url_original == null ) {
 			$this->getLogger()->log('[ERROR] WordPressHTTPS->makeUrlHttp - Invalid input:' . $string);
 		}
+
+		return $url;
 	}
 
 	/**
