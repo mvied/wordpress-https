@@ -63,7 +63,7 @@ class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
 	 * Output contents of the log to the browser's console.
 	 *
 	 * @param none
-	 * @return void
+	 * @return string $code
 	 */
 	public function consoleLog() {
 		$code = "<script type=\"text/javascript\">\n\tif ( typeof console === 'object' ) {\n";
@@ -79,8 +79,22 @@ class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
 			$code .= "\t\tconsole.log(" . $log_entry . ");\n";
 		}
 		$code .= "\t}\n</script>\n";
-		
-		echo $code;
+		return $code;
+	}
+	
+	/**
+	 * File Log
+	 * 
+	 * Writes the contens of the log to a file
+	 *
+	 * @param sring $filename
+	 * @return int | false
+	 */
+	public function fileLog( $filename = '' ) {
+		if ( $filename == '' ) {
+			$filename = 'debug.log.txt';
+		}
+		return file_put_contents($filename, implode("\r\n", $this->getLog()), FILE_APPEND);
 	}
 	
 }

@@ -179,6 +179,11 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		$this->fixExtensions();
 		$this->fixElements();
 		$this->fixLinksAndForms();
+		
+		// Output logger contents to browsers console if in Debug Mode
+		if ( $this->getPlugin()->getSetting('debug') == true ) {
+			$this->consoleLog();
+		}
 
 		return $this->_html;
 	}
@@ -444,6 +449,16 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				}
 			}
 		}
+	}
+
+	/**
+	 * Output contents of the log to the browser's console.
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function consoleLog() {
+		$this->_html = str_replace('</body>', $this->getPlugin()->getLogger()->consoleLog() . "\n\n</body>", $this->_html);
 	}
 
 }

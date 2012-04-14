@@ -120,12 +120,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 				$this->redirect('https');
 			}
 		}
-		
-		// Output logger contents to browsers console if in Debug Mode
-		if ( $this->getSetting('debug') == true ) {
-			add_action('wp_footer', array($this->getLogger(), 'consoleLog'));
-		}
-		
+
 		parent::init();
 	}
 
