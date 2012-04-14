@@ -45,10 +45,8 @@
 			</fieldset>
 		</td>
 	</tr>
-
-<?php if ( get_option('show_on_front') == 'posts' ) { ?>
 	<tr valign="top" id="frontpage_row">
-		<th scope="row">HTTPS Front Page</th>
+		<th scope="row">Secure Front Page</th>
 		<td>
 			<fieldset>
 				<label for="frontpage">
@@ -58,8 +56,6 @@
 			</fieldset>
 		</td>
 	</tr>
-
-<?php } ?>
 	<tr valign="top" id="debug_row">
 		<th scope="row">Debug Mode</th>
 		<td>
