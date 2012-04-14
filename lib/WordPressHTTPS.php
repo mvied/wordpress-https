@@ -110,12 +110,13 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('HTTP URL: ' . $this->getHttpUrl());
 		$this->getLogger()->log('HTTPS URL: ' . $this->getHttpsUrl());
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
+		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Proxy: ' . ( isset($_COOKIE['https_proxy']) && $_COOKIE['https_proxy'] == 1 ? 'Yes' : 'No') );
 
 		// Redirect admin/login pages. This is not pluggable due to the redirect methods used in wp-login.php
 		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getSetting('ssl_admin') ) {
-			add_action('wp_redirect', array(&$this, 'wp_redirect_admin'), 1, 1);
+			add_action('wp_redirect', array($this->getModule('Hooks'), 'wp_redirect_admin'), 1, 1);
 			if ( !$this->isSsl() ) {
 				$this->redirect('https');
 			}
@@ -184,12 +185,12 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	public function makeUrlHttps( $string ) {
 		$url_original = WordPressHTTPS_Url::fromString( $string ); // URL in string to be replaced
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
-		if ( $this->isUrlLocal($url_original) ) {
+		if ( $this->isUrlLocal($url_original->toString()) ) {
 			$url->setScheme('https');
 			$url->setHost($this->getHttpsUrl()->getHost());
 			$url->setPort($this->getHttpsUrl()->getPort());
 
-			if ( $this->getSetting('ssl_host_diff') ) { 
+			if ( $this->getSetting('ssl_host_diff') ) {
 				if ( strpos($url_original->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
 					if ( $url_original->getPath() == '/' ) {
 						$url->setQuery($url_original->getQuery());
@@ -290,7 +291,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	
 					// If redirecting to an admin page
 					if ( strpos($url->getPath(), 'wp-admin') !== false || strpos($url->getPath(), 'wp-login') !== false ) {
-						$url = WordPressHTTPS_Url::fromString($this->wp_redirect_admin($url));
+						$url = WordPressHTTPS_Url::fromString($this->getModule('Hooks')->wp_redirect_admin($url));
 					}
 	
 					header("Location: " . $url);
