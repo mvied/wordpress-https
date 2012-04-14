@@ -407,7 +407,9 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					} else {
 						$post = get_option('page_on_front');
 					}
-					$force_ssl = (( $this->getPlugin()->getSetting('frontpage') == 1 ) ? true : false);
+					if ( $this->getPlugin()->getSetting('frontpage') == 1 ) {
+						$force_ssl = true;
+					}
 				} else if ( $post = get_page_by_path($url_parts['path']) ) {
 					$post = $post->ID;
 				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
