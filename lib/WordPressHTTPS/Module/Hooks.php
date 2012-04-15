@@ -36,8 +36,8 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		 * Run proxy check
 		 */
 		if ( ! $this->getPlugin()->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
-			add_action('wp_head', array(&$this, 'proxy_check'), 1);
-			add_action('admin_head', array(&$this, 'proxy_check'), 1);
+			add_action('init', array(&$this, 'proxy_check'), 1);
+			add_action('admin_init', array(&$this, 'proxy_check'), 1);
 			add_action('login_head', array(&$this, 'proxy_check'), 1);
 		}
 
