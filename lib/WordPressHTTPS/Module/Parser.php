@@ -71,17 +71,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		// Start output buffering
 		add_action('init', array(&$this, 'startOutputBuffering'));
 	}
-	
-	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		$this->setSecureExternalUrls( array() );
-		$this->setUnsecureExternalUrls( array() );
-	}
 
 	/**
 	 * Parse HTML
