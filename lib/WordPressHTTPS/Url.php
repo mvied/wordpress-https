@@ -232,14 +232,15 @@ class WordPressHTTPS_Url {
 	 * @return string
 	 */
 	public function setPath( $path ) {
-		$this->_path = '/' . ltrim($path, '/');
-		$this->setFilename(basename($this->_path));
-		$pathinfo = pathinfo($this->_filename);
+		$this->_path = ltrim($path, '/');
+		$this->_path = '/' . $this->_path;
+		$filename = basename($this->_path);
+		$pathinfo = pathinfo($filename);
 		if ( $pathinfo && isset($pathinfo['extension']) ) {
 			$this->setExtension($pathinfo['extension']);
-		} else {
-			$this->_path .= '/';
+			$this->setFilename($filename);
 		}
+
 		return $this;
 	}
 
@@ -252,8 +253,6 @@ class WordPressHTTPS_Url {
 	 * @return string
 	 */
 	public function getPath() {
-		$this->_path = '/' . trim($this->_path, '/');
-
 		return $this->_path;
 	}
 	
