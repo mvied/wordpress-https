@@ -30,14 +30,16 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 * @var array
 	 */
 	protected $_settings = array(
-		'ssl_host' =>               '', // Hostname for SSL Host
-		'ssl_port' =>               '', // Port number for SSL Host
-		'ssl_host_diff' =>          0,  // Is SSL Host different than WordPress host
-		'ssl_host_subdomain' =>     0,  // Is SSL Host a subdomain of WordPress host
-		'exclusive_https' =>        0,  // Exclusively force SSL on posts and pages with the `Force SSL` option checked.
-		'frontpage' =>              0,  // Force SSL on front page
-		'ssl_admin' =>              0,  // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
-		'debug' =>                  0,  // Debug Mode
+		'ssl_host' =>               '',      // Hostname for SSL Host
+		'ssl_port' =>               '',      // Port number for SSL Host
+		'secure_external_urls' =>   array(), // Secure external URL's
+		'unsecure_external_urls' => array(), // Unsecure external URL's
+		'ssl_host_diff' =>          0,       // Is SSL Host different than WordPress host
+		'ssl_host_subdomain' =>     0,       // Is SSL Host a subdomain of WordPress host
+		'exclusive_https' =>        0,       // Exclusively force SSL on posts and pages with the `Force SSL` option checked.
+		'frontpage' =>              0,       // Force SSL on front page
+		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
+		'debug' =>                  0,       // Debug Mode
 	);
 
 	/**

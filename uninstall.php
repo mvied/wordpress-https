@@ -8,6 +8,7 @@ if ( !defined('WP_UNINSTALL_PLUGIN') ) {
 
 // Delete WordPress HTTPS options
 delete_option('wordpress-https_external_urls');
+delete_option('wordpress-https_secure_external_urls');
 delete_option('wordpress-https_unsecure_external_urls');
 delete_option('wordpress-https_ssl_host');
 delete_option('wordpress-https_ssl_port');
