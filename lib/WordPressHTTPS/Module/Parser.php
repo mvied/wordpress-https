@@ -433,19 +433,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					if ( $type == 'a' && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
 						$force_ssl = true;
 					} else if ( (int) $post > 0 ) {
-						// Secure Post
-						$force_ssl = (( !isset($force_ssl) ) ? get_post_meta($post, 'force_ssl', true) : $force_ssl);
-
-						// Force SSL Children
-						$postParent = get_post($post);
-						while ( $postParent->post_parent ) {
-							$postParent = get_post( $postParent->post_parent );
-							if ( get_post_meta($postParent->ID, 'force_ssl_children', true) == 1 ) {
-								$force_ssl = true;
-								break;
-							}
-						}
-						
 						$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
 					}
 

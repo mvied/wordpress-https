@@ -28,6 +28,10 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 		
 		// Filter admin_url
 		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
+		
+		// Filter force_ssl
+		add_filter('force_ssl', array(&$this, 'secure_child_post'), 10, 2);
+		add_filter('force_ssl', array(&$this, 'secure_post'), 9, 2);
 
 		// Filter site_url in admin panel
 		if ( $this->getPlugin()->isSsl() ) {
@@ -70,6 +74,50 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	public function reset() {
 		
 	}
+
+	/**
+	 * Admin URL
+	 * WordPress Filter - admin_url
+	 *
+	 * @param string $url
+	 * @param string $path
+	 * @param string $scheme
+	 * @return string $url
+	 */
+	public function admin_url( $url, $path, $scheme ) {
+		if ( ( $scheme == 'https' || $this->ssl_admin || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
+			$url = $this->getPlugin()->makeUrlHttps($url);
+		}
+
+		return $url;
+	}
+
+	/**
+	 * Allowed Redirect Hosts
+	 * WordPress Filter - aloowed_redirect_hosts
+	 *
+	 * @param array $content
+	 * @return array $content
+	 */
+	public function allowed_redirect_hosts( $content ) {
+		$content[] = $this->getPlugin()->getHttpsUrl()->getHost();
+		return $content;
+	}
+
+	/**
+	 * Blog Info
+	 * WordPress Filter - get_bloginfo, bloginfo
+	 *
+	 * @param string $result
+	 * @param string $show
+	 * @return string $result
+	 */
+	public function bloginfo( $result = '', $show = '' ) {
+		if ( $show == 'stylesheet_url' || $show == 'template_url' || $show == 'wpurl' || $show == 'home' || $show == 'siteurl' || $show == 'Url' ) {
+			$result = $this->getPlugin()->makeUrlHttp($result);
+		}
+		return $result;
+	}
 	
 	/**
 	 * Get Avatar
@@ -93,47 +141,40 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	}
 	
 	/**
-	 * Admin URL
-	 * WordPress Filter - admin_url
+	 * Secure Post
+	 * WordPress HTTPS Filter - force_ssl
 	 *
-	 * @param string $url
-	 * @param string $path
-	 * @param string $scheme
-	 * @return string $url
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @return boolean $force_ssl
 	 */
-	public function admin_url( $url, $path, $scheme ) {
-		if ( ( $scheme == 'https' || $this->ssl_admin || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
-			$url = $this->getPlugin()->makeUrlHttps($url);
+	public function secure_post( $force_ssl, $post_id ) {
+		if ( is_numeric($post_id) ) {
+			$force_ssl = (( get_post_meta($post_id, 'force_ssl', true) !== false ) ? get_post_meta($post_id, 'force_ssl', true) : $force_ssl);
 		}
-
-		return $url;
+		return $force_ssl;
 	}
 
 	/**
-	 * Blog Info
-	 * WordPress Filter - get_bloginfo, bloginfo
+	 * Secure Child Post
+	 * WordPress HTTPS Filter - force_ssl
 	 *
-	 * @param string $result
-	 * @param string $show
-	 * @return string $result
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @return boolean $force_ssl
 	 */
-	public function bloginfo( $result = '', $show = '' ) {
-		if ( $show == 'stylesheet_url' || $show == 'template_url' || $show == 'wpurl' || $show == 'home' || $show == 'siteurl' || $show == 'Url' ) {
-			$result = $this->getPlugin()->makeUrlHttp($result);
+	public function secure_child_post( $force_ssl, $post_id ) {
+		if ( is_numeric($post_id) ) {
+			$postParent = get_post($post_id);
+			while ( $postParent->post_parent ) {
+				$postParent = get_post( $postParent->post_parent );
+				if ( get_post_meta($postParent->ID, 'force_ssl_children', true) == 1 ) {
+					$force_ssl = true;
+					break;
+				}
+			}
 		}
-		return $result;
-	}
-
-	/**
-	 * Allowed Redirect Hosts
-	 * WordPress Filter - aloowed_redirect_hosts
-	 *
-	 * @param array $content
-	 * @return array $content
-	 */
-	public function allowed_redirect_hosts( $content ) {
-		$content[] = $this->getPlugin()->getHttpsUrl()->getHost();
-		return $content;
+		return $force_ssl;
 	}
 
 }

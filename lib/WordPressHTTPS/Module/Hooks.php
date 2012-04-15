@@ -87,27 +87,14 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		global $post;
 		
 		if ( ( is_single() || is_page() || is_front_page() || is_home() ) && $post->ID > 0 ) {
-			// Secure Post
-			if ( get_post_meta($post->ID, 'force_ssl', true) ) {
-				$force_ssl = true;
-			}
-
+			$force_ssl = apply_filters('force_ssl', $force_ssl, $post->ID );
+			
 			// Secure Front Page
 			if ( is_front_page() ) {
 				if ( $this->getPlugin()->getSetting('frontpage') && ! $this->getPlugin()->isSsl() ) {
 					$force_ssl = true;
 				} else if ( ! $this->getPlugin()->getSetting('frontpage') && ! isset($force_ssl) && $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
 					$force_ssl = false;
-				}
-			}
-
-			// Force SSL Children
-			$postParent = $post;
-			while ( $postParent->post_parent ) {
-				$postParent = get_post( $postParent->post_parent );
-				if ( get_post_meta($postParent->ID, 'force_ssl_children', true) == 1 ) {
-					$force_ssl = true;
-					break;
 				}
 			}
 
@@ -120,8 +107,6 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			if ( $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ! isset($force_ssl) ) {
 				$force_ssl = false;
 			}
-
-			$force_ssl = apply_filters('force_ssl', $force_ssl, $post->ID );
 
 			if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 				$scheme = 'https';
