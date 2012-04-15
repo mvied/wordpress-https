@@ -85,7 +85,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 		if ( $this->getPlugin()->isSsl() ) {
 			// Set host to https://secure.gravatar.com
 			if ( $avatar = preg_replace('/\d\.gravatar\.com/', 'secure.gravatar.com', $avatar) ) {
-				$avatar = str_replace('https', 'http', str_replace('http', 'https', $avatar));
+				$avatar = str_replace('http', 'https', str_replace('https', 'http', $avatar));
 			}
 		}
 		
