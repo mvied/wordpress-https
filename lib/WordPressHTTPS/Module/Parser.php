@@ -402,55 +402,63 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 			unset($force_ssl);
 
-			if ( $this->getPlugin()->isUrlLocal($url) ) {
-				$url_parts = parse_url($url);
-				if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+			$url_parts = parse_url($url);
+			if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+				if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
 				}
 				$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
+			}
 
-				if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
-					$post = $postID[1];
-				} else if ( $url_parts['path'] == '' ) {
-					if ( get_option('show_on_front') == 'posts' ) {
-						$post = true;
-					} else {
-						$post = get_option('page_on_front');
-					}
-					if ( $this->getPlugin()->getSetting('frontpage') ) {
-						$force_ssl = true;
-					}
-				} else if ( $post = get_page_by_path($url_parts['path']) ) {
-					$post = $post->ID;
-				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-				} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( !is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
+			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
+				$post = $postID[1];
+			} else if ( $this->getPlugin()->isUrlLocal($url) && $url_parts['path'] == '' ) {
+				if ( get_option('show_on_front') == 'posts' ) {
 					$post = true;
+				} else {
+					$post = get_option('page_on_front');
+				}
+				if ( $this->getPlugin()->getSetting('frontpage') ) {
 					$force_ssl = true;
 				}
-
-				if ( isset($post) ) {
-					// Always change links to HTTPS when logged in via different SSL Host
-					if ( $type == 'a' && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
-						$force_ssl = true;
-					} else if ( (int) $post > 0 ) {
-						$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
-					}
-
-					if ( $force_ssl == true ) {
-						$updated = $this->getPlugin()->makeUrlHttps($url);
-						$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-					} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
-						$updated = $this->getPlugin()->makeUrlHttp($url);
-						$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
+			} else if ( $this->getPlugin()->isUrlLocal($url) && ($post = get_page_by_path($url_parts['path'])) ) {
+				$post = $post->ID;
+			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
+			} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+				if ( !is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) {
+					$post = true;
+					$force_ssl = true;
+				} else if ( is_multisite() ) {
+					if ( $blog_id = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
+						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $scheme != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+							$this->_html = str_replace($url, str_replace('http', 'https', $url), $this->_html);
+						}
 					}
 				}
+			}
 
-				// Add log entry if this change hasn't been logged
-				if ( $updated && $url != $updated ) {
-					$log = '[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated;
-					if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
-						$this->getPlugin()->getLogger()->log($log);
-					}
+			if ( isset($post) ) {
+				// Always change links to HTTPS when logged in via different SSL Host
+				if ( $type == 'a' && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+					$force_ssl = true;
+				} else if ( (int) $post > 0 ) {
+					$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
+				}
+
+				if ( $force_ssl == true ) {
+					$updated = $this->getPlugin()->makeUrlHttps($url);
+					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
+				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
+					$updated = $this->getPlugin()->makeUrlHttp($url);
+					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
+				}
+			}
+
+			// Add log entry if this change hasn't been logged
+			if ( $updated && $url != $updated ) {
+				$log = '[FIXED] Element: <' . $type . '> - ' . $url . ' => ' . $updated;
+				if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+					$this->getPlugin()->getLogger()->log($log);
 				}
 			}
 		}
