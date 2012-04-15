@@ -127,16 +127,6 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-
-	/**
 	 * Install
 	 * 
 	 * @param none
