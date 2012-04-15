@@ -150,7 +150,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	 */
 	public function secure_post( $force_ssl, $post_id ) {
 		if ( is_numeric($post_id) ) {
-			$force_ssl = (( get_post_meta($post_id, 'force_ssl', true) !== false ) ? get_post_meta($post_id, 'force_ssl', true) : $force_ssl);
+			$force_ssl = (( get_post_meta($post_id, 'force_ssl', true) == 1 ) ? true : $force_ssl);
 		}
 		return $force_ssl;
 	}
