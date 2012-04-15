@@ -88,6 +88,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		}
 		
 		$property = '_secure_external_urls';
+		$this->$property = $this->getSecureExternalUrls();
 		array_push($this->$property, (string) $value);
 		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
@@ -120,6 +121,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		}
 		
 		$property = '_unsecure_external_urls';
+		$this->$property = $this->getUnsecureExternalUrls();
 		array_push($this->$property, (string) $value);
 		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
 		return $this;
@@ -161,8 +163,8 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function reset() {
-		delete_option($this->getPlugin()->getSlug() . '_secure_external_urls');
-		delete_option($this->getPlugin()->getSlug() . '_unsecure_external_urls');
+		$this->setSecureExternalUrls( array() );
+		$this->setUnsecureExternalUrls( array() );
 	}
 
 	/**
