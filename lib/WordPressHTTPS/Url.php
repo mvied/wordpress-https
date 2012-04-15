@@ -233,10 +233,10 @@ class WordPressHTTPS_Url {
 	 */
 	public function setPath( $path ) {
 		$this->_path = '/' . ltrim($path, '/');
-		$this->_filename = basename($this->_path);
+		$this->setFilename(basename($this->_path));
 		$pathinfo = pathinfo($this->_filename);
 		if ( $pathinfo && isset($pathinfo['extension']) ) {
-			$this->_extension = $pathinfo['extension'];
+			$this->setExtension($pathinfo['extension']);
 		} else {
 			$this->_path .= '/';
 		}
@@ -431,10 +431,6 @@ class WordPressHTTPS_Url {
 			}
 		}
 
-		if ( strpos($url->getFilename(), '.') !== false ) {
-			$url->setExtension(end(explode('.', $url->getFilename())));
-		}
-
 		return $url;
 	}
 
@@ -457,10 +453,6 @@ class WordPressHTTPS_Url {
 					if ( method_exists($url, $method) ) {
 						call_user_func(array($url, $method), $value);
 					}
-				}
-				
-				if ( strpos($url->getFilename(), '.') !== false ) {
-					$url->setExtension(end(explode('.', $url->getFilename())));
 				}
 
 				return $url;
