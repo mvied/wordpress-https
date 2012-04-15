@@ -31,7 +31,6 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 
 		// Filter site_url in admin panel
 		if ( $this->getPlugin()->isSsl() ) {
-			add_filter('site_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('template_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('stylesheet_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
 		}
