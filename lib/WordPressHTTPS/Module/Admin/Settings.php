@@ -176,7 +176,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 
 							if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
 								// Ensure that the WordPress installation is accessible at this host
-								if ( $ssl_host->isValid(true) ) {
+								if ( $ssl_host->isValid() ) {
 									// If secure domain has changed and currently on SSL, logout user
 									if ( $this->getPlugin()->isSsl() ) {
 										$logout = true;
