@@ -131,7 +131,11 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 * Set Cookie
 	 * WordPress Hook - set_auth_cookie, set_logged_in_cookie
 	 *
-	 * @param none
+	 * @param string $cookie
+	 * @param string $expire
+	 * @param int $expiration
+	 * @param int $user_id
+	 * @param string $scheme
 	 * @return void
 	 */
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
@@ -163,9 +167,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 				$cookie_domain = parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_HOST);
 			}
 
-			$cookie_path = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . $cookie_path;
-			$cookie_path_site = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . $cookie_path_site;
-			$cookie_path_plugins = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . $cookie_path_plugins;
+			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path);
+			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_site);
+			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_plugins);
 			$cookie_path_admin = $cookie_path_site . 'wp-admin';
 		}
 
