@@ -433,7 +433,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					} else if ( (int) $post > 0 ) {
 						// Secure Post
 						$force_ssl = (( !isset($force_ssl) ) ? get_post_meta($post, 'force_ssl', true) : $force_ssl);
-q
+
 						// Force SSL Children
 						$postParent = get_post($post);
 						while ( $postParent->post_parent ) {
