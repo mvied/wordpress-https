@@ -237,6 +237,8 @@ class WordPressHTTPS_Url {
 		$pathinfo = pathinfo($this->_filename);
 		if ( $pathinfo && isset($pathinfo['extension']) ) {
 			$this->_extension = $pathinfo['extension'];
+		} else {
+			$this->_path .= '/';
 		}
 		return $this;
 	}
@@ -251,10 +253,6 @@ class WordPressHTTPS_Url {
 	 */
 	public function getPath() {
 		$this->_path = '/' . trim($this->_path, '/');
-
-		if ( $this->getExtension() == '' && $this->getQuery() == '' ) {
-			$this->_path .= '/';
-		}
 
 		return $this->_path;
 	}
@@ -432,11 +430,11 @@ class WordPressHTTPS_Url {
 				call_user_func(array($url, $method), $value);
 			}
 		}
-		
+
 		if ( strpos($url->getFilename(), '.') !== false ) {
 			$url->setExtension(end(explode('.', $url->getFilename())));
 		}
-		
+
 		return $url;
 	}
 
@@ -464,13 +462,13 @@ class WordPressHTTPS_Url {
 				if ( strpos($url->getFilename(), '.') !== false ) {
 					$url->setExtension(end(explode('.', $url->getFilename())));
 				}
-								
+
 				return $url;
 			}
 		} else {
 			 return false;
 		}
-		
+
 		return $url;
 	}
 
