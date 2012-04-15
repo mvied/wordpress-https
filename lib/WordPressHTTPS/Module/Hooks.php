@@ -110,15 +110,24 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 					break;
 				}
 			}
-			
+
+			// Force SSL Admin
+			if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
+				$force_ssl = true;
+			}
+
+			// Exclusive HTTPS
+			if ( $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ! isset($force_ssl) ) {
+				$force_ssl = false;
+			}
+
 			$force_ssl = apply_filters('force_ssl', $force_ssl, $post->ID );
 
 			if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 				$scheme = 'https';
-			} else if ( $this->getPlugin()->getSetting('exclusive_https') && isset($force_ssl) && ! $force_ssl && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
+			} else if ( $this->getPlugin()->isSsl() && isset($force_ssl) && ! $force_ssl ) {
 				$scheme = 'http';
 			}
-
 		}
 
 		if ( isset($scheme) ) {
