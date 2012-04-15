@@ -187,7 +187,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 						$url->setPath($this->getHttpsUrl()->getPath());
 					} else {
 						$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
-						$path = str_replace($https_path, '', $url->getPath());
+						$path = str_replace($url->getPath(), '', $https_path);
 						$url->setPath($this->getHttpsUrl()->getPath() . $path);
 					}
 				}
@@ -215,7 +215,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			if ( $this->getSetting('ssl_host_diff') ) {
 				if ( $this->getHttpsUrl()->getPath() != '/' && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
 					$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
-					$path = str_replace($https_path, '', $url->getPath());
+					$path = str_replace($url->getPath(), '', $https_path);
 					$url->setPath($this->getHttpsUrl()->getPath() . $path);
 				}
 			}
