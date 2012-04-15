@@ -26,57 +26,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	protected $_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js');
 	
 	/**
-	 * Secure External URL's
-	 * 
-	 * External URL's that are available over HTTPS.
-	 *
-	 * @var string
-	 */
-	protected $_secure_external_urls = array();
-	
-	/**
-	 * Unsecure External URL's
-	 * 
-	 * External URL's that are not available over HTTPS.
-	 *
-	 * @var string
-	 */
-	protected $_unsecure_external_urls = array();
-
-	/**
-	 * Add Secure External URL
-	 * 
-	 * Stores the value of this array in WordPress options.
-	 *
-	 * @param array $value
-	 * @return $this
-	 */
-	public function setSecureExternalUrls( $value ) {
-		$property = '_secure_external_urls';
-		$this->$property = $value;
-		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
-		return $this;
-	}
-	
-	/**
-	 * Get Secure External URL's
-	 * 
-	 * Retrieves the value of this array from WordPress options.
-	 *
-	 * @param none
-	 * @return array
-	 */
-	public function getSecureExternalUrls() {
-		$property = '_secure_external_urls';
-		$option = get_option($this->getPlugin()->getSlug() . $property);
-		if ( $option !== false ) {
-			return $option;
-		} else {
-			return $this->$property;
-		}
-	}
-	
-	/**
 	 * Add Secure External URL
 	 * 
 	 * @param string $value
@@ -86,29 +35,14 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		if ( $value == '' ) {
 			return $this;
 		}
-		
-		$property = '_secure_external_urls';
-		$this->$property = $this->getSecureExternalUrls();
-		array_push($this->$property, (string) $value);
-		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
+
+		$secure_external_urls = (array) $this->getPlugin()->getSetting('secure_external_urls');
+		array_push($secure_external_urls, (string) $value);
+		$this->getPlugin()->setSetting('secure_external_urls', $secure_external_urls);
+
 		return $this;
 	}
-	
-	/**
-	 * Set Unsecure External URL's
-	 * 
-	 * Stores the value of this array in WordPress options.
-	 *
-	 * @param array $value
-	 * @return $this
-	 */
-	public function setUnsecureExternalUrls( $value = array() ) {
-		$property = '_unsecure_external_urls';
-		$this->$property = $value;
-		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
-		return $this;
-	}
-	
+
 	/**
 	 * Add Unsecure External URL
 	 * 
@@ -119,32 +53,14 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		if ( $value == '' ) {
 			return $this;
 		}
-		
-		$property = '_unsecure_external_urls';
-		$this->$property = $this->getUnsecureExternalUrls();
-		array_push($this->$property, (string) $value);
-		update_option($this->getPlugin()->getSlug() . $property, $this->$property);
+
+		$unsecure_external_urls = (array) $this->getPlugin()->getSetting('unsecure_external_urls');
+		array_push($unsecure_external_urls, (string) $value);
+		$this->getPlugin()->setSetting('unsecure_external_urls', $unsecure_external_urls);
+
 		return $this;
 	}
-	
-	/**
-	 * Get Unsecure External URL's
-	 * 
-	 * Retrieves the value of this array from WordPress options.
-	 *
-	 * @param none
-	 * @return array
-	 */
-	public function getUnsecureExternalUrls() {
-		$property = '_unsecure_external_urls';
-		$option = get_option($this->getPlugin()->getSlug() . $property);
-		if ( $option !== false ) {
-			return $option;
-		} else {
-			return $this->$property;
-		}
-	}
-	
+
 	/**
 	 * Initialize
 	 *
@@ -154,6 +70,17 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function init() {
 		// Start output buffering
 		add_action('init', array(&$this, 'startOutputBuffering'));
+	}
+	
+	/**
+	 * Runs when the plugin settings are reset.
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function reset() {
+		$this->setSecureExternalUrls( array() );
+		$this->setUnsecureExternalUrls( array() );
 	}
 
 	/**
