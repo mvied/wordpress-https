@@ -2,7 +2,7 @@
 Contributors: Mvied
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N9NFVADLVUR7A
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
-Requires at least: 2.9.0
+Requires at least: 3.0
 Tested up to: 3.4
 Stable tag: 3.0
 
