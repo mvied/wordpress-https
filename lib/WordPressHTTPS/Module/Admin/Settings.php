@@ -147,7 +147,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 		$reload = false;
 		$logout = false;
 		if ( @$_POST['Reset'] ) {
-			$this->reset();
+			$this->getPlugin()->reset();
 			$reload = true;
 		} else {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {

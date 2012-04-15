@@ -93,9 +93,7 @@ jQuery(document).ready(function($) {
 	});
 	
 	$('#settings-reset').click(function(e, el) {
-	   if ( confirm('Are you sure you want to reset all WordPress HTTPS settings?') ) {
-			$(this).parents('form').submit();
-	   } else {
+	   if ( ! confirm('Are you sure you want to reset all WordPress HTTPS settings?') ) {
 			e.preventDefault();
 			return false;
 	   }

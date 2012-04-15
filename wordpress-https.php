@@ -9,9 +9,9 @@
  */
 
 $include_paths = array(
+	get_include_path(),
 	dirname(__FILE__),
-	dirname(__FILE__) . '/lib',
-	get_include_path()
+	dirname(__FILE__) . '/lib'
 );
 set_include_path(implode(PATH_SEPARATOR, $include_paths));
 

@@ -1,9 +1,9 @@
 <?php
 
 $include_paths = array(
+	get_include_path(),
 	realpath(dirname(__FILE__) . '/../../../../..'),
-	realpath(dirname(__FILE__) . '/../../lib'),
-	get_include_path()
+	realpath(dirname(__FILE__) . '/../../lib')
 );
 set_include_path(implode(PATH_SEPARATOR, $include_paths));
 require_once('wp-load.php');

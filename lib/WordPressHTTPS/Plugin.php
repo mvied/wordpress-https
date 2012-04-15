@@ -422,7 +422,7 @@ class WordPressHTTPS_Plugin {
 	 * @return $this
 	 */
 	public function reset() {
-		foreach ( $this->getPlugin()->getSettings() as $option => $value ) {
+		foreach ( $this->getSettings() as $option => $value ) {
 			update_option($this->getSlug() . '_' . $option, $value);
 		}
 		
