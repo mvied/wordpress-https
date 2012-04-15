@@ -359,7 +359,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function fixExtensions() {
 		if ( $this->getPlugin()->isSsl() ) {
-			@preg_match_all('/(http|https):\/\/[\/-\w\d\.,~#@^!\'()?=\+&%;:[\]]+/i', $this->_html, $matches);
+			@preg_match_all('/(http|https):\/\/[^\'"]+[\'"]+/i', $this->_html, $matches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				$url = rtrim($matches[0][$i], '\'"');
 				$filename = basename($url);
