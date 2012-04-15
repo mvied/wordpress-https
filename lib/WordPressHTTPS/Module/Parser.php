@@ -94,8 +94,8 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
 		
-		$this->getPlugin()->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getSecureExternalUrls()) . ' ]');
-		$this->getPlugin()->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getUnsecureExternalUrls()) . ' ]');
+		$this->getPlugin()->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getPlugin()->getSetting('secure_external_urls')) . ' ]');
+		$this->getPlugin()->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getPlugin()->getSetting('unsecure_external_urls')) . ' ]');
 		
 		$this->fixLinksAndForms();
 		$this->fixExtensions();
@@ -137,7 +137,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			$this->_html = str_replace($url, $updated, $this->_html);
 		// If external and not HTTPS
 		} else if ( $url->getPath() != 'https' ) {
-			if ( @in_array($url->toString(), $this->getSecureExternalUrls()) == false && @in_array($url->toString(), $this->getUnsecureExternalUrls()) == false ) {
+			if ( @in_array($url->toString(), $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url->toString(), $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
 				$test_url = clone $url;
 				$test_url->setScheme('https');
 				if ( $test_url->isValid() ) {
@@ -149,7 +149,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				}
 			}
 
-			if ( in_array($url, $this->getSecureExternalUrls()) ) {
+			if ( in_array($url, $this->getPlugin()->getSetting('secure_external_urls')) ) {
 				$updated = clone $url;
 				$updated->setScheme('https');
 				$this->_html = str_replace($url, $updated, $this->_html);
