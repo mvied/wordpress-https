@@ -188,8 +188,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					} else {
 						$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
 						$path = str_replace($https_path, '', $url->getPath());
-						$url->setPath($path);
-						//$url->setPath($this->getHttpsUrl()->getPath() . $url->getPath());
+						$url->setPath($this->getHttpsUrl()->getPath() . $path);
 					}
 				}
 			}
@@ -217,7 +216,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 				if ( $this->getHttpsUrl()->getPath() != '/' && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
 					$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
 					$path = str_replace($https_path, '', $url->getPath());
-					$url->setPath($path);
+					$url->setPath($this->getHttpsUrl()->getPath() . $path);
 				}
 			}
 			return $url;
