@@ -33,7 +33,7 @@ if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	//Load Modules
 	$wordpress_https->loadModules();
 
-	// If WPHTTPS_RESET global is defined, run reset method
+	// If WPHTTPS_RESET global is defined, reset settings
 	if ( defined('WPHTTPS_RESET') && constant('WPHTTPS_RESET') == true ) {
 		foreach($wordpress_https->getSettings() as $key => $default) {
 			$wordpress_https->setSetting($key, $default);
