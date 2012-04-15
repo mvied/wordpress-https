@@ -234,11 +234,15 @@ class WordPressHTTPS_Plugin {
 	 * Get Plugin Setting
 	 *
 	 * @param string $setting
+	 * @param int $blog_id
 	 * @return mixed
 	 */
-	public function getSetting( $setting ) {
+	public function getSetting( $setting, $blog_id = 0 ) {
+		if ( $blog_id == 0 ) {
+			$blog_id = get_current_blog_id();
+		}
 		$setting = $this->getSlug() . '_' . $setting;
-		$setting = get_option($setting);
+		$setting = get_blog_option($blog_id, $setting);
 		switch( $setting ) {
 			case "1":
 				$setting = true;
