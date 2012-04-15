@@ -81,6 +81,13 @@ class WordPressHTTPS_Url {
 	protected $_query;
 
 	/**
+	 * The fragment string for the request. In the URL http://www.foo.com/?page=bar#test, #test is the fragment component.
+	 *
+	 * @var string
+	 */
+	protected $_fragment;
+
+	/**
 	 * The response body of the request.
 	 *
 	 * @var string
@@ -320,6 +327,27 @@ class WordPressHTTPS_Url {
 	}
 	
 	/**
+	 * Set Fragment
+	 * 
+	 * @param string $fragment
+	 * @return object $this
+	 */
+	public function setFragment( $fragment ) {
+		$this->_fragment = $fragment;
+		return $this;
+	}
+	
+	/**
+	 * Get Fragment
+	 * 
+	 * @param none
+	 * @return string
+	 */
+	public function getFragment() {
+		return $this->_fragment;
+	}
+	
+	/**
 	 * Set Content
 	 * 
 	 * @param string $content
@@ -485,7 +513,8 @@ class WordPressHTTPS_Url {
 		$this->getHost() .
 		( $this->getPort()  ? ':' . $this->getPort() : '' ) . 
 		$this->getPath() . 
-		( $this->getQuery() ? '?' . $this->getQuery() : '' );
+		( $this->getQuery() ? '?' . $this->getQuery() : '' ) . 
+		( $this->getFragment() ? '#' . $this->getFragment() : '' );
 	
 		return $string;
 	}
