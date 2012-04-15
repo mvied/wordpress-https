@@ -46,16 +46,6 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-	
-	/**
 	 * Proxy Check
 	 * 
 	 * If the server is on a proxy and not correctly reporting HTTPS, this

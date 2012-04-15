@@ -16,13 +16,5 @@ interface WordPressHTTPS_Module_Interface {
 	 * @return void
 	 */
 	public function init();
-	
-	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset();
 
 }

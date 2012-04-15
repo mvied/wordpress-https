@@ -66,16 +66,6 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-
-	/**
 	 * Admin URL
 	 * WordPress Filter - admin_url
 	 *

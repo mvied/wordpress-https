@@ -32,16 +32,6 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-	
-	/**
 	 * Add meta boxes to WordPress HTTPS Settings page.
 	 *
 	 * @param none
@@ -147,7 +137,9 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 		$reload = false;
 		$logout = false;
 		if ( @$_POST['Reset'] ) {
-			$this->getPlugin()->reset();
+			foreach ($this->getPlugin()->getSettings() as $key => $default) {
+				$this->getPlugin()->setSetting($key, $default);
+			}
 			$reload = true;
 		} else {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {

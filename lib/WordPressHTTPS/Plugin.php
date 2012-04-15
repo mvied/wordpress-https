@@ -425,25 +425,5 @@ class WordPressHTTPS_Plugin {
 
 		return $this;
 	}
-	
-	/**
-	 * Resets all plugin options to the defaults
-	 *
-	 * @param none
-	 * @return $this
-	 */
-	public function reset() {
-		foreach ( $this->getSettings() as $option => $value ) {
-			update_option($this->getSlug() . '_' . $option, $value);
-		}
-		
-		foreach( $this->getModules() as $module ) {
-			if( method_exists($module, 'reset') ) {
-				$module->reset();
-			}
-		}
-		
-		return $this;
-	}
 
 }

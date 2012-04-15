@@ -25,16 +25,6 @@ class WordPressHTTPS_Module_Admin_Post extends WordPressHTTPS_Module implements 
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-	
-	/**
 	 * Adds HTTPS Settings meta box to post edit screen.
 	 * WordPress Hook - add_meta_boxes 
 	 *

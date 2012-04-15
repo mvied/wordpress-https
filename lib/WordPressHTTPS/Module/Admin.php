@@ -32,16 +32,6 @@ class WordPressHTTPS_Module_Admin extends WordPressHTTPS_Module implements WordP
 	}
 
 	/**
-	 * Runs when the plugin settings are reset.
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function reset() {
-		
-	}
-	
-	/**
 	 * Adds javascript and stylesheets to admin panel
 	 * WordPress Hook - admin_enqueue_scripts
 	 *
