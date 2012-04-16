@@ -57,6 +57,15 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/updates.php' )
 		);
 		add_meta_box(
+			$this->getPlugin()->getSlug() . '_rate',
+			__( 'Feedback', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
+			'side',
+			'core',
+			array( 'metabox' => 'ajax', 'url' => 'http://mvied.com/wphttps/rate.php' )
+		);
+		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate',
 			__( 'Donate', $this->getPlugin()->getSlug() ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
