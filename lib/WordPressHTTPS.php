@@ -182,14 +182,14 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setPort($this->getHttpsUrl()->getPort());
 
 			if ( $this->getSetting('ssl_host_diff') ) {
-				if ( strpos($url->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
-					if ( $url_original->getPath() == '/' ) {
-						$url->setPath($this->getHttpsUrl()->getPath());
-					} else {
-						$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
-						$path = str_replace($url->getPath(), '', $https_path);
-						$url->setPath($this->getHttpsUrl()->getPath() . $path);
-					}
+				if ( $url_original->getPath() == '/' ) {
+					$url->setPath($this->getHttpsUrl()->getPath());
+				} else {
+					$path = $url->getPath();
+					$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
+					$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+					$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
+					$url->setPath($path);
 				}
 			}
 			return $url;
@@ -213,10 +213,14 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setPort($this->getHttpUrl()->getPort());
 			
 			if ( $this->getSetting('ssl_host_diff') ) {
-				if ( $this->getHttpsUrl()->getPath() != '/' && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
-					$https_path = str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath());
-					$path = str_replace($url->getPath(), '', $https_path);
-					$url->setPath($this->getHttpsUrl()->getPath() . $path);
+				if ( $this->getHttpsUrl()->getPath() == '/' ) {
+					$url->setPath($this->getHttpUrl()->getPath());
+				} else {
+					$path = $url->getPath();
+					$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
+					$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+					$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
+					$url->setPath($path);
 				}
 			}
 			return $url;
