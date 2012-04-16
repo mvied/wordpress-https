@@ -75,7 +75,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	 * @return string $url
 	 */
 	public function admin_url( $url, $path, $scheme ) {
-		if ( ( $scheme == 'https' || $this->ssl_admin || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
+		if ( ( $scheme == 'https' || $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
 		}
 
