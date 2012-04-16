@@ -54,7 +54,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://www.wordpresshttps.com/client/updates.php' )
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/updates.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_rate',
@@ -63,7 +63,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://www.wordpresshttps.com/client/rate.php' )
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/rate.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate',
@@ -72,7 +72,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://www.wordpresshttps.com/client/donate.php' )
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_support',
@@ -81,7 +81,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://www.wordpresshttps.com/client/support.php' )
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/support.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',
@@ -90,7 +90,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://www.wordpresshttps.com/client/donate2.php' )
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate2.php' )
 		);
 	}
 
