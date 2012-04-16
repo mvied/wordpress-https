@@ -186,8 +186,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					$url->setPath($this->getHttpsUrl()->getPath());
 				} else {
 					$path = $url->getPath();
-					$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
-					$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+					$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
+					$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
 					$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 					$url->setPath($path);
 				}
@@ -217,8 +217,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					$url->setPath($this->getHttpUrl()->getPath());
 				} else {
 					$path = $url->getPath();
-					$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
-					$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+					$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
+					$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
 					$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 					$url->setPath($path);
 				}
