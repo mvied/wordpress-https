@@ -8,10 +8,12 @@
 
 #poststuff .column-primary {
 	width: 60%;
+	padding: 0;
 }
 #poststuff .column-secondary {
 	width: 40%;
 	float: right;
+	padding: 0;
 }
 
 .wphttps-message-wrap {
