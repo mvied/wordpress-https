@@ -82,10 +82,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
-		
-		$this->getPlugin()->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getPlugin()->getSetting('secure_external_urls')) . ' ]');
-		$this->getPlugin()->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getPlugin()->getSetting('unsecure_external_urls')) . ' ]');
-		
+
 		$this->fixLinksAndForms();
 		$this->fixExtensions();
 		$this->fixElements();

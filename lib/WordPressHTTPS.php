@@ -115,7 +115,9 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Proxy: ' . ( isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ? 'Yes' : 'No') );
-
+		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getSetting('secure_external_urls')) . ' ]');
+		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getSetting('unsecure_external_urls')) . ' ]');
+		
 		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
 		if ( ( $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getSetting('ssl_admin') ) {
 			if ( ! $this->isSsl() ) {
@@ -174,23 +176,19 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttps( $string ) {
-		$url_original = WordPressHTTPS_Url::fromString( $string ); // URL in string to be replaced
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
-		if ( $url && $this->isUrlLocal($url_original->toString()) ) {
+		if ( $url && $this->isUrlLocal($url) ) {
 			$url->setScheme('https');
 			$url->setHost($this->getHttpsUrl()->getHost());
 			$url->setPort($this->getHttpsUrl()->getPort());
 
 			if ( $this->getSetting('ssl_host_diff') ) {
-				if ( $url_original->getPath() == '/' ) {
-					$url->setPath($this->getHttpsUrl()->getPath());
-				} else {
-					$path = $url->getPath();
-					$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
-					$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
-					$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
-					$url->setPath($path);
-				}
+				$path = $url->getPath();
+				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', rtrim($path, '/'));
+				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', rtrim($path, '/'));
+				$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
+				$path = str_replace('//', '/', $path);
+				$url->setPath($path);
 			}
 			return $url;
 		} else {
@@ -205,23 +203,19 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttp( $string ) {
-		$url_original = WordPressHTTPS_Url::fromString( $string ); // URL in string to be replaced
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
-		if ( $url && $this->isUrlLocal($url_original) ) {
+		if ( $url && $this->isUrlLocal($url) ) {
 			$url->setScheme('http');
 			$url->setHost($this->getHttpUrl()->getHost());
 			$url->setPort($this->getHttpUrl()->getPort());
 			
 			if ( $this->getSetting('ssl_host_diff') ) {
-				if ( $this->getHttpsUrl()->getPath() == '/' ) {
-					$url->setPath($this->getHttpUrl()->getPath());
-				} else {
-					$path = $url->getPath();
-					$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
-					$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
-					$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
-					$url->setPath($path);
-				}
+				$path = $url->getPath();
+				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', rtrim($path, '/'));
+				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', rtrim($path, '/'));
+				$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
+				$path = str_replace('//', '/', $path);
+				$url->setPath($path);
 			}
 			return $url;
 		} else {
@@ -269,18 +263,18 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			// Prepend secure URL path if it does not exist.
-			if ( strpos($url->getPath(), $_SERVER['REQUEST_URI']) != 0 ) {
-				$url->setPath($url->getPath() . $_SERVER['REQUEST_URI']);
-			} else {
-				$url->setPath($_SERVER['REQUEST_URI']);
-			}
+			$path = $_SERVER['REQUEST_URI'];
+			$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', rtrim($path, '/'));
+			$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', rtrim($path, '/'));
+			$url->setPath($url->getPath() . $path);
 
 			// Use a cookie to detect redirect loops
-			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_int($_COOKIE['redirect_count']) ? $_COOKIE['redirect_count']++ : 1 );
-			setcookie('redirect_count', $redirect_count, 0, '/', '.' . $url->getHost());
+			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
+			setcookie('redirect_count', $redirect_count, 0, '/', '.' . $url->getBaseHost());
+
 			// If redirect count is 3 or higher, prevent redirect and log the redirect loop
 			if ( $redirect_count >= 3 ) {
+				setcookie('redirect_count', null, -time(), '/', '.' . $url->getBaseHost());
 				$this->getLogger()->log('[ERROR] Redirect Loop!');
 			// If no redirect loop, continue with redirect...
 			} else {
