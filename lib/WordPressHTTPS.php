@@ -115,8 +115,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Proxy: ' . ( isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ? 'Yes' : 'No') );
-		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', $this->getSetting('secure_external_urls')) . ' ]');
-		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', $this->getSetting('unsecure_external_urls')) . ' ]');
+		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', (array)$this->getSetting('secure_external_urls')) . ' ]');
+		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 		
 		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
 		if ( ( $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getSetting('ssl_admin') ) {

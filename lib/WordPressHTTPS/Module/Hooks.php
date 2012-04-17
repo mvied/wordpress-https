@@ -94,6 +94,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		if ( $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ! isset($force_ssl) ) {
 			$force_ssl = false;
 		}
+
 		// Force SSL Admin
 		if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
 			$force_ssl = true;
