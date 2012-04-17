@@ -183,14 +183,13 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setHost($this->getHttpsUrl()->getHost());
 			$url->setPort($this->getHttpsUrl()->getPort());
 
+			$path = $url->getPath();
 			if ( $this->getSetting('ssl_host_diff') ) {
-				$path = $url->getPath();
-				$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
-				$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
-				$path = rtrim(str_replace($this->getHttpUrl()->getPath(), '', $this->getHttpsUrl()->getPath()), '/') . '/' . ltrim($path, '/');
+				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
+				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
+				$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 				$url->setPath($path);
 			}
-			$url = str_replace('//', '/', $url->toString());
 			return $url;
 		} else {
 			return $string;
@@ -210,14 +209,13 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setHost($this->getHttpUrl()->getHost());
 			$url->setPort($this->getHttpUrl()->getPort());
 			
+			$path = $url->getPath();
 			if ( $this->getSetting('ssl_host_diff') ) {
-				$path = $url->getPath();
-				$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
-				$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
+				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
+				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
 				$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 				$url->setPath($path);
 			}
-			$url = str_replace('//', '/', $url->toString());
 			return $url;
 		} else {
 			return $string;
