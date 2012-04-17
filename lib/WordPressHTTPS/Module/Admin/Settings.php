@@ -171,8 +171,9 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 							$ssl_host->setPort($port);
 
 							// Add Path
-							if ( strpos($ssl_host->toString(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
-								$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . $this->getPlugin()->getHttpUrl()->getPath());
+							if ( strpos($ssl_host->getPath(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
+								$path = '/'. ltrim(str_replace(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/'), '', $ssl_host->getPath()), '/');
+								$ssl_host->setPath(rtrim($path, '/') . $this->getPlugin()->getHttpUrl()->getPath());
 							}
 
 							if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
