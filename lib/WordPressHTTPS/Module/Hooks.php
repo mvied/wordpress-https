@@ -143,7 +143,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
 		if( $scheme == 'logged_in' ) {
 			$cookie_name = LOGGED_IN_COOKIE;
-		} elseif ( $secure ) {
+		} elseif ( $secure || ( $this->getPlugin()->isSsl() && $this->getPlugin()->getSetting('ssl_host_diff') ) ) {
 			$cookie_name = SECURE_AUTH_COOKIE;
 			$scheme = 'secure_auth';
 		} else {
@@ -168,44 +168,28 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			
 			$cookie_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path);
 			$cookie_path = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path);
-			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path;
+			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path;
 			
 			$cookie_path_site = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_site);
 			$cookie_path_site = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_site);
-			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_site;
+			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_site;
 
 			$cookie_path_plugins = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_plugins);
 			$cookie_path_plugins = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_plugins);
-			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_plugins;
+			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_plugins;
 
 			$cookie_path_admin = $cookie_path_site . 'wp-admin';
 		}
 
 		// Cookie paths defined to accomodate different SSL Host
-		if ( version_compare(phpversion(), '5.2.0', '>=') ) {
-			if ( $scheme == 'logged_in' ) {
-				setcookie($cookie_name, $cookie, $expire, $cookie_path, $cookie_domain, $secure, true);
-				if ( $cookie_path != $cookie_path_site ) {
-					setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure, true);
-				}
-			} else {
-				setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
-				setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
+		if ( $scheme == 'logged_in' ) {
+			setcookie($cookie_name, $cookie, $expire, $cookie_path, $cookie_domain, $secure, true);
+			if ( $cookie_path != $cookie_path_site ) {
+				setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure, true);
 			}
 		} else {
-			if ( !empty($cookie_domain) ) {
-				$cookie_domain .= '; HttpOnly';
-			}
-
-			if ( $scheme == 'logged_in' ) {
-				setcookie($cookie_name, $cookie, $expire, $cookie_path, $cookie_domain, $secure);
-				if ( $cookie_path != $cookie_path_site ) {
-					setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure);
-				}
-			} else {
-				setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain);
-				setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain);
-			}
+			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
+			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
 		}
 	}
 
