@@ -184,8 +184,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 			if ( $this->getSetting('ssl_host_diff') ) {
 				$path = $url->getPath();
-				$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
-				$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+				$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
+				$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
 				$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 				$path = str_replace('//', '/', $path);
 				$url->setPath($path);
@@ -211,8 +211,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			
 			if ( $this->getSetting('ssl_host_diff') ) {
 				$path = $url->getPath();
-				$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
-				$path = str_replace($this->getHttpUrl()->getPath(), '', $path);
+				$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
+				$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
 				$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
 				$path = str_replace('//', '/', $path);
 				$url->setPath($path);
@@ -264,9 +264,9 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 		if ( $url ) {
 			$path = $_SERVER['REQUEST_URI'];
-			$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', rtrim($path, '/'));
-			$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', rtrim($path, '/'));
-			$url->setPath($url->getPath() . $path);
+			$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
+			$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
+			$url->setPath(rtrim($url->getPath(), '/') . $path);
 
 			// Use a cookie to detect redirect loops
 			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
