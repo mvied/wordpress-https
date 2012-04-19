@@ -83,6 +83,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
 
+		$this->normalizeElements();
 		$this->fixLinksAndForms();
 		$this->fixExtensions();
 		$this->fixElements();
@@ -152,7 +153,23 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			$this->getPlugin()->getLogger()->log($log);
 		}
 	}
-	
+
+	/**
+	 * Normalize all local URL's to HTTP
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function normalizeElements() {
+		$url = clone $this->getPlugin()->getHttpUrl();
+		$url->setScheme('https');
+		
+		$count = substr_count($this->_html, $url);
+		if ( $count > 0 ) {
+			$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
+		}
+	}
+
 	/**
 	 * Fix Elements
 	 * 
@@ -162,18 +179,6 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function fixElements() {
-		// Fix any occurrence of the HTTPS version of the regular domain when using different SSL Host
-		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
-			$url = clone $this->getPlugin()->getHttpUrl();
-			$url->setScheme('https');
-			
-			$count = substr_count($this->_html, $url);
-			if ( $count > 0 ) {
-				$this->getPlugin()->getLogger()->log('[FIXED] Updated ' . $count . ' Occurrences of URL: ' . $url . ' => ' . $this->getPlugin()->makeUrlHttp($url));
-				$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
-			}
-		}
-
 		if ( $this->getPlugin()->isSsl() ) {
 			if ( is_admin() ) {
 				preg_match_all('/\<(script|link|img)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
