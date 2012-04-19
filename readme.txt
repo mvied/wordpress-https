@@ -72,6 +72,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 
 == Changelog ==
 = 3.0.1 =
+* Bug Fix - Fixed major issue when upgrading from previous version of WordPress HTTPS.
 * Bug Fix - Archive widget links should not appear correctly.
 = 3.0 =
 * The plugin has been completely re-written.
