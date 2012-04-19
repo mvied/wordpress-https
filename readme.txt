@@ -9,13 +9,6 @@ Stable tag: 3.0.1
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
 == Description ==
-<ul>
- <li>Supports Shared and Private SSL.</li>
- <li>Helps reduce or completely fix partially encrypted / mixed content errors.</li>
- <li>Force SSL on a per-page basis.</li>
- <li>Force SSL in admin panel.</li>
-</ul>
-
 If you're having partially encrypted/mixed content errors or other problems, please read the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>. If you're still having trouble, please <a href="http://wordpress.org/tags/wordpress-https#postform">start a support topic</a> and I will do my best to assist you.
 
 == Installation ==
