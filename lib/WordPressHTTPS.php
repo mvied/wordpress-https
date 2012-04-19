@@ -104,6 +104,10 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		} else {
 			$this->setSetting('ssl_host_diff', 0);
 		}
+		
+		if ( strpos($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath()) === true ) {
+			$this->getHttpsUrl()->setPath( $this->getHttpsUrl()->getPath() . $this->getHttpUrl()->getPath() );
+		}
 
 		// Add SSL Port to HTTPS URL
 		$this->getHttpsUrl()->setPort($this->getSetting('ssl_port'));
@@ -183,12 +187,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setHost($this->getHttpsUrl()->getHost());
 			$url->setPort($this->getHttpsUrl()->getPort());
 
-			$path = $url->getPath();
-			if ( $this->getSetting('ssl_host_diff') ) {
-				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
-				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
-				$path = rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim($path, '/');
-				$url->setPath($path);
+			if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
+				$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $url->getPath()));
 			}
 			return $url;
 		} else {
@@ -208,13 +208,9 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setScheme('http');
 			$url->setHost($this->getHttpUrl()->getHost());
 			$url->setPort($this->getHttpUrl()->getPort());
-			
-			$path = $url->getPath();
-			if ( $this->getSetting('ssl_host_diff') ) {
-				$path = str_replace(rtrim($this->getHttpsUrl()->getPath(), '/'), '', $path);
-				$path = str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), '', $path);
-				$path = rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim($path, '/');
-				$url->setPath($path);
+
+			if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpUrl()->getPath()) === false ) {
+				$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $url->getPath()));
 			}
 			return $url;
 		} else {
@@ -262,10 +258,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			$path = $_SERVER['REQUEST_URI'];
-			$path = '/'. ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $path), '/');
-			$path = '/'. ltrim(str_replace($this->getHttpUrl()->getPath(), '', $path), '/');
-			$url->setPath(rtrim($url->getPath(), '/') . $path);
+			$url->setPath(rtrim(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI'])));
 
 			// Use a cookie to detect redirect loops
 			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
