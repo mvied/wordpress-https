@@ -189,7 +189,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 									$_POST[$key] = get_option($key);
 								}
 							} else {
-								$_POST[$key] = $this->getPlugin()->getHttpsUrl();
+								$_POST[$key] = $this->getPlugin()->getHttpsUrl()->toString();
 							}
 						} else {
 							$_POST[$key] = get_option($key);
