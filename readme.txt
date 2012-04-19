@@ -73,6 +73,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 == Changelog ==
 = 3.0.1 =
 * Bug Fix - Fixed major issue when upgrading from previous version of WordPress HTTPS.
+* Bug Fix - Added is_ssl method back to main plugin class to avoid errors with Gravity Forms.
 * Bug Fix - Archive widget links should now appear correctly.
 = 3.0 =
 * The plugin has been completely re-written.
