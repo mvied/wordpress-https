@@ -2,7 +2,7 @@
 Contributors: Mvied
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N9NFVADLVUR7A
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
-Requires at least: 3.0.1
+Requires at least: 3.0
 Tested up to: 3.4
 Stable tag: 3.0.1
 
@@ -73,7 +73,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 == Changelog ==
 = 3.0.1 =
 * Bug Fix - Fixed major issue when upgrading from previous version of WordPress HTTPS.
-* Bug Fix - Archive widget links should not appear correctly.
+* Bug Fix - Archive widget links should now appear correctly.
 = 3.0 =
 * The plugin has been completely re-written.
 * Redirect loops should no longer be an issue.
