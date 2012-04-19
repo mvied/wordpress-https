@@ -42,7 +42,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 
 		// Filter HTTPS from links in WP 3.0+
 		if ( version_compare(get_bloginfo('version'), '3.0', '>') && !is_admin() && $this->getPlugin()->getHttpUrl()->getScheme() != 'https' ) {
-			$filters = array('page_link', 'post_link', 'category_link', 'get_archives_link', 'tag_link', 'search_link');
+			$filters = array('page_link', 'post_link', 'category_link', 'archives_link', 'tag_link', 'search_link');
 			foreach( $filters as $filter ) {
 				add_filter($filter, array($this->getPlugin(), 'makeUrlHttp'), 10);
 			}
