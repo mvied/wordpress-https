@@ -166,7 +166,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 							$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
 							// Add Port
-							$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->port);
+							$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->getPort());
 							$port = (($port != 80 && $port != 443) ? $port : null);
 							$ssl_host->setPort($port);
 
