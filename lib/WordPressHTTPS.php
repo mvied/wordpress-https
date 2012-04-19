@@ -239,6 +239,16 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 		return is_ssl();
 	}
+	
+	/**
+	 * Maintained for backwards compatibility.
+	 *
+	 * @param none
+	 * @return bool
+	 */
+	public function is_ssl() {
+		return $this->isSsl();
+	}
 
 	/**
 	 * Redirects page to HTTP or HTTPS accordingly
