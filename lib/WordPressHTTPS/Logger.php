@@ -7,6 +7,8 @@
  *
  */
 
+require_once('Logger/Interface.php');
+
 class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
 
 	/**

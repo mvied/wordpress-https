@@ -15,10 +15,10 @@ $include_paths = array(
 );
 set_include_path(implode(PATH_SEPARATOR, $include_paths));
 
-require_once('Zend/Loader/Autoloader.php');
-$autoloader = Zend_Loader_Autoloader::getInstance();
-$autoloader->registerNamespace('WordPressHTTPS_');
-
+require_once('WordPressHTTPS/Url.php');
+require_once('WordPressHTTPS/Logger.php');
+require_once('WordPressHTTPS/Module.php');
+require_once('WordPressHTTPS/Plugin.php');
 require_once('WordPressHTTPS.php');
 
 if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {

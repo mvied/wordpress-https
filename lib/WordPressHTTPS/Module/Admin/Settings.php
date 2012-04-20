@@ -9,6 +9,9 @@
  * 
  */
 
+require_once('WordPressHTTPS/Module.php');
+require_once('WordPressHTTPS/Module/Interface.php');
+
 class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module implements WordPressHTTPS_Module_Interface {
 
 	/**

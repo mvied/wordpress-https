@@ -369,6 +369,10 @@ class WordPressHTTPS_Plugin {
 			$base_class = get_class($this);
 		}
 		$module_full = 'Module\\' . $module;
+		$filename = str_replace('\\', '/', $module_full);
+		$filename = $filename . '.php';
+		
+		require_once($filename);
 
 		$class = $base_class . '_' . str_replace('\\', '_', $module_full);
 		if ( ! isset($this->_modules[$class]) || ! is_object($this->_modules[$class]) || get_class($this->_modules[$class]) != $class ) {

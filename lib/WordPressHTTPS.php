@@ -6,6 +6,7 @@
  * @package WordPressHTTPS
  *
  */
+
 class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 	/**
