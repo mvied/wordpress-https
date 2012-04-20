@@ -35,7 +35,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return $this
 	 */
 	public function addSecureExternalUrl( $value ) {
-		if ( $value == '' ) {
+		if ( trim($value) == '' ) {
 			return $this;
 		}
 
@@ -53,7 +53,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return $this
 	 */
 	public function addUnsecureExternalUrl( $value ) {
-		if ( $value == '' ) {
+		if ( trim($value) == '' ) {
 			return $this;
 		}
 
