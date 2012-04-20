@@ -97,7 +97,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		if ( is_front_page() ) {
 			if ( $this->getPlugin()->getSetting('frontpage') ) {
 				$force_ssl = true;
-			} else if ( ! $this->getPlugin()->getSetting('frontpage') && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
+			} else if ( ! $this->getPlugin()->getSetting('frontpage') && $this->getPlugin()->getSetting('exclusive_https') && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
 				$force_ssl = false;
 			}
 		}
