@@ -156,10 +156,10 @@ class WordPressHTTPS_Url {
 	public function getBaseHost() {
 		$return_url = clone $this;
 		$test_url = clone $this;
+		$test_url->setPath('');
 		$host_parts = explode('.', $test_url->getHost());
 		for ( $i = 0; $i <= sizeof($host_parts); $i++ ) {
 			$test_url->setHost( str_replace($host_parts[$i] . '.', '', $test_url->getHost()) );
-			$test_url->setPath('');
 			if ( $test_url->isValid() ) {
 				$return_url = clone $test_url;
 			} else {
