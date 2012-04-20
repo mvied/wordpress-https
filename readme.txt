@@ -64,6 +64,9 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.0.2 =
+* Bug Fix - Proxy check should no longer interfere with RSS Feeds, HTML Validators, etc.
+* Bug Fix - Force SSL and SSL Front Page should no longer conflict.
 = 3.0.1 =
 * Bug Fix - Fixed major issue when upgrading from previous version of WordPress HTTPS.
 * Bug Fix - Added is_ssl method back to main plugin class to avoid errors with Gravity Forms.

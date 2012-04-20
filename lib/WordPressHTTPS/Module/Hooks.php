@@ -32,13 +32,19 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			}
 		}
 
-		/*
-		 * Run proxy check
-		 */
-		if ( ! $this->getPlugin()->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
-			add_action('init', array(&$this, 'proxy_check'), 1);
-			add_action('admin_init', array(&$this, 'proxy_check'), 1);
-			add_action('login_head', array(&$this, 'proxy_check'), 1);
+		// Run proxy check
+		if ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) {
+			// If page is not SSL and no proxy cookie is detected, run proxy check
+			if ( ! $this->getPlugin()->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
+				add_action('init', array(&$this, 'proxy_check'), 1);
+				add_action('admin_init', array(&$this, 'proxy_check'), 1);
+			// Update ssl_proxy setting if a proxy has been detected
+			} else if ( ! $this->getPlugin()->getSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ) {
+				$this->getPlugin()->setSetting('ssl_proxy', 1);
+			// Update ssl_proxy if proxy is no longer detected
+			} else if ( $this->getPlugin()->setSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] != 1 ) {
+				$this->getPlugin()->setSetting('ssl_proxy', 0);
+			}
 		}
 
 		// Check if the page needs to be redirected
@@ -55,6 +61,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function proxy_check() {
+		if ( ! is_user_logged_in() ) {
+			return false;
+		}
 		$cookie_expiration = gmdate('D, d-M-Y H:i:s T', strtotime('now + 10 years'));
 		echo '<!-- WordPress HTTPS Proxy Check -->' . "\n";
 		echo '<script type="text/javascript">function getCookie(a){var b=document.cookie;var c=a+"=";var d=b.indexOf("; "+c);if(d==-1){d=b.indexOf(c);if(d!=0)return null}else{d+=2;var e=document.cookie.indexOf(";",d);if(e==-1){e=b.length}}return unescape(b.substring(d+c.length,e))}if(getCookie("wp_proxy")!=true){if(window.location.protocol=="https:"){document.cookie="wp_proxy=1; path=/; expires=' . $cookie_expiration . '"}else if(getCookie("wp_proxy")==null){document.cookie="wp_proxy=0; path=/; expires=' . $cookie_expiration . '"}if(getCookie("wp_proxy")!=null){window.location.reload()}else{document.write("You must enable cookies.")}}</script>' . "\n";
@@ -83,9 +92,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		
 		// Secure Front Page
 		if ( is_front_page() ) {
-			if ( $this->getPlugin()->getSetting('frontpage') && ! $this->getPlugin()->isSsl() ) {
+			if ( $this->getPlugin()->getSetting('frontpage') ) {
 				$force_ssl = true;
-			} else if ( ! $this->getPlugin()->getSetting('frontpage') && $this->getPlugin()->isSsl() && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
+			} else if ( ! $this->getPlugin()->getSetting('frontpage') && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
 				$force_ssl = false;
 			}
 		}

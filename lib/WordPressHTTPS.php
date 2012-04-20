@@ -39,6 +39,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		'exclusive_https' =>        0,       // Exclusively force SSL on posts and pages with the `Force SSL` option checked.
 		'frontpage' =>              0,       // Force SSL on front page
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
+		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
 	);
 
@@ -118,7 +119,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
-		$this->getLogger()->log('Proxy: ' . ( isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ? 'Yes' : 'No') );
+		$this->getLogger()->log('Proxy: ' . ( $this->getSetting('ssl_proxy') ? 'Yes' : 'No') );
 		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', (array)$this->getSetting('secure_external_urls')) . ' ]');
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 		
@@ -226,7 +227,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 */
 	public function isSsl() {
 		// Some extra checks for proxies and Shared SSL
-		if ( isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == true ) {
+		if ( $this->getSetting('ssl_proxy') ) {
 			return true;
 		} else if ( is_ssl() && strpos($_SERVER['HTTP_HOST'], $this->getHttpsUrl()->getHost()) === false && $_SERVER['SERVER_ADDR'] != $_SERVER['HTTP_HOST'] ) {
 			return false;
