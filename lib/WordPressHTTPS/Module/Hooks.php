@@ -45,7 +45,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			} else if ( ! $this->getPlugin()->getSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ) {
 				$this->getPlugin()->setSetting('ssl_proxy', 1);
 			// Update ssl_proxy if proxy is no longer detected
-			} else if ( $this->getPlugin()->setSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] != 1 ) {
+			} else if ( $this->getPlugin()->getSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] != 1 ) {
 				$this->getPlugin()->setSetting('ssl_proxy', 0);
 			}
 		}
