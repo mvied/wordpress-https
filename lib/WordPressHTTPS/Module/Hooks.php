@@ -36,7 +36,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		}
 
 		// Run proxy check
-		if ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) {
+		if ( $this->getPlugin()->getSetting('ssl_proxy') && ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
 			// If page is not SSL and no proxy cookie is detected, run proxy check
 			if ( ! $this->getPlugin()->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
 				add_action('init', array(&$this, 'proxy_check'), 1);
