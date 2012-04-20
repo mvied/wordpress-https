@@ -192,7 +192,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
 				$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $url->getPath()));
 			}
-			return $url;
+			return $url->toString();
 		} else {
 			return $string;
 		}
@@ -214,7 +214,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpUrl()->getPath()) === false ) {
 				$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $url->getPath()));
 			}
-			return $url;
+			return $url->toString();
 		} else {
 			return $string;
 		}
