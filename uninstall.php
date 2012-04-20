@@ -15,6 +15,7 @@ delete_option('wordpress-https_ssl_port');
 delete_option('wordpress-https_exclusive_https');
 delete_option('wordpress-https_frontpage');
 delete_option('wordpress-https_ssl_admin');
+delete_option('wordpress-https_ssl_proxy');
 delete_option('wordpress-https_ssl_host_subdomain');
 delete_option('wordpress-https_version');
 delete_option('wordpress-https_debug');

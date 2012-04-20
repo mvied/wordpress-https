@@ -4,7 +4,7 @@
  Plugin URI: http://mvied.com/projects/wordpress-https/
  Description: WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
  Author: Mike Ems
- Version: 3.0.1
+ Version: 3.0.2b1
  Author URI: http://mvied.com/
  */
 
@@ -24,7 +24,7 @@ require_once('WordPressHTTPS.php');
 if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS;
 	$wordpress_https->setSlug('wordpress-https');
-	$wordpress_https->setVersion('3.0.1');
+	$wordpress_https->setVersion('3.0.2b1');
 	$wordpress_https->setLogger(WordPressHTTPS_Logger::getInstance());
 	$wordpress_https->setPluginUrl(plugins_url('', __FILE__));
 	$wordpress_https->setDirectory(dirname(__FILE__));
