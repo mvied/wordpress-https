@@ -271,33 +271,21 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 		if ( $url ) {
 			$url->setPath(rtrim(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI'])));
-
-			// Use a cookie to detect redirect loops
-			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
-			setcookie('redirect_count', $redirect_count, 0, '/', '.' . $url->getBaseHost());
-
-			// If redirect count is 3 or higher, prevent redirect and log the redirect loop
-			if ( $redirect_count >= 3 ) {
-				setcookie('redirect_count', null, -time(), '/', '.' . $url->getBaseHost());
-				$this->getLogger()->log('[ERROR] Redirect Loop!');
-			// If no redirect loop, continue with redirect...
+			// Redirect
+			if ( function_exists('wp_redirect') ) {
+				wp_redirect($url, 301);
 			} else {
-				// Redirect
-				if ( function_exists('wp_redirect') ) {
-					wp_redirect($url, 301);
-				} else {
-					// End all output buffering and redirect
-					while(@ob_end_clean());
-	
-					// If redirecting to an admin page
-					if ( strpos($url->getPath(), 'wp-admin') !== false || strpos($url->getPath(), 'wp-login') !== false ) {
-						$url = WordPressHTTPS_Url::fromString($this->getModule('Hooks')->wp_redirect_admin($url));
-					}
-	
-					header("Location: " . $url);
+				// End all output buffering and redirect
+				while(@ob_end_clean());
+
+				// If redirecting to an admin page
+				if ( strpos($url->getPath(), 'wp-admin') !== false || strpos($url->getPath(), 'wp-login') !== false ) {
+					$url = WordPressHTTPS_Url::fromString($this->getModule('Hooks')->wp_redirect_admin($url));
 				}
-				exit();
+
+				header("Location: " . $url);
 			}
+			exit();
 		}
 	}
 	
