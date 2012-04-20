@@ -168,10 +168,14 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function normalizeElements() {
 		$url = clone $this->getPlugin()->getHttpUrl();
 		$url->setScheme('https');
-		
-		$count = substr_count($this->_html, $url);
-		if ( $count > 0 ) {
-			$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
+		preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]+)[\'"]?/im', $this->_html, $matches);
+		for ($i = 0; $i < sizeof($matches[0]); $i++) {
+			if ( isset($matches[1][$i]) ) {
+				$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
+				if ( strpos($url->getPath(), 'wp-admin') === false && strpos($url->getPath(), 'wp-login') === false ) {
+					$this->_html = str_replace($url->toString(), $this->getPlugin()->makeUrlHttp($url), $this->_html);
+				}
+			}
 		}
 	}
 
@@ -330,7 +334,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				$post = $post->ID;
 			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
 			} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
-				if ( !is_multisite() || ( is_multisite() && $url_parts['host'] == $this->getPlugin()->getHttpsUrl()->getHost() ) ) {
+				if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
 					$post = true;
 					$force_ssl = true;
 				} else if ( is_multisite() ) {
