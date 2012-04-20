@@ -202,14 +202,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					( $type == 'input' && strpos($html, 'image') !== false ) ||
 					( $type == 'param' && strpos($html, 'movie') !== false )
 				) {
-					// In admin panel, only fix image tags
-					if ( is_admin() ) {
-						if ( $type == 'img' ) {
-							$this->secureElement($url, $type);
-						}
-					} else {
-						$this->secureElement($url, $type);
-					}
+					$this->secureElement($url, $type);
 				}
 			}
 		}
