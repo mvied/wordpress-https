@@ -65,6 +65,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 
 == Changelog ==
 = 3.0.2 =
+* Bug Fix - Fixed performance issue that caused the login page to load for a long period of time.
 * Bug Fix - Proxy check should no longer interfere with RSS Feeds, HTML Validators, etc.
 * Bug Fix - Force SSL and SSL Front Page should no longer conflict.
 = 3.0.1 =
