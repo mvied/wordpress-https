@@ -128,14 +128,16 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		// If external and not HTTPS
 		} else if ( $url->getPath() != 'https' ) {
 			if ( @in_array($url->toString(), $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url->toString(), $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
-				$test_url = clone $url;
-				$test_url->setScheme('https');
-				if ( $test_url->isValid() ) {
-					// Cache this URL as available over HTTPS for future reference
-					$this->addSecureExternalUrl($url->toString());
-				} else {
-					// If not available over HTTPS, mark as an unsecure external URL
-					$this->addUnsecureExternalUrl($url->toString());
+				if ( $url->getScheme() != 'https' ) {
+					$test_url = clone $url;
+					$test_url->setScheme('https');
+					if ( $test_url->isValid() ) {
+						// Cache this URL as available over HTTPS for future reference
+						$this->addSecureExternalUrl($url->toString());
+					} else {
+						// If not available over HTTPS, mark as an unsecure external URL
+						$this->addUnsecureExternalUrl($url->toString());
+					}
 				}
 			}
 
