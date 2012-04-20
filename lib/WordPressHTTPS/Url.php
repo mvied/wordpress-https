@@ -379,6 +379,7 @@ class WordPressHTTPS_Url {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_ssl);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
@@ -415,6 +416,7 @@ class WordPressHTTPS_Url {
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $verify_ssl);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 			curl_setopt($ch, CURLOPT_FAILONERROR, true);
+			curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 			@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($ch, CURLOPT_HEADER, false);
 			curl_setopt($ch, CURLOPT_ENCODING, 'gzip,deflate');
