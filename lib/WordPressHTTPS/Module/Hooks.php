@@ -213,13 +213,31 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function clear_cookies() {
-		$cookie_domain = '.' . $this->getPlugin()->getHttpsUrl()->getBaseHost();
-		$cookie_path = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . COOKIEPATH;
-		$cookie_path_site = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . SITECOOKIEPATH;
-		$cookie_path_plugins = rtrim(parse_url($this->getPlugin()->getHttpsUrl(), PHP_URL_PATH), '/') . PLUGINS_COOKIE_PATH;
+		if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
+			$cookie_domain = '.' . $this->getPlugin()->getHttpsUrl()->getBaseHost();
+		}
+		$cookie_path = COOKIEPATH;
+		$cookie_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path);
+		$cookie_path = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path);
+		$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path;
+		
+		$cookie_path_site = SITECOOKIEPATH;
+		$cookie_path_site = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_site);
+		$cookie_path_site = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_site);
+		$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_site;
+
+		$cookie_path_plugins = PLUGINS_COOKIE_PATH;
+		$cookie_path_plugins = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path_plugins);
+		$cookie_path_plugins = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_plugins);
+		$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_plugins;
+
 		$cookie_path_admin = $cookie_path_site . 'wp-admin';
 
-		if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
+		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
+			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
+			setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
+			setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
 			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path, $cookie_domain);
 			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path_site, $cookie_domain);
 		}
