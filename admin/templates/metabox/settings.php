@@ -5,7 +5,7 @@
 	$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
 	$ssl_host = rtrim($ssl_host, '/');
 ?>
-<form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" method="post">
+<form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" action="admin.php?page=wordpress-https" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
 <table class="form-table">
