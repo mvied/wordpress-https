@@ -66,6 +66,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 == Changelog ==
 = 3.0.2 =
 * Added setting to change where HTTPS settings appear in the admin panel.
+* Bug Fix - Fixed major bug that occurred when site was installed in the base directory.
 * Bug Fix - File uploader should no longer produce an HTTP Error.
 * Bug Fix - Fixed performance issue that caused the login page to load for a long period of time.
 * Bug Fix - Proxy check should no longer interfere with RSS Feeds, HTML Validators, etc.
