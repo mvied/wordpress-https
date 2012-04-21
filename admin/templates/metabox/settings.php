@@ -45,6 +45,17 @@
 			</fieldset>
 		</td>
 	</tr>
+	<tr valign="top" id="frontpage_row">
+		<th scope="row">Secure Front Page</th>
+		<td>
+			<fieldset>
+				<label for="frontpage">
+					<input type="hidden" name="frontpage" value="0" />
+					<input name="frontpage" type="checkbox" id="frontpage" value="1"<?php echo (($this->getPlugin()->getSetting('frontpage')) ? ' checked="checked"' : ''); ?> />
+				</label>
+			</fieldset>
+		</td>
+	</tr>
 	<tr valign="top" id="ssl_proxy_row">
 		<th scope="row">Proxy</th>
 		<td>
@@ -53,17 +64,6 @@
 					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> No
 					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> Auto
 					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> Yes
-				</label>
-			</fieldset>
-		</td>
-	</tr>
-	<tr valign="top" id="frontpage_row">
-		<th scope="row">Secure Front Page</th>
-		<td>
-			<fieldset>
-				<label for="frontpage">
-					<input type="hidden" name="frontpage" value="0" />
-					<input name="frontpage" type="checkbox" id="frontpage" value="1"<?php echo (($this->getPlugin()->getSetting('frontpage')) ? ' checked="checked"' : ''); ?> />
 				</label>
 			</fieldset>
 		</td>
