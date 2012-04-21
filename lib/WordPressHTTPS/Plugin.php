@@ -237,19 +237,14 @@ class WordPressHTTPS_Plugin {
 	 * @param int $setting_blog_id
 	 * @return mixed
 	 */
-	public function getSetting( $setting, $setting_blog_id = 0 ) {
-		global $blog_id;
-		
-		if ( $setting_blog_id > 0 ) {
-			$blog_id = $setting_blog_id;
-		}
-		
+	public function getSetting( $setting, $blog_id = 0 ) {
 		$setting_full = $this->getSlug() . '_' . $setting;
-		if ( is_multisite() && isset($blog_id) ) {
+		if ( $blog_id > 0 ) {
 			$value = get_blog_option($blog_id, $setting_full);
 		} else {
 			$value = get_option($setting_full);
 		}
+
 		// Load default option
 		if ( $value === false ) {
 			$value = $this->_settings[$setting];
@@ -265,7 +260,7 @@ class WordPressHTTPS_Plugin {
 		}
 		return $value;
 	}
-	
+
 	/**
 	 * Get Plugin Settings
 	 *
