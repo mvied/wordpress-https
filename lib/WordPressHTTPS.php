@@ -275,11 +275,17 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			if ( $this->getSetting('ssl_host_diff') ) {
+			if ( $this->getSetting('ssl_host_diff') && $scheme == 'https' ) {
 				if ( $this->getHttpUrl()->getPath() != '/' ) {
-					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath()) . $_SERVER['REQUEST_URI']);
+					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI']));
 				} else {
 					$url->setPath($this->getHttpsUrl()->getPath() . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
+				}
+			} else if ( $this->getSetting('ssl_host_diff') && $scheme == 'http' ) {
+				if ( $this->getHttpsUrl()->getPath() != '/' ) {
+					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $_SERVER['REQUEST_URI']));
+				} else {
+					$url->setPath($this->getHttpUrl()->getPath() . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 				}
 			}
 
