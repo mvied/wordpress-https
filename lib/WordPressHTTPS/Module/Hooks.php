@@ -195,9 +195,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 				$cookie_path_plugins = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_plugins);
 			}
 
-			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path;
-			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_site;
-			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_plugins;
+			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path;
+			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_site;
+			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_plugins;
 			$cookie_path_admin = $cookie_path_site . 'wp-admin';
 		}
 
@@ -243,9 +243,9 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			$cookie_path_plugins = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $cookie_path_plugins);
 		}
 
-		$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path;
-		$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_site;
-		$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/' . $cookie_path_plugins;
+		$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path;
+		$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_site;
+		$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_plugins;
 		$cookie_path_admin = $cookie_path_site . 'wp-admin';
 
 		setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
