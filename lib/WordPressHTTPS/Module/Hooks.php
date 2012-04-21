@@ -36,16 +36,16 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		}
 
 		// Run proxy check
-		if ( $this->getPlugin()->getSetting('ssl_proxy') && ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
+		if ( $this->getPlugin()->getSetting('ssl_proxy') === 'auto' ) {
 			// If page is not SSL and no proxy cookie is detected, run proxy check
 			if ( ! $this->getPlugin()->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
 				add_action('init', array(&$this, 'proxy_check'), 1);
 				add_action('admin_init', array(&$this, 'proxy_check'), 1);
 			// Update ssl_proxy setting if a proxy has been detected
-			} else if ( ! $this->getPlugin()->getSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ) {
+			} else if ( $this->getPlugin()->getSetting('ssl_proxy') !== true && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] == 1 ) {
 				$this->getPlugin()->setSetting('ssl_proxy', 1);
 			// Update ssl_proxy if proxy is no longer detected
-			} else if ( $this->getPlugin()->getSetting('ssl_proxy') && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] != 1 ) {
+			} else if ( $this->getPlugin()->getSetting('ssl_proxy') !== false && isset($_COOKIE['wp_proxy']) && $_COOKIE['wp_proxy'] != 1 ) {
 				$this->getPlugin()->setSetting('ssl_proxy', 0);
 			}
 		}
@@ -153,9 +153,14 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
+		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->getSetting('ssl_admin') ) || ( $this->getPlugin()->isSsl() && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
+			$secure = true;
+		}
+		$secure = apply_filters('secure_auth_cookie', $secure, $user_id);
+
 		if( $scheme == 'logged_in' ) {
 			$cookie_name = LOGGED_IN_COOKIE;
-		} elseif ( $secure || ( $this->getPlugin()->isSsl() && $this->getPlugin()->getSetting('ssl_host_diff') ) ) {
+		} elseif ( $secure ) {
 			$cookie_name = SECURE_AUTH_COOKIE;
 			$scheme = 'secure_auth';
 		} else {
@@ -233,7 +238,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 
 		$cookie_path_admin = $cookie_path_site . 'wp-admin';
 
-		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+		if ( $this->getPlugin()->getSetting('ssl_host_diff') || $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
 			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
 			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
 			setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);

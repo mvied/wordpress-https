@@ -120,7 +120,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
-		$this->getLogger()->log('Proxy: ' . ( $this->getSetting('ssl_proxy') ? 'Yes' : 'No') );
+		$this->getLogger()->log('Proxy: ' . ( $this->getSetting('ssl_proxy') === 'auto' ? 'Auto' : ( $this->getSetting('ssl_proxy') ? 'Yes' : 'No' ) ));
 		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', (array)$this->getSetting('secure_external_urls')) . ' ]');
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 		
@@ -153,8 +153,10 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		$http_domain = $this->getHttpUrl()->getBaseHost();
 		$https_domain = $this->getHttpsUrl()->getBaseHost();
 
-		if ( $this->getHttpsUrl()->setScheme('http') != $this->getHttpUrl() && $http_domain == $https_domain ) {
+		if ( $this->getHttpsUrl()->setScheme('http')->toString() != $this->getHttpUrl()->toString() && $http_domain == $https_domain ) {
 			$this->setSetting('ssl_host_subdomain', 1);
+		} else {
+			$this->setSetting('ssl_host_subdomain', 0);
 		}
 	}
 	/**
@@ -227,10 +229,8 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 * @return bool
 	 */
 	public function isSsl() {
-		// Some extra checks for proxies and Shared SSL
-		if ( $this->getSetting('ssl_proxy') ) {
-			return true;
-		} else if ( is_ssl() && strpos($_SERVER['HTTP_HOST'], $this->getHttpsUrl()->getHost()) === false && $_SERVER['SERVER_ADDR'] != $_SERVER['HTTP_HOST'] ) {
+		// Some extra checks for Shared SSL
+		if ( is_ssl() && strpos($_SERVER['HTTP_HOST'], $this->getHttpsUrl()->getHost()) === false && $_SERVER['SERVER_ADDR'] != $_SERVER['HTTP_HOST'] ) {
 			return false;
 		} else if ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' ) {
 			return true;

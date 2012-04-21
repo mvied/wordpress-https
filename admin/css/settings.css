@@ -76,6 +76,10 @@ img#submit-waiting {
 	line-height: 32px;
 	padding: 0;
 }
+#wordpress-https_settings label.label-radio {
+	display: block;
+	margin-top: 5px;
+}
 #wordpress-https_settings #settings-reset {
 	float: left;
 	margin-right: 10px;

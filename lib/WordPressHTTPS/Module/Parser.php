@@ -166,16 +166,19 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function normalizeElements() {
-		$url = clone $this->getPlugin()->getHttpUrl();
-		$url->setScheme('https');
-		preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]+)[\'"]?/im', $this->_html, $matches);
-		for ($i = 0; $i < sizeof($matches[0]); $i++) {
-			if ( isset($matches[1][$i]) ) {
-				$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
-				if ( strpos($url->getPath(), 'wp-admin') === false && strpos($url->getPath(), 'wp-login') === false ) {
-					$this->_html = str_replace($url->toString(), $this->getPlugin()->makeUrlHttp($url), $this->_html);
+		if ( ! is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
+			$url = clone $this->getPlugin()->getHttpUrl();
+			$url->setScheme('https');
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $matches);
+			for ($i = 0; $i < sizeof($matches[0]); $i++) {
+				if ( isset($matches[1][$i]) ) {
+					$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
+					if ( $url && strpos($url->getPath(), 'wp-admin') === false && strpos($url->getPath(), 'wp-login') === false ) {
+						$url = $url->toString();
+						$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
+					}
 				}
-			}
+		}
 		}
 	}
 
@@ -201,7 +204,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				$scheme = $matches[3][$i];
 				$updated = false;
 
-				if ( $type == 'img' || $type == 'script' || $type == 'embed' ||
+				if	( $type == 'img' || $type == 'script' || $type == 'embed' ||
 					( $type == 'link' && ( strpos($html, 'stylesheet') !== false || strpos($html, 'pingback') !== false ) ) ||
 					( $type == 'form' && strpos($html, 'wp-pass.php') !== false ) ||
 					( $type == 'form' && strpos($html, 'commentform') !== false ) ||

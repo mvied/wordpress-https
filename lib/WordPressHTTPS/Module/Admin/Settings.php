@@ -152,6 +152,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				$this->getPlugin()->setSetting($key, $default);
 			}
+			$this->getPlugin()->install();
 			$reload = true;
 		} else {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
@@ -196,6 +197,11 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 							}
 						} else {
 							$_POST[$key] = get_option($key);
+						}
+					} else if ( $key == 'ssl_proxy' ) {
+						// Reload if we're auto detecting the proxy and we're not in SSL
+						if ( $_POST[$key] == 'auto' && ! $this->getPlugin()->isSsl() ) {
+							$reload = true;
 						}
 					} else if ( $key == 'ssl_admin' ) {
 						if ( force_ssl_admin() || force_ssl_login() ) {

@@ -45,6 +45,18 @@
 			</fieldset>
 		</td>
 	</tr>
+	<tr valign="top" id="ssl_proxy_row">
+		<th scope="row">Proxy</th>
+		<td>
+			<fieldset>
+				<label for="ssl_proxy" class="label-radio">
+					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> No
+					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> Auto
+					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> Yes
+				</label>
+			</fieldset>
+		</td>
+	</tr>
 	<tr valign="top" id="frontpage_row">
 		<th scope="row">Secure Front Page</th>
 		<td>
