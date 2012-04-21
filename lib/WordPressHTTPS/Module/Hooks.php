@@ -90,7 +90,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		}
 		
 		if ( $post->ID > 0 ) {
-			$force_ssl = apply_filters('force_ssl', $force_ssl, $post->ID );
+			$force_ssl = apply_filters('force_ssl', null, $post->ID );
 		}
 		
 		// Secure Front Page
