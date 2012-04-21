@@ -153,7 +153,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
-		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->getSetting('ssl_admin') ) || ( $this->getPlugin()->isSsl() && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
+		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->isSsl() ) || ( $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
 			$secure = true;
 		}
 		$secure = apply_filters('secure_auth_cookie', $secure, $user_id);
@@ -174,7 +174,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		$cookie_path_plugins = PLUGINS_COOKIE_PATH;
 		$cookie_path_admin = ADMIN_COOKIE_PATH;
 
-		if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->isSsl() ) {
+		if ( $this->getPlugin()->isSsl() ) {
 			// If SSL Host is a subdomain, make cookie domain a wildcard
 			if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
 				$cookie_domain = '.' . $this->getPlugin()->getHttpsUrl()->getBaseHost();
@@ -204,7 +204,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			if ( $cookie_path != $cookie_path_site ) {
 				setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure, true);
 			}
-		} else {
+		} else {		
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
 		}
@@ -220,6 +220,8 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 	public function clear_cookies() {
 		if ( $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
 			$cookie_domain = '.' . $this->getPlugin()->getHttpsUrl()->getBaseHost();
+		} else {
+			$cookie_domain = $this->getPlugin()->getHttpsUrl()->getHost();
 		}
 		$cookie_path = COOKIEPATH;
 		$cookie_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $cookie_path);
@@ -238,14 +240,12 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 
 		$cookie_path_admin = $cookie_path_site . 'wp-admin';
 
-		if ( $this->getPlugin()->getSetting('ssl_host_diff') || $this->getPlugin()->getSetting('ssl_host_subdomain') ) {
-			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
-			setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
-			setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
-			setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
-			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path, $cookie_domain);
-			setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path_site, $cookie_domain);
-		}
+		setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
+		setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
+		setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin, $cookie_domain);
+		setcookie(SECURE_AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins, $cookie_domain);
+		setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path, $cookie_domain);
+		setcookie(LOGGED_IN_COOKIE, ' ', time() - 31536000, $cookie_path_site, $cookie_domain);
 
 		setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_admin);
 		setcookie(AUTH_COOKIE, ' ', time() - 31536000, $cookie_path_plugins);
