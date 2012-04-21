@@ -245,7 +245,7 @@ class WordPressHTTPS_Plugin {
 		}
 		
 		$setting = $this->getSlug() . '_' . $setting;
-		if ( is_multisite() && && isset($blog_id) ) {
+		if ( is_multisite() && isset($blog_id) ) {
 			$setting = get_blog_option($blog_id, $setting);
 		} else {
 			$setting = get_option($setting);
