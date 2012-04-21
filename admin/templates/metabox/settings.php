@@ -5,7 +5,7 @@
 	$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
 	$ssl_host = rtrim($ssl_host, '/');
 ?>
-<form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" action="admin.php?page=wordpress-https" method="post">
+<form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
 <table class="form-table">
@@ -61,9 +61,9 @@
 		<td>
 			<fieldset>
 				<label for="ssl_proxy" class="label-radio">
-					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> No
-					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> Auto
-					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> Yes
+					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> <span>No</span>
+					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> <span>Auto</span>
+					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span>Yes</span>
 				</label>
 			</fieldset>
 		</td>
@@ -76,6 +76,17 @@
 					<input type="hidden" name="debug" value="0" />
 					<input name="debug" type="checkbox" id="debug" value="1"<?php echo (($this->getPlugin()->getSetting('debug')) ? ' checked="checked"' : ''); ?> />
 					Outputs debug information to the browser's console.
+				</label>
+			</fieldset>
+		</td>
+	</tr>
+	<tr valign="top" id="admin_menu_row">
+		<th scope="row">Admin Menu</th>
+		<td>
+			<fieldset>
+				<label for="admin_menu" class="label-radio">
+					<input type="radio" name="admin_menu" value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'side') ? ' checked="checked"' : ''); ?>> <span>Admin Sidebar</span>
+					<input type="radio" name="admin_menu" value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'settings') ? ' checked="checked"' : ''); ?>> <span>General Settings</span>
 				</label>
 			</fieldset>
 		</td>

@@ -42,6 +42,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
 		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
+		'admin_menu' =>             'side',  // HTTPS Admin Menu location
 	);
 
 	/**

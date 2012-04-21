@@ -53,9 +53,11 @@ class WordPressHTTPS_Module_Admin extends WordPressHTTPS_Module implements WordP
 	 * @return void
 	 */
 	public function menu() {
-		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'), '', 88);
-		//remove_submenu_page( $this->getPlugin()->getSlug(), $this->getPlugin()->getSlug() );
-		//add_submenu_page($this->getPlugin()->getSlug() . '-menu', 'Updates', 'Updates', 'manage_options', $this->getPlugin()->getSlug() . '-updates', array(&$this, 'dispatch'));
+		if ( $this->getPlugin()->getSetting('admin_menu') === 'side' ) {
+			add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'), '', 88);
+		} else {
+			add_options_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'));
+		}
 	}
 
 	/**

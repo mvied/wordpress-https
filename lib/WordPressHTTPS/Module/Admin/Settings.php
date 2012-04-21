@@ -26,7 +26,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 				add_action('plugins_loaded', array(&$this, 'save'), 1);
 			}
 			
-			add_action('toplevel_page_' . $this->getPlugin()->getSlug(), array(&$this, 'add_meta_boxes'));
+			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 
 			// Add scripts
 			add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
