@@ -244,21 +244,26 @@ class WordPressHTTPS_Plugin {
 			$blog_id = $setting_blog_id;
 		}
 		
-		$setting = $this->getSlug() . '_' . $setting;
+		$setting_full = $this->getSlug() . '_' . $setting;
 		if ( is_multisite() && isset($blog_id) ) {
-			$setting = get_blog_option($blog_id, $setting);
+			$value = get_blog_option($blog_id, $setting_full);
 		} else {
-			$setting = get_option($setting);
+			$value = get_option($setting_full);
 		}
-		switch( $setting ) {
+		// Load default option
+		if ( $value === false ) {
+			$value = $this->_settings[$setting];
+		}
+		// Convert 1's and 0's to boolean
+		switch( $value ) {
 			case "1":
-				$setting = true;
+				$value = true;
 			break;
 			case "0":
-				$setting = false;
+				$value = false;
 			break;
 		}
-		return $setting;
+		return $value;
 	}
 	
 	/**
