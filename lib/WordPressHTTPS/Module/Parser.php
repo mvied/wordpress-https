@@ -321,7 +321,9 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
 				}
-				$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
+				if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+					$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
+				}
 			}
 
 			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
