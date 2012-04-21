@@ -2,7 +2,9 @@
 	$count = 1; // Used to restrict str_replace count
 	$ssl_host = clone $this->getPlugin()->getHttpsUrl();
 	$ssl_host = $ssl_host->setPort('')->setScheme('')->toString();
-	$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
+	if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+		$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
+	}
 	$ssl_host = rtrim($ssl_host, '/');
 ?>
 <form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">

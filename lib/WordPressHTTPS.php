@@ -193,7 +193,11 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$url->setPort($this->getHttpsUrl()->getPort());
 
 			if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
-				$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $url->getPath()));
+				if ( $this->getHttpUrl()->getPath() == '/' ) {
+					$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $url->getPath());
+				} else {
+					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $url->getPath()));
+				}
 			}
 			return $url->toString();
 		} else {
