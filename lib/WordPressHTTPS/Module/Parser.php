@@ -332,6 +332,8 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				}
 				if ( $this->getPlugin()->getSetting('frontpage') ) {
 					$force_ssl = true;
+				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
+					$force_ssl = false;
 				}
 			} else if ( $this->getPlugin()->isUrlLocal($url) && ($post = get_page_by_path($url_parts['path'])) ) {
 				$post = $post->ID;
