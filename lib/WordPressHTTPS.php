@@ -275,12 +275,14 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			if ( $this->getHttpUrl()->getPath() != '/' ) {
-				$url->setPath(rtrim(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI'])));
+			if ( $this->getSetting('ssl_host_diff') ) {
+				if ( $this->getHttpUrl()->getPath() != '/' ) {
+					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath()) . $_SERVER['REQUEST_URI']);
+				} else {
+					$url->setPath($this->getHttpsUrl()->getPath() . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
+				}
 			}
-			if ( $scheme == 'https' ) {
-				$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $url->getPath());
-			}
+
 			// Redirect
 			if ( function_exists('wp_redirect') ) {
 				wp_redirect($url, 301);
