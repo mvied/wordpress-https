@@ -191,27 +191,29 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function fixElements() {
-		if ( $this->getPlugin()->isSsl() ) {
-			if ( is_admin() ) {
-				preg_match_all('/\<(script|link|img)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
-			} else {
-				preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
-			}
-			for ($i = 0; $i < sizeof($matches[0]); $i++) {
-				$html = $matches[0][$i];
-				$type = $matches[1][$i];
-				$url = $matches[2][$i];
-				$scheme = $matches[3][$i];
-				$updated = false;
+		if ( is_admin() ) {
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+		} else {
+			preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+		}
+		for ($i = 0; $i < sizeof($matches[0]); $i++) {
+			$html = $matches[0][$i];
+			$type = $matches[1][$i];
+			$url = $matches[2][$i];
+			$scheme = $matches[3][$i];
+			$updated = false;
 
-				if	( $type == 'img' || $type == 'script' || $type == 'embed' ||
-					( $type == 'link' && ( strpos($html, 'stylesheet') !== false || strpos($html, 'pingback') !== false ) ) ||
-					( $type == 'form' && strpos($html, 'wp-pass.php') !== false ) ||
-					( $type == 'form' && strpos($html, 'commentform') !== false ) ||
-					( $type == 'input' && strpos($html, 'image') !== false ) ||
-					( $type == 'param' && strpos($html, 'movie') !== false )
-				) {
+			if	( $type == 'img' || $type == 'script' || $type == 'embed' ||
+				( $type == 'link' && ( strpos($html, 'stylesheet') !== false || strpos($html, 'pingback') !== false ) ) ||
+				( $type == 'form' && strpos($html, 'wp-pass.php') !== false ) ||
+				( $type == 'form' && strpos($html, 'commentform') !== false ) ||
+				( $type == 'input' && strpos($html, 'image') !== false ) ||
+				( $type == 'param' && strpos($html, 'movie') !== false )
+			) {
+				if ( $this->getPlugin()->isSsl() ) {
 					$this->secureElement($url, $type);
+				} else if ( strpos($this->getPlugin()->getHttpsUrl(), $url) !== false ) {
+					$this->_html = str_replace($html, str_replace($this->getPlugin()->getHttpUrl(), $this->getPlugin()->getHttpsUrl(), $html), $this->_html);
 				}
 			}
 		}
