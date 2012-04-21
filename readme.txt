@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 3.0.1
+Stable tag: 3.0.2
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
@@ -69,6 +69,7 @@ add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 * Bug Fix - Fixed performance issue that caused the login page to load for a long period of time.
 * Bug Fix - Proxy check should no longer interfere with RSS Feeds, HTML Validators, etc.
 * Bug Fix - Force SSL and SSL Front Page should no longer conflict.
+* Bug Fix - If Force SSL Exclusively is enabled and Secure Front Page is not (or the front page is not secured), links to the front page will be set to HTTP.
 = 3.0.1 =
 * Bug Fix - Fixed major issue when upgrading from previous version of WordPress HTTPS.
 * Bug Fix - Added is_ssl method back to main plugin class to avoid errors with Gravity Forms.
