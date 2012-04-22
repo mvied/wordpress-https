@@ -251,9 +251,9 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				( $type == 'input' && strpos($html, 'image') !== false ) ||
 				( $type == 'param' && strpos($html, 'movie') !== false )
 			) {
-				if ( $scheme == 'http' && $this->getPlugin()->isSsl() ) {
+				if ( $scheme == 'http' && ( $this->getPlugin()->isSsl() ) ) {
 					$this->secureElement($url, $type);
-				} else if ( $scheme == 'https' && ! $this->getPlugin()->isSsl() ) {
+				} else if ( $scheme == 'https' && ! $this->getPlugin()->isSsl() && strpos($url, 'wp-admin') === false ) {
 					$this->unsecureElement($url, $type);
 				}
 			}
