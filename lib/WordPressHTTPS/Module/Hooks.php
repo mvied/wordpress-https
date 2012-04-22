@@ -30,7 +30,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			}
 
 			// Filter redirects in admin panel
-			if ( is_admin() && $this->getPlugin()->isSsl() ) {
+			if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') ) {
 				add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
 			}
 		}
