@@ -200,9 +200,11 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function normalizeElements() {
 		if ( ! is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
-			$url = clone $this->getPlugin()->getHttpsUrl();
-			$url->setScheme('http');
-			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
+			if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+				$url = clone $this->getPlugin()->getHttpsUrl();
+				$url->setScheme('http');
+				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
+			}
 
 			$url = clone $this->getPlugin()->getHttpUrl();
 			$url->setScheme('https');
