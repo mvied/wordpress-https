@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 3.0.2
+Stable tag: 3.0.3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
@@ -74,9 +74,12 @@ add_filter('force_ssl', 'store_force_ssl');`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.0.3 =
+* Any element on an HTTP page that is set to HTTPS should be auto-corrected.
+* Bug Fix - Fixed bug in cookie logic that prevented some users from logging in.
+* Bug Fix - Fixed bug in redirects that would cause login issues and 404 errors.
 = 3.0.2 =
 * Added setting to change where HTTPS settings appear in the admin panel.
-* Any element on an HTTP page that is set to HTTPS should be auto-corrected.
 * Bug Fix - Plugin should no longer interefere with editing posts and using images from the Media Library.
 * Bug Fix - Fixed major bug that occurred when site was installed in the base directory.
 * Bug Fix - File uploader should no longer produce an HTTP Error.
