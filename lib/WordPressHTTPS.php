@@ -284,7 +284,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 				if ( $this->getSetting('ssl_host_diff') &&  $this->getHttpsUrl()->getPath() != '/' ) {
 					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $_SERVER['REQUEST_URI']));
 				}
-				$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
+				$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 			}
 
 			// Redirect
