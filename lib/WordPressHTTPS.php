@@ -275,18 +275,16 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 
 		if ( $url ) {
-			if ( $this->getSetting('ssl_host_diff') && $scheme == 'https' ) {
-				if ( $this->getHttpUrl()->getPath() != '/' ) {
+			if ( $scheme == 'https' ) {
+				if ( $this->getSetting('ssl_host_diff') && $this->getHttpUrl()->getPath() != '/' ) { die('t' . $url);
 					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI']));
-				} else {
-					$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 				}
-			} else if ( $this->getSetting('ssl_host_diff') && $scheme == 'http' ) {
-				if ( $this->getHttpsUrl()->getPath() != '/' ) {
+				$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
+			} else if ($scheme == 'http' ) {
+				if ( $this->getSetting('ssl_host_diff') &&  $this->getHttpsUrl()->getPath() != '/' ) { die('t' . $url);
 					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $_SERVER['REQUEST_URI']));
-				} else {
-					$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 				}
+				$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 			}
 
 			// Redirect
@@ -298,7 +296,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 				// If redirecting to an admin page
 				if ( strpos($url->getPath(), 'wp-admin') !== false || strpos($url->getPath(), 'wp-login') !== false ) {
-					$url = WordPressHTTPS_Url::fromString($this->getModule('Hooks')->wp_redirect_admin($url));
+					$url = WordPressHTTPS_Url::fromString($this->redirectAdmin($url));
 				}
 
 				header("Location: " . $url);
@@ -307,4 +305,20 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		}
 	}
 	
+	/**
+	 * WP Redirect Admin
+	 * WordPress Filter - wp_redirect_admin
+	 *
+	 * @param string $url
+	 * @return string $url
+	 */
+	public function redirectAdmin( $url ) {
+		$url = $this->makeUrlHttps($url);
+
+		// Fix redirect_to
+		preg_match('/redirect_to=([^&]+)/i', $url, $redirect);
+		$redirect_url = @$redirect[1];
+		$url = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $url);
+		return $url;
+	}
 }

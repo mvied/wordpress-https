@@ -31,7 +31,7 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 
 			// Filter redirects in admin panel
 			if ( is_admin() && $this->getPlugin()->isSsl() ) {
-				add_action('wp_redirect', array(&$this, 'wp_redirect_admin'), 10, 1);
+				add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
 			}
 		}
 
@@ -122,23 +122,6 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 		if ( isset($scheme) ) {
 			$this->getPlugin()->redirect($scheme);
 		}
-	}
-	
-	/**
-	 * WP Redirect Admin
-	 * WordPress Filter - wp_redirect_admin
-	 *
-	 * @param string $url
-	 * @return string $url
-	 */
-	public function wp_redirect_admin( $url ) {
-		$url = $this->getPlugin()->makeUrlHttps($url);
-
-		// Fix redirect_to
-		preg_match('/redirect_to=([^&]+)/i', $url, $redirect);
-		$redirect_url = @$redirect[1];
-		$url = str_replace($redirect_url, urlencode($this->getPlugin()->makeUrlHttps(urldecode($redirect_url))), $url);
-		return $url;
 	}
 
 	/**
