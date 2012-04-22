@@ -59,6 +59,16 @@ Yes! Here is an example of how to use the 'force_ssl' hook to force a page to be
 
 add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
 
+You can also use this filter to filter pages based on their URL. Let's say you have an E-commerce site and all of your E-commerce URL's contain 'store'.
+`function store_force_ssl( $force_ssl, $post_id ) {
+	if ( strpos($_SERVER['REQUEST_URI'], 'store') !== false ) {
+		$force_ssl = true;
+	}
+	return $force_ssl;
+}
+
+add_filter('force_ssl', 'store_force_ssl');`
+
 == Screenshots ==
 1. WordPress HTTPS Settings screen
 2. Force SSL checkbox added to add/edit posts screen
