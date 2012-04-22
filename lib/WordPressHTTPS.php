@@ -276,15 +276,15 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 
 		if ( $url ) {
 			if ( $scheme == 'https' ) {
-				if ( $this->getSetting('ssl_host_diff') && $this->getHttpUrl()->getPath() != '/' ) { die('t' . $url);
+				if ( $this->getSetting('ssl_host_diff') && $this->getHttpUrl()->getPath() != '/' ) {
 					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI']));
 				}
 				$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 			} else if ($scheme == 'http' ) {
-				if ( $this->getSetting('ssl_host_diff') &&  $this->getHttpsUrl()->getPath() != '/' ) { die('t' . $url);
+				if ( $this->getSetting('ssl_host_diff') &&  $this->getHttpsUrl()->getPath() != '/' ) {
 					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $_SERVER['REQUEST_URI']));
 				}
-				$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' . ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
+				$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' ltrim(str_replace($this->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']), '/'));
 			}
 
 			// Redirect
