@@ -213,7 +213,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				if ( $this->getPlugin()->isSsl() ) {
 					$this->secureElement($url, $type);
 				} else if ( strpos($this->getPlugin()->getHttpsUrl(), $url) !== false ) {
-					$this->_html = str_replace($html, str_replace($this->getPlugin()->getHttpUrl(), $this->getPlugin()->getHttpsUrl(), $html), $this->_html);
+					$this->_html = str_replace($html, str_replace($this->getPlugin()->getHttpsUrl(), $this->getPlugin()->getHttpUrl(), $html), $this->_html);
 				}
 			}
 		}
