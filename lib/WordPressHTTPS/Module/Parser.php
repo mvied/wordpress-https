@@ -121,10 +121,15 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	public function secureElement( $url, $type = '' ) {
 		$updated = false;
 		$url = WordPressHTTPS_Url::fromString($url);
+		$upload_dir = wp_upload_dir();
+		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
+
 		// If local
 		if ( $this->getPlugin()->isUrlLocal($url) ) {
-			$updated = $this->getPlugin()->makeUrlHttps($url);
-			$this->_html = str_replace($url, $updated, $this->_html);
+			if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
+				$updated = $this->getPlugin()->makeUrlHttps($url);
+				$this->_html = str_replace($url, $updated, $this->_html);
+			}
 		// If external and not HTTPS
 		} else if ( $url->getPath() != 'https' ) {
 			if ( @in_array($url->toString(), $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url->toString(), $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
@@ -158,6 +163,34 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			$this->getPlugin()->getLogger()->log($log);
 		}
 	}
+	
+	/**
+	 * Unsecure element
+	 *
+	 * @param string $url
+	 * @param string $type
+	 * @return void
+	 */
+	public function unsecureElement( $url, $type = '' ) {
+		$updated = false;
+		$url = WordPressHTTPS_Url::fromString($url);
+
+		// If local
+		if ( $this->getPlugin()->isUrlLocal($url) ) {
+			if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
+				$updated = $this->getPlugin()->makeUrlHttp($url);
+				$this->_html = str_replace($url, $updated, $this->_html);
+			}
+		}
+		
+		// Add log entry if this change hasn't been logged
+		if ( $updated && $url != $updated ) {
+			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
+		}
+		if ( isset($log) && ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+			$this->getPlugin()->getLogger()->log($log);
+		}
+	}
 
 	/**
 	 * Normalize all local URL's to HTTP
@@ -167,9 +200,14 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function normalizeElements() {
 		if ( ! is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
+			$url = clone $this->getPlugin()->getHttpsUrl();
+			$url->setScheme('http');
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
+
 			$url = clone $this->getPlugin()->getHttpUrl();
 			$url->setScheme('https');
-			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $matches);
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
+			$matches = array_merge($httpsMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
 					$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
@@ -178,7 +216,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 						$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
 					}
 				}
-		}
+			}
 		}
 	}
 
@@ -192,10 +230,11 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 */
 	public function fixElements() {
 		if ( is_admin() ) {
-			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 		} else {
-			preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 		}
+
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$html = $matches[0][$i];
 			$type = $matches[1][$i];
@@ -210,10 +249,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				( $type == 'input' && strpos($html, 'image') !== false ) ||
 				( $type == 'param' && strpos($html, 'movie') !== false )
 			) {
-				if ( $this->getPlugin()->isSsl() ) {
+				if ( $scheme == 'http' && $this->getPlugin()->isSsl() ) {
 					$this->secureElement($url, $type);
-				} else if ( strpos($this->getPlugin()->getHttpsUrl(), $url) !== false ) {
-					$this->_html = str_replace($html, str_replace($this->getPlugin()->getHttpsUrl(), $this->getPlugin()->getHttpUrl(), $html), $this->_html);
+				} else if ( $scheme == 'https' && ! $this->getPlugin()->isSsl() ) {
+					$this->unsecureElement($url, $type);
 				}
 			}
 		}
@@ -272,25 +311,28 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 	 * @return void
 	 */
 	public function fixExtensions() {
-		if ( $this->getPlugin()->isSsl() ) {
-			@preg_match_all('/(http|https):\/\/[^\'"]+[\'"]+/i', $this->_html, $matches);
-			for ($i = 0; $i < sizeof($matches[0]); $i++) {
-				$url = rtrim($matches[0][$i], '\'"');
-				$filename = basename($url);
-				$scheme = $matches[1][$i];
-	
-				foreach( $this->_extensions as $extension ) {
-					if ( $extension == 'js' ) {
-						$type = 'script';
-					} else if ( $extension == 'css' ) {
-						$type = 'style';
-					} else if ( in_array($extension, array('jpg', 'jpeg', 'png', 'gif')) ) {
-						$type = 'img';
-					} else {
-						$type = '';
-					}
-					if ( strpos($filename, '.' . $extension) !== false ) {
+		@preg_match_all('/(http|https):\/\/[^\'"]+[\'"]+/i', $this->_html, $matches);
+		for ($i = 0; $i < sizeof($matches[0]); $i++) {
+			$url = rtrim($matches[0][$i], '\'"');
+			$filename = basename($url);
+			$scheme = $matches[1][$i];
+
+			foreach( $this->_extensions as $extension ) {
+				if ( $extension == 'js' ) {
+					$type = 'script';
+				} else if ( $extension == 'css' ) {
+					$type = 'style';
+				} else if ( in_array($extension, array('jpg', 'jpeg', 'png', 'gif')) ) {
+					$type = 'img';
+				} else {
+					$type = '';
+				}
+
+				if ( strpos($filename, '.' . $extension) !== false ) {
+					if ( $this->getPlugin()->isSsl() ) {
 						$this->secureElement($url, $type);
+					} else {
+						$this->unsecureElement($url, $type);
 					}
 				}
 			}
