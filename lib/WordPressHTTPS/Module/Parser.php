@@ -271,7 +271,11 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$css = $matches[0][$i];
 			$url = $matches[2][$i];
-			$this->secureElement($url, 'style');
+			if ( $this->getPlugin()->isSsl() ) {
+				$this->secureElement($url, 'style');
+			} else {
+				$this->unsecureElement($url, 'style');
+			}
 		}
 	}
 	
