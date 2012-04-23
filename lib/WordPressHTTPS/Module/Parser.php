@@ -395,7 +395,10 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					$post = true;
 					$force_ssl = true;
 				} else if ( is_multisite() ) {
-					if ( $blog_id = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
+					// get_blog_details returns an object with a property of blog_id
+					if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
+						// set $blog_id using $blog_details->blog_id
+						$blog_id = $blog_details->blog_id;
 						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $scheme != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
 							$this->_html = str_replace($url, str_replace('http', 'https', $url), $this->_html);
 						}
