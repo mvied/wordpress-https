@@ -103,7 +103,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 		if ( $this->getSetting('ssl_host') && $this->getSetting('ssl_host') != $this->getHttpsUrl()->toString() ) {
 			// Assign HTTPS URL to SSL Host
 			$this->setSetting('ssl_host_diff', 1);
-			$this->setHttpsUrl(WordPressHTTPS_Url::fromString( $this->getSetting('ssl_host') ));
+			$this->setHttpsUrl(WordPressHTTPS_Url::fromString( rtrim($this->getSetting('ssl_host'), '/') . '/' ));
 		} else {
 			$this->setSetting('ssl_host_diff', 0);
 		}
