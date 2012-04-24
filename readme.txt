@@ -76,6 +76,8 @@ add_filter('force_ssl', 'store_force_ssl');`
 == Changelog ==
 = 3.0.3 =
 * Any element on an HTTP page that is set to HTTPS should be auto-corrected.
+* Added support for domain mapper plugin.
+* Bug Fix - SSL Host should now always end in a trailing slash.
 * Bug Fix - Fixed bug in cookie logic that prevented some users from logging in.
 * Bug Fix - Fixed bug in redirects that would cause login issues and 404 errors.
 = 3.0.2 =
