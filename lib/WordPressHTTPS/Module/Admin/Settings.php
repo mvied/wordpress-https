@@ -179,6 +179,7 @@ class WordPressHTTPS_Module_Admin_Settings extends WordPressHTTPS_Module impleme
 								$path = '/'. ltrim(str_replace(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/'), '', $ssl_host->getPath()), '/');
 								$ssl_host->setPath(rtrim($path, '/') . $this->getPlugin()->getHttpUrl()->getPath());
 							}
+							$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . '/');
 
 							if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
 								// Ensure that the WordPress installation is accessible at this host
