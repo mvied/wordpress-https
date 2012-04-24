@@ -94,20 +94,10 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 	 * @return void
 	 */
 	public function init() {
-		// We need to grab the URL for the blog on multi-site installs from a source that will be filtered by
-		// the domain mapper plugin.  This might not be the best place to grab it but it does work.
-		// template_url form the get_bloginfo call is filtered by the domain mapper.
-		if(is_multisite()) {
-			// HTTP URL
-			$this->setHttpUrl(WordPressHTTPS_Url::fromString('http://'.parse_url(get_bloginfo('template_url'),PHP_URL_HOST).'/'));
-			// HTTPS URL
-			$this->setHttpsUrl(WordPressHTTPS_Url::fromString('https://'.parse_url(get_bloginfo('template_url'),PHP_URL_HOST).'/'));
-		} else {
-			// HTTP URL
-			$this->setHttpUrl(WordPressHTTPS_Url::fromString(home_url('/', 'http')));
-			// HTTPS URL
-			$this->setHttpsUrl(WordPressHTTPS_Url::fromString(home_url('/', 'https')));
-		}
+		// HTTP URL
+		$this->setHttpUrl(WordPressHTTPS_Url::fromString('http://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH)));
+		// HTTPS URL
+		$this->setHttpsUrl(WordPressHTTPS_Url::fromString('https://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH)));
 
 		// If using a different host for SSL
 		if ( $this->getSetting('ssl_host') && $this->getSetting('ssl_host') != $this->getHttpsUrl()->toString() ) {
