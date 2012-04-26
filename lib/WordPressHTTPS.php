@@ -307,7 +307,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 					$url = WordPressHTTPS_Url::fromString($this->redirectAdmin($url));
 				}
 
-				header("Location: " . $url);
+				header("Location: " . $url, true, 301);
 			}
 			exit();
 		}
