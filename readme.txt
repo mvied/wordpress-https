@@ -67,7 +67,7 @@ You can also use this filter to filter pages based on their URL. Let's say you h
 	return $force_ssl;
 }
 
-add_filter('force_ssl', 'store_force_ssl');`
+add_filter('force_ssl', 'store_force_ssl', 10, 2);`
 
 == Screenshots ==
 1. WordPress HTTPS Settings screen
