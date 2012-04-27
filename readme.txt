@@ -23,7 +23,7 @@ To make your entire website secure, you simply need to change your home url and 
 In the Publish box on the add/edit post screen, a checkbox for 'Force SSL' has been added to make this process easy. See Screenshots if you're having a hard time finding it.
 
 = I changed my SSL Host and now I can't get into my admin panel! =
-Go to your wp-config.php file and add this line. Hit any page on your site, and then remove it.
+Go to /wp-content/plugins/wordpress-https/wordpress-https.php and uncomment (remove the two forward slashes before) the line below, or go to your wp-config.php file and add this line. Hit any page on your site, and then remove it or comment it out again.
 `define('WPHTTPS_RESET', true);`
 
 = I'm getting 404 errors on all of my pages. Why? =
