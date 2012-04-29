@@ -2,7 +2,7 @@
 /**
  * URL Class for the WordPress plugin WordPress HTTPS
  * 
- * This class and it's properties are heavily based on parse_url()
+ * This class and its properties are heavily based on parse_url()
  *
  * @author Mike Ems
  * @package WordPressHTTPS
