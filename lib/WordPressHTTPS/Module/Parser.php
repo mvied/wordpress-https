@@ -211,7 +211,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 			$url = clone $this->getPlugin()->getHttpUrl();
 			$url->setScheme('https');
 			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
-			$matches = array_merge($httpsMatches, $httpsMatches);
+			$matches = array_merge($httpMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
 					$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
