@@ -45,7 +45,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 		}
 
 		// Filter HTTPS from links
-		if ( ! is_admin() && WordPressHTTPS_Url::fromString( home_url('/') )->getScheme() != 'https' ) {
+		if ( ! is_admin() && WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() != 'https' ) {
 			$filters = array('page_link', 'post_link', 'category_link', 'archives_link', 'tag_link', 'search_link');
 			foreach( $filters as $filter ) {
 				add_filter($filter, array($this->getPlugin(), 'makeUrlHttp'), 10);
@@ -55,7 +55,7 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 			add_filter('bloginfo_url', array(&$this, 'bloginfo'), 10, 2);
 
 		// If the whole site is not HTTPS, set links to the front-end to HTTP from within the admin panel
-		} else if ( is_admin() && $this->getPlugin()->isSsl() && WordPressHTTPS_Url::fromString( home_url('/') )->getScheme() != 'https' ) {
+		} else if ( is_admin() && $this->getPlugin()->isSsl() && WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() != 'https' ) {
 			$filters = array('page_link', 'post_link', 'category_link', 'get_archives_link', 'tag_link', 'search_link');
 			foreach( $filters as $filter ) {
 				add_filter($filter, array($this->getPlugin(), 'makeUrlHttp'), 10);
@@ -108,7 +108,9 @@ class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements Wor
 	 */
 	public function bloginfo( $result = '', $show = '' ) {
 		if ( $show == 'stylesheet_url' || $show == 'template_url' || $show == 'wpurl' || $show == 'home' || $show == 'siteurl' || $show == 'Url' ) {
-			$result = $this->getPlugin()->makeUrlHttp($result);
+			if ( WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() != 'https' ) {
+				$result = $this->getPlugin()->makeUrlHttp($result);
+			}
 		}
 		return $result;
 	}

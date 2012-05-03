@@ -208,9 +208,11 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 			}
 
-			$url = clone $this->getPlugin()->getHttpUrl();
-			$url->setScheme('https');
-			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
+			if ( WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() != 'https' ) {
+				$url = clone $this->getPlugin()->getHttpUrl();
+				$url->setScheme('https');
+				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
+			}
 			$matches = array_merge($httpMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
@@ -378,7 +380,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 
 			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 				$post = $postID[1];
-			} else if ( $this->getPlugin()->isUrlLocal($url) && $url_parts['path'] == '' ) {
+			} else if ( $this->getPlugin()->isUrlLocal($url) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) { 
 				if ( get_option('show_on_front') == 'posts' ) {
 					$post = true;
 				} else {
@@ -416,7 +418,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
 				}
 
-				if ( $force_ssl == true ) {
+				if ( $force_ssl == true || WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() == 'https' ) {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
 					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
