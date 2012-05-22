@@ -108,6 +108,7 @@ class WordPressHTTPS extends WordPressHTTPS_Plugin {
 			$this->setSetting('ssl_host_diff', 0);
 		}
 		
+		// Prepend SSL Host path
 		if ( strpos($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath()) === false ) {
 			$this->getHttpsUrl()->setPath( $this->getHttpsUrl()->getPath() . $this->getHttpUrl()->getPath() );
 		}
