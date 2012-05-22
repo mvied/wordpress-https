@@ -83,7 +83,7 @@
 		</td>
 	</tr>
 	<tr valign="top" id="admin_menu_row">
-		<th scope="row">Admin Menu</th>
+		<th scope="row">Admin Menu Location</th>
 		<td>
 			<fieldset>
 				<label for="admin_menu" class="label-radio">
