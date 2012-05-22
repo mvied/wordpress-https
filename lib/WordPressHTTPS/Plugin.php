@@ -120,7 +120,7 @@ class WordPressHTTPS_Plugin {
 		$modules = array();
 		if ( is_dir($this->getModuleDirectory()) && $module_directory = opendir($this->getModuleDirectory()) ) {
 			while ( false !== ($entry = readdir($module_directory)) ) {
-				if ( $entry != '.' && $entry != '..' ) {
+				if ( strpos($entry, '.') !== 0 ) {
 					$module = str_replace('.php', '', $entry);
 					if ( $module != 'Interface' ) {
 						$modules[] = $module;
