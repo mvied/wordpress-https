@@ -441,8 +441,8 @@ class WordPressHTTPS_Url {
 	/**
 	 * Factory object from an array provided by the parse_url function
 	 * 
-	 * Example of usage from within the plugin or modules:
-	 * WordPressHTTPS::factory('Url')->fromArray( parse_url( site_url() ) );
+	 * Example of usage:
+	 * $site_url = WordPressHTTPS_Url::fromArray( parse_url( site_url() ) );
 	 *
 	 * @param array $array
 	 * @return $url WordPressHTTPS_Url
@@ -467,6 +467,9 @@ class WordPressHTTPS_Url {
 
 	/**
 	 * Factory object from a string that contains a URL
+	 * 
+	 * Example of usage:
+	 * $site_url = WordPressHTTPS_Url::fromArray( site_url() );
 	 *
 	 * @param string $string
 	 * @return $url WordPressHTTPS_Url
