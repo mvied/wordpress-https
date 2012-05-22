@@ -184,7 +184,6 @@ class WordPressHTTPS_Module_Hooks extends WordPressHTTPS_Module implements WordP
 			$cookie_path_admin = $cookie_path_site . 'wp-admin';
 		}
 
-		// Cookie paths defined to accomodate different SSL Host
 		if ( $scheme == 'logged_in' ) {
 			setcookie($cookie_name, $cookie, $expire, $cookie_path, $cookie_domain, $secure, true);
 			if ( $cookie_path != $cookie_path_site ) {

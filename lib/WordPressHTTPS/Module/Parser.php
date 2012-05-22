@@ -208,7 +208,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 			}
 
-			if ( WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() != 'https' ) {
+			if ( WordPressHTTPS_Url::fromString(get_option('home'))->getScheme() != 'https' ) {
 				$url = clone $this->getPlugin()->getHttpUrl();
 				$url->setScheme('https');
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
@@ -418,7 +418,7 @@ class WordPressHTTPS_Module_Parser extends WordPressHTTPS_Module implements Word
 					$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
 				}
 
-				if ( $force_ssl == true || WordPressHTTPS_Url::fromString(get_bloginfo('wpurl'))->getScheme() == 'https' ) {
+				if ( $force_ssl == true || WordPressHTTPS_Url::fromString(get_option('home'))->getScheme() == 'https' ) {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
 					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
