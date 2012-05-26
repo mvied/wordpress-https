@@ -16,18 +16,18 @@ If you're having partially encrypted/mixed content errors or other problems, ple
 1. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Frequently Asked Questions ==
-= How do I make my whole website secure? =
-To make your entire website secure, you simply need to change your home url and site url to use HTTPS instead of HTTP. Please read <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">how to change the site url</a>.
-
-= How do I make only certain pages secure? =
-In the Publish box on the add/edit post screen, a checkbox for 'Force SSL' has been added to make this process easy. See Screenshots if you're having a hard time finding it.
-
-= I changed my SSL Host and now I can't get into my admin panel! =
+= I can't get into my admin panel after updating. How do I fix it? =
 Go to /wp-content/plugins/wordpress-https/wordpress-https.php and uncomment (remove the two forward slashes before) the line below, or go to your wp-config.php file and add this line. Hit any page on your site, and then remove it or comment it out again.
 `define('WPHTTPS_RESET', true);`
 
+= How do I make my whole website secure? =
+To make your entire website secure, you simply need to change your site url to use HTTPS instead of HTTP. Please read <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">how to change the site url</a>.
+
+= How do I make only certain pages secure? =
+The plugin adds a meta box to the add/edit post screen entitled HTTPS. In that meta box, a checkbox for 'Secure Post' has been added to make this process easy. See Screenshots if you're having a hard time finding it.
+
 = I'm getting 404 errors on all of my pages. Why? =
-If you're using a public/shared SSL, try disabling your custom permalink structure. Some public/shared SSL's have issues with WordPress' permalinks because of the way they are configured.
+If you're using a public/shared SSL, try disabling your custom permalink structure. Some public/shared SSL's have issues with WordPress' permalinks because of the way they are configured. If you continue to recieve 404 errors, there is no way to use WordPress with that particular public/shared SSL with WordPress.
 
 = How do I fix partially encrypted/mixed content errors? =
 To identify what is causing your page(s) to be insecure, please follow the instructions below.
@@ -48,8 +48,7 @@ Most insecure content warnings can generally be resolved by changing absolute re
 </ul>
 
 = Is there a hook or filter to force pages to be secure? =
-
-Yes! Here is an example of how to use the 'force_ssl' hook to force a page to be secure.
+Yes! Here is an example of how to use the 'force_ssl' filter to force a page to be secure.
 `function custom_force_ssl( $force_ssl, $post_id ) {
 	if ( $post_id == 5 ) {
 		return true

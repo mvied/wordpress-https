@@ -469,7 +469,7 @@ class WordPressHTTPS_Url {
 	 * Factory object from a string that contains a URL
 	 * 
 	 * Example of usage:
-	 * $site_url = WordPressHTTPS_Url::fromArray( site_url() );
+	 * $site_url = WordPressHTTPS_Url::fromString( site_url() );
 	 *
 	 * @param string $string
 	 * @return $url WordPressHTTPS_Url

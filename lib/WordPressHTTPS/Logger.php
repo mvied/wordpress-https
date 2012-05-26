@@ -7,9 +7,9 @@
  *
  */
 
-require_once('Logger/Interface.php');
+require_once('Mvied/Logger/Interface.php');
 
-class WordPressHTTPS_Logger implements WordPressHTTPS_Logger_Interface {
+class WordPressHTTPS_Logger implements Mvied_Logger_Interface {
 
 	/**
 	 * Instance

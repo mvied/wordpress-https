@@ -32,18 +32,18 @@ $include_paths = array(
 );
 set_include_path(implode(PATH_SEPARATOR, $include_paths));
 
+function wphttps_autoloader($class) {
+	$filename = str_replace('_', '/', $class) . '.php';
+	include $filename;
+}
+spl_autoload_register('wphttps_autoloader');
+
 /*
  * WordPress HTTPS Reset
  * Uncomment the line below (remove the two forward slashes) to reset the plugin to its default settings.
  * When the plugin is reset, comment the line out again.
  */
 //define('WPHTTPS_RESET', true);
-
-require_once('WordPressHTTPS/Url.php');
-require_once('WordPressHTTPS/Logger.php');
-require_once('WordPressHTTPS/Module.php');
-require_once('WordPressHTTPS/Plugin.php');
-require_once('WordPressHTTPS.php');
 
 if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS;

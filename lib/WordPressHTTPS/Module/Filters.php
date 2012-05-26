@@ -7,10 +7,10 @@
  *
  */
 
-require_once('WordPressHTTPS/Module.php');
-require_once('WordPressHTTPS/Module/Interface.php');
+require_once('Mvied/Module.php');
+require_once('Mvied/Module/Interface.php');
 
-class WordPressHTTPS_Module_Filters extends WordPressHTTPS_Module implements WordPressHTTPS_Module_Interface {
+class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module_Interface {
 
 	/**
 	 * Initialize

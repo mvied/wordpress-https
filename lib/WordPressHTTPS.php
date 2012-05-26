@@ -1,13 +1,13 @@
 <?php 
 /**
- * WordPressHTTPS Class for the WordPress plugin WordPress HTTPS
+ * WordPress HTTPS
  *
  * @author Mike Ems
  * @package WordPressHTTPS
  *
  */
 
-class WordPressHTTPS extends WordPressHTTPS_Plugin {
+class WordPressHTTPS extends Mvied_Plugin {
 
 	/**
 	 * HTTP URL
