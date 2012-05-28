@@ -383,7 +383,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				global $q_config;
 				if ( isset($q_config['enabled_languages']) ) {
 					foreach($q_config['enabled_languages'] as $language) {
-						$url_parts['path'] = preg_replace('/^\/' . $language . '/', '', $url_parts['path']);
+						$url_parts['path'] = preg_replace('/^\/' . $language . '\//', '/', $url_parts['path']);
 					}
 				}
 			}
