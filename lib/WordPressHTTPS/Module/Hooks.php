@@ -85,6 +85,11 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_I
 	public function redirect_check() {
 		global $post;
 		
+		// Force SSL Admin
+		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
+			$this->getPlugin()->redirect('https');
+		}
+		
 		if ( ! (is_single() || is_page() || is_front_page() || is_home()) ) {
 			return false;
 		}
@@ -107,11 +112,6 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_I
 			$force_ssl = false;
 		}
 
-		// Force SSL Admin
-		if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
-			$force_ssl = true;
-		}
-					
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';
 		} else if ( $this->getPlugin()->isSsl() && isset($force_ssl) && ! $force_ssl ) {
