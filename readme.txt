@@ -77,6 +77,8 @@ add_filter('force_ssl', 'store_force_ssl', 10, 2);`
 * SSL Domain Mapping
 
 == Changelog ==
+= 3.0.5 =
+* Users receiving 404 errors on every page when using Shared SSL should now be able to use those Shared SSL's that previously did not work.
 = 3.0.4 =
 * Fixed multiple bugs for sites using SSL for the entire site.
 * Bug Fix - plugin should no longer try to load hidden files as modules.
