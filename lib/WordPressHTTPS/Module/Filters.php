@@ -147,8 +147,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module
 	 * @return array $request
 	 */
 	public function request( $request ) {
-		$httpsPath = $this->getPlugin()->getHttpsUrl()->getPath();
-	    $request['pagename'] = str_replace(trim($httpsPath, '/') . '/', '', $request['pagename']);
+	    $request['pagename'] = str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/', '', $request['pagename']);
 	    return $request;
 	}
 
