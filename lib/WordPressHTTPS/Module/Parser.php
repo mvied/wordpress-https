@@ -131,7 +131,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				$this->_html = str_replace($url, $updated, $this->_html);
 			}
 		// If external and not HTTPS
-		} else if ( $url->getPath() != 'https' ) {
+		} else if ( $url->getScheme() != 'https' ) {
 			if ( @in_array($url->toString(), $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url->toString(), $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
 				if ( $url->getScheme() != 'https' ) {
 					$test_url = clone $url;
