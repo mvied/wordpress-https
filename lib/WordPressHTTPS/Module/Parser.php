@@ -120,7 +120,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 	 */
 	public function secureElement( $url, $type = '' ) {
 		$updated = false;
-		$url = WordPressHTTPS_Url::fromString($url);
 		$upload_dir = wp_upload_dir();
 		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
 
@@ -131,22 +130,21 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				$this->_html = str_replace($url, $updated, $this->_html);
 			}
 		// If external and not HTTPS
-		} else if ( $url->getScheme() != 'https' ) {
-			if ( @in_array($url->toString(), $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url->toString(), $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
-				$test_url = clone $url;
+		} else if ( strpos($url, 'https') !== 0 ) {
+			if ( @in_array($url, $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url, $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
+				$test_url = WordPressHTTPS_Url::fromString($url);
 				$test_url->setScheme('https');
 				if ( $test_url->isValid() ) {
 					// Cache this URL as available over HTTPS for future reference
-					$this->addSecureExternalUrl($url->toString());
+					$this->addSecureExternalUrl($url);
 				} else {
 					// If not available over HTTPS, mark as an unsecure external URL
-					$this->addUnsecureExternalUrl($url->toString());
+					$this->addUnsecureExternalUrl($url);
 				}
 			}
 
 			if ( in_array($url, $this->getPlugin()->getSetting('secure_external_urls')) ) {
-				$updated = clone $url;
-				$updated->setScheme('https');
+				$updated = str_replace('http://', 'https://', $url);
 				$this->_html = str_replace($url, $updated, $this->_html);
 			}
 		}
@@ -171,7 +169,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 	 */
 	public function unsecureElement( $url, $type = '' ) {
 		$updated = false;
-		$url = WordPressHTTPS_Url::fromString($url);
 
 		// If local
 		if ( $this->getPlugin()->isUrlLocal($url) ) {
@@ -206,7 +203,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 			}
 
-			if ( WordPressHTTPS_Url::fromString(get_option('home'))->getScheme() != 'https' ) {
+			if ( strpos(get_option('home'), 'https') !== 0 ) {
 				$url = clone $this->getPlugin()->getHttpUrl();
 				$url->setScheme('https');
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
@@ -214,9 +211,8 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 			$matches = array_merge($httpMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
-					$url = WordPressHTTPS_Url::fromString($matches[1][$i]);
-					if ( $url && strpos($url->getPath(), 'wp-admin') === false && strpos($url->getPath(), 'wp-login') === false ) {
-						$url = $url->toString();
+					$url_parts = parse_url($matches[1][$i]);
+					if ( $url_parts && strpos($url_parts['path'], 'wp-admin') === false && strpos($url_parts['path'], 'wp-login') === false ) {
 						$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
 					}
 				}
@@ -426,7 +422,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 					$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
 				}
 
-				if ( $force_ssl == true || WordPressHTTPS_Url::fromString(get_option('home'))->getScheme() == 'https' ) {
+				if ( $force_ssl == true || strpos(get_option('home'), 'https') !== 0 ) {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
 					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
