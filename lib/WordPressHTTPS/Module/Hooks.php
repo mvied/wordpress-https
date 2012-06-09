@@ -28,11 +28,11 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_I
 				add_action('set_auth_cookie', array(&$this, 'set_cookie'), 10, 5);
 				add_action('set_logged_in_cookie', array(&$this, 'set_cookie'), 10, 5);
 			}
+		}
 
-			// Filter redirects in admin panel
-			if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') ) {
-				add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
-			}
+		// Filter redirects in admin panel
+		if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') ) {
+			add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
 		}
 
 		// Run proxy check
