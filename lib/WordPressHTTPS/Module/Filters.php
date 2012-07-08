@@ -44,10 +44,14 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
-		// Filter URL's on SSL pages
+		// Filter stylesheet directories
 		if ( $this->getPlugin()->isSsl() ) {
 			add_filter('template_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('stylesheet_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
+		}
+
+		// Filter login/logout URL's
+		if ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) {
 			add_filter('logout_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('login_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('loginout', array($this->getPlugin(), 'makeUrlHttps'), 10);

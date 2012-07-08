@@ -84,30 +84,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 		$upload_dir = wp_upload_dir();
 		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
 
-		// If local
-		if ( $this->getPlugin()->isUrlLocal($url) ) {
-			if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
-				$updated = $this->getPlugin()->makeUrlHttps($url);
-				$this->_html = str_replace($url, $updated, $this->_html);
-			}
-		// If external and not HTTPS
-		} else if ( strpos($url, 'https') !== 0 ) {
-			if ( @in_array($url, $this->getPlugin()->getSetting('secure_external_urls')) == false && @in_array($url, $this->getPlugin()->getSetting('unsecure_external_urls')) == false ) {
-				$test_url = WordPressHTTPS_Url::fromString($url);
-				$test_url->setScheme('https');
-				if ( $test_url->isValid() ) {
-					// Cache this URL as available over HTTPS for future reference
-					$this->getPlugin()->addSecureExternalUrl($url);
-				} else {
-					// If not available over HTTPS, mark as an unsecure external URL
-					$this->getPlugin()->addUnsecureExternalUrl($url);
-				}
-			}
-
-			if ( in_array($url, $this->getPlugin()->getSetting('secure_external_urls')) ) {
-				$updated = str_replace('http://', 'https://', $url);
-				$this->_html = str_replace($url, $updated, $this->_html);
-			}
+		if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
+			$updated = $this->getPlugin()->makeUrlHttps($url);
+			$this->_html = str_replace($url, $updated, $this->_html);
 		}
 	
 		// Add log entry if this change hasn't been logged
@@ -131,14 +110,11 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	public function unsecureElement( $url, $type = '' ) {
 		$updated = false;
 
-		// If local
-		if ( $this->getPlugin()->isUrlLocal($url) ) {
-			if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
-				$updated = $this->getPlugin()->makeUrlHttp($url);
-				$this->_html = str_replace($url, $updated, $this->_html);
-			}
+		if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
+			$updated = $this->getPlugin()->makeUrlHttp($url);
+			$this->_html = str_replace($url, $updated, $this->_html);
 		}
-		
+
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
 			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;

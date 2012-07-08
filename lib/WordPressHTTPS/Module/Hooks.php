@@ -27,6 +27,12 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 			}
 		}
 
+		// Filter scripts
+		add_action('wp_print_scripts', array(&$this, 'fix_scripts'), 100, 0);
+
+		// Filter styles
+		add_action('wp_print_styles', array(&$this, 'fix_styles'), 100, 0);
+
 		// Filter redirects in admin panel
 		if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') ) {
 			add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
@@ -53,13 +59,43 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	}
 
 	/**
-	 * Removes redirect_count cookie.
+	 * Fix Enqueued Scripts
 	 *
 	 * @param none
 	 * @return void
 	 */
-	public function clear_redirect_count_cookie() {
-		setcookie('redirect_count', null, -time(), '/');
+	public function fix_scripts() {
+		global $wp_scripts;
+		foreach ( (array)$wp_scripts->registered as $script ) {
+			if ( strpos($script->src, 'http') !== 0 ) {
+				$script->src = site_url($script->src);
+			}
+			if ( $this->getPlugin()->isSsl() ) {
+				$script->src = $this->getPlugin()->makeUrlHttps($script->src);
+			} else {
+				$script->src = $this->getPlugin()->makeUrlHttp($script->src);
+			}
+		}
+	}
+
+	/**
+	 * Fix Enqueued Styles
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function fix_styles() {
+		global $wp_styles;
+		foreach ( (array)$wp_styles->registered as $style ) {
+			if ( strpos($style->src, 'http') !== 0 ) {
+				$style->src = site_url($style->src);
+			}
+			if ( $this->getPlugin()->isSsl() ) {
+				$style->src = $this->getPlugin()->makeUrlHttps($style->src);
+			} else {
+				$style->src = $this->getPlugin()->makeUrlHttp($style->src);
+			}
+		}
 	}
 
 	/**
@@ -188,6 +224,16 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
 		}
+	}
+
+	/**
+	 * Removes redirect_count cookie.
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function clear_redirect_count_cookie() {
+		setcookie('redirect_count', null, -time(), '/');
 	}
 
 	/**
