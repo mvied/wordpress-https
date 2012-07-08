@@ -160,6 +160,15 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				}
 			}
 
+			// Check secure filters
+			if ( sizeof($this->getPlugin()->getSetting('secure_filter')) > 0 ) {
+				foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
+					if ( strpos($url, $filter) !== false ) {
+						$force_ssl = true;
+					}
+				}
+			}
+
 			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 				$post = $postID[1];
 			} else if ( $this->getPlugin()->isUrlLocal($url) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) {

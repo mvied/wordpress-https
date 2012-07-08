@@ -48,6 +48,15 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			array( 'metabox' => 'settings' )
 		);
 		add_meta_box(
+			$this->getPlugin()->getSlug() . '_filters',
+			__( 'URL Filters', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
+			'main',
+			'core',
+			array( 'metabox' => 'filters' )
+		);
+		add_meta_box(
 			$this->getPlugin()->getSlug() . '_updates',
 			__( 'Developer Updates', $this->getPlugin()->getSlug() ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
@@ -145,13 +154,17 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 		$errors = array();
 		$reload = false;
 		$logout = false;
-		if ( @$_POST['Reset'] ) {
+		if ( isset($_POST['settings-reset']) ) {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				$this->getPlugin()->setSetting($key, $default);
 			}
 			$this->getPlugin()->install();
 			$reload = true;
-		} else {
+		} else if ( isset($_POST['filters-save']) ) {
+			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
+			$filters = array_filter($filters); // Removes blank array items
+			$this->getPlugin()->setSetting('secure_filter', $filters);
+		} else if ( isset($_POST['settings-save']) ) {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
 					$_POST[$key] = 0;

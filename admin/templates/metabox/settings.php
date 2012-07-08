@@ -7,7 +7,7 @@
 	}
 	$ssl_host = rtrim($ssl_host, '/');
 ?>
-<form name="form" id="<?php echo $this->getPlugin()->getSlug(); ?>" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form name="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
 <table class="form-table">
@@ -86,9 +86,11 @@
 		<th scope="row">Admin Menu Location</th>
 		<td>
 			<fieldset>
-				<label for="admin_menu" class="label-radio">
-					<input type="radio" name="admin_menu" value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'side') ? ' checked="checked"' : ''); ?>> <span>Admin Sidebar</span>
-					<input type="radio" name="admin_menu" value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'settings') ? ' checked="checked"' : ''); ?>> <span>General Settings</span>
+				<label for="admin_menu_side" class="label-radio">
+					<input type="radio" name="admin_menu" id="admin_menu_side" value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'side') ? ' checked="checked"' : ''); ?>> <span>Admin Sidebar</span>
+				</label>
+				<label for="admin_menu_settings" class="label-radio">
+					<input type="radio" name="admin_menu" id="admin_menu_settings" value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'settings') ? ' checked="checked"' : ''); ?>> <span>General Settings</span>
 				</label>
 			</fieldset>
 		</td>
@@ -100,23 +102,23 @@
 <input type="hidden" name="ssl_host_diff" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_diff') != 1) ? 0 : 1); ?>" />
 
 <p class="button-controls">
-	<input type="submit" name="Submit" value="Save Changes" class="button-primary" id="settings-save" />
-	<input type="submit" name="Reset" value="Reset" class="button-secondary" id="settings-reset" />
-	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting" id="submit-waiting" />
+	<input type="submit" name="settings-save" value="Save Changes" class="button-primary" id="settings-save" />
+	<input type="submit" name="settings-reset" value="Reset" class="button-secondary" id="settings-reset" />
+	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>').submit(function() {
-		$('#submit-waiting').show();
+	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function() {
+		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').show();
 	}).ajaxForm({
 		data: { ajax: '1'},
 		success: function(responseText, textStatus, XMLHttpRequest) {
-			$('#submit-waiting').hide();
+			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
 			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
 		}
 	});
-	
+
 	$('#settings-reset').click(function(e, el) {
 	   if ( ! confirm('Are you sure you want to reset all WordPress HTTPS settings?') ) {
 			e.preventDefault();

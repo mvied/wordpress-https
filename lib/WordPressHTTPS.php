@@ -43,6 +43,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
 		'admin_menu' =>             'side',  // HTTPS Admin Menu location
+		'secure_filter' =>          array(), // Array of expressions to secure URL's against
 	);
 
 	/**

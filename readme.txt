@@ -79,6 +79,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.1 =
 * Memory optimization.
+* Added secure URL filtering.
 * Users receiving 404 errors on every page when using Shared SSL should now be able to use those Shared SSL's that previously did not work.
 * Added support for qTranslate.
 * Added support for securing custom post types.
