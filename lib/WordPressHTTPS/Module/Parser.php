@@ -15,7 +15,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @var string
 	 */
 	protected $_html;
-	
+
 	/**
 	 * Extensions
 	 * 
@@ -61,7 +61,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 
 		return $this->_html;
 	}
-	
+
 	/**
 	 * Start output buffering
 	 *
@@ -71,7 +71,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	public function startOutputBuffering() {
 		ob_start(array(&$this, 'parseHtml'));
 	}
-	
+
 	/**
 	 * Secure element
 	 *
@@ -120,7 +120,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			$this->getPlugin()->getLogger()->log($log);
 		}
 	}
-	
+
 	/**
 	 * Unsecure element
 	 *
@@ -181,8 +181,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	}
 
 	/**
-	 * Fix Elements
-	 * 
 	 * Fixes schemes on DOM elements.
 	 *
 	 * @param none
@@ -217,7 +215,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			}
 		}
 	}
-	
+
 	/**
 	 * Fix CSS background images or imports.
 	 *
@@ -236,7 +234,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			}
 		}
 	}
-	
+
 	/**
 	 * Fix elements that are being referenced relatively.
 	 *
@@ -265,10 +263,8 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			}
 		}
 	}
-		
+
 	/**
-	 * Fix Extensions
-	 * 
 	 * Fixes schemes on DOM elements with extensions specified in $this->_extensions
 	 *
 	 * @param none
