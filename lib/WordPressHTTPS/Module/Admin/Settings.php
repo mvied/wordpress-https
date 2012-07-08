@@ -160,10 +160,6 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			}
 			$this->getPlugin()->install();
 			$reload = true;
-		} else if ( isset($_POST['filters-save']) ) {
-			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
-			$filters = array_filter($filters); // Removes blank array items
-			$this->getPlugin()->setSetting('secure_filter', $filters);
 		} else if ( isset($_POST['settings-save']) ) {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
@@ -237,6 +233,13 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 					$this->getPlugin()->setSetting($key, $_POST[$key]);
 				}
 			}
+		} else if ( isset($_POST['filters-save']) ) {
+			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
+			$filters = array_filter($filters); // Removes blank array items
+			$this->getPlugin()->setSetting('secure_filter', $filters);
+		} else if ( isset($_POST['filters-reset']) ) {
+			$this->getPlugin()->setSetting('secure_filter', array());
+			$reload = true;
 		}
 
 		if ( $logout ) {

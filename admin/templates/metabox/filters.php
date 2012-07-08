@@ -5,7 +5,6 @@
 	<tr valign="top" id="secure_filter_row">
 		<th scope="row">
 			Secure Filters
-			<p class="description">On each line, specify the segment of a URL that you want to be secure.</p>
 			<p class="description">Example: If you have an E-commerce shop and all of the URL's begin with /store/, you could secure all store links by entering '/store/' on one line.</p>
 		</th>
 		<td>
