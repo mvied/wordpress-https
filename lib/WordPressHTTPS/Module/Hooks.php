@@ -105,20 +105,6 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		if ( $post->ID > 0 ) {
 			$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		}
-		
-		// Secure Front Page
-		if ( is_front_page() ) {
-			if ( $this->getPlugin()->getSetting('frontpage') ) {
-				$force_ssl = true;
-			} else if ( ! $this->getPlugin()->getSetting('frontpage') && $this->getPlugin()->getSetting('exclusive_https') && ( ! $this->getPlugin()->getSetting('ssl_host_diff') || ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && ! is_user_logged_in() ) ) ) {
-				$force_ssl = false;
-			}
-		}
-
-		// Exclusive HTTPS
-		if ( $this->getPlugin()->getSetting('exclusive_https') && $this->getPlugin()->isSsl() && ! isset($force_ssl) ) {
-			$force_ssl = false;
-		}
 
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';
