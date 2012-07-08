@@ -371,6 +371,8 @@ class WordPressHTTPS_Url {
 			return $this->_content;
 		}
 		
+		$this->_content = false;
+		
 		if ( function_exists('curl_init') ) {
 			$ch = curl_init();
 
@@ -387,18 +389,18 @@ class WordPressHTTPS_Url {
 			$content = curl_exec($ch);
 			$info = curl_getinfo($ch);
 			curl_close($ch);
-			
-			if ( !$info['http_code'] || ( $info['http_code'] == 0 || $info['http_code'] == 404 ) ) {
-				return false;
-			} else {
-				return $content;
-			}
-		} else if ( @ini_get('allow_url_fopen') ) {
-			if ( ($content = @file_get_contents($url)) !== false ) {
-				return $content;
+
+			if ( isset($info['http_code']) && !( $info['http_code'] == 0 || $info['http_code'] == 404 ) ) {
+				$this->_content = $content;
 			}
 		}
-		return false;
+		
+		if ( !$this->_content && @ini_get('allow_url_fopen') ) {
+			if ( ($content = @file_get_contents($this->toString())) !== false ) {
+				$this->_content = $content;
+			}
+		}
+		return $this->_content;
 	}
 
 	/**
