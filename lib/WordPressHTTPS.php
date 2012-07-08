@@ -200,7 +200,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 				}
 			}
 			$string = $url->toString();
-			unset $url;
+			unset($url);
 			return $string;
 		} else {
 			return $string;
@@ -224,11 +224,47 @@ class WordPressHTTPS extends Mvied_Plugin {
 				$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $url->getPath()));
 			}
 			$string = $url->toString();
-			unset $url;
+			unset($url);
 			return $string;
 		} else {
 			return $string;
 		}
+	}
+
+	/**
+	 * Add Secure External URL
+	 *
+	 * @param string $value
+	 * @return $this
+	 */
+	public function addSecureExternalUrl( $value ) {
+		if ( trim($value) == '' ) {
+			return $this;
+		}
+
+		$secure_external_urls = (array) $this->getSetting('secure_external_urls');
+		array_push($secure_external_urls, (string) $value);
+		$this->setSetting('secure_external_urls', $secure_external_urls);
+
+		return $this;
+	}
+
+	/**
+	 * Add Unsecure External URL
+	 *
+	 * @param string $value
+	 * @return $this
+	 */
+	public function addUnsecureExternalUrl( $value ) {
+		if ( trim($value) == '' ) {
+			return $this;
+		}
+
+		$unsecure_external_urls = (array) $this->getSetting('unsecure_external_urls');
+		array_push($unsecure_external_urls, (string) $value);
+		$this->setSetting('unsecure_external_urls', $unsecure_external_urls);
+
+		return $this;
 	}
 
 	/**
@@ -279,7 +315,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		}
 
 		if ( $url ) {
-			$path = $_SERVER['REQUEST_URI'];
+			$path = ( isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
 			if ( $this->getHttpsUrl()->getPath() != '/' ) {
 				$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
 			}
@@ -297,6 +333,16 @@ class WordPressHTTPS extends Mvied_Plugin {
 				} else {
 					$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' . $path);
 				}
+			}
+
+			// Use a cookie to detect redirect loops
+			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
+			setcookie('redirect_count', $redirect_count, 0, '/');
+			// If redirect count is greater than 2, prevent redirect and log the redirect loop
+			if ( $redirect_count > 2 ) {
+				setcookie('redirect_count', null, -time(), '/');
+				$this->getLogger()->log('[ERROR] Redirect Loop!');
+				return;
 			}
 
 			// Redirect

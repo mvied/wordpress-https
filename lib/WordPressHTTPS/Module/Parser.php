@@ -7,10 +7,7 @@
  *
  */
 
-require_once('Mvied/Module.php');
-require_once('Mvied/Module/Interface.php');
-
-class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_Interface {
+class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * HTML
@@ -27,42 +24,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 	 * @var array
 	 */
 	protected $_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js');
-	
-	/**
-	 * Add Secure External URL
-	 * 
-	 * @param string $value
-	 * @return $this
-	 */
-	public function addSecureExternalUrl( $value ) {
-		if ( trim($value) == '' ) {
-			return $this;
-		}
-
-		$secure_external_urls = (array) $this->getPlugin()->getSetting('secure_external_urls');
-		array_push($secure_external_urls, (string) $value);
-		$this->getPlugin()->setSetting('secure_external_urls', $secure_external_urls);
-
-		return $this;
-	}
-
-	/**
-	 * Add Unsecure External URL
-	 * 
-	 * @param string $value
-	 * @return $this
-	 */
-	public function addUnsecureExternalUrl( $value ) {
-		if ( trim($value) == '' ) {
-			return $this;
-		}
-
-		$unsecure_external_urls = (array) $this->getPlugin()->getSetting('unsecure_external_urls');
-		array_push($unsecure_external_urls, (string) $value);
-		$this->getPlugin()->setSetting('unsecure_external_urls', $unsecure_external_urls);
-
-		return $this;
-	}
 
 	/**
 	 * Initialize
@@ -136,10 +97,10 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				$test_url->setScheme('https');
 				if ( $test_url->isValid() ) {
 					// Cache this URL as available over HTTPS for future reference
-					$this->addSecureExternalUrl($url);
+					$this->getPlugin()->addSecureExternalUrl($url);
 				} else {
 					// If not available over HTTPS, mark as an unsecure external URL
-					$this->addUnsecureExternalUrl($url);
+					$this->getPlugin()->addUnsecureExternalUrl($url);
 				}
 			}
 
@@ -196,18 +157,17 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 	public function normalizeElements() {
 		$httpMatches = array();
 		$httpsMatches = array();
-		if ( ! is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
-			if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
-				$url = clone $this->getPlugin()->getHttpsUrl();
-				$url->setScheme('http');
-				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
-			}
+		if ( $this->getPlugin()->getSetting('ssl_host_diff') && !is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
+			$url = clone $this->getPlugin()->getHttpsUrl();
+			$url->setScheme('http');
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 
-			if ( strpos(get_option('home'), 'https') !== 0 ) {
+			if ( $this->getPlugin()->isSsl() ) {
 				$url = clone $this->getPlugin()->getHttpUrl();
 				$url->setScheme('https');
 				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
 			}
+
 			$matches = array_merge($httpMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
@@ -249,9 +209,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 				( $type == 'input' && strpos($html, 'image') !== false ) ||
 				( $type == 'param' && strpos($html, 'movie') !== false )
 			) {
-				if ( $scheme == 'http' && ( $this->getPlugin()->isSsl() ) ) {
+				if ( $scheme == 'http' && $this->getPlugin()->isSsl() ) {
 					$this->secureElement($url, $type);
-				} else if ( $scheme == 'https' && ! $this->getPlugin()->isSsl() && strpos($url, 'wp-admin') === false ) {
+				} else if ( $scheme == 'https' && !$this->getPlugin()->isSsl() && strpos($url, 'wp-admin') === false ) {
 					$this->unsecureElement($url, $type);
 				}
 			}
@@ -360,75 +320,14 @@ class WordPressHTTPS_Module_Parser extends Mvied_Module implements Mvied_Module_
 			$scheme = $matches[3][$i];
 			$updated = false;
 
-			unset($force_ssl);
+			$force_ssl = apply_filters('force_ssl', null, 0, $url );
 
-			$url_parts = parse_url($url);
-			if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
-				if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
-					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
-				}
-				if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
-					$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
-				}
-			}
-
-			// qTranslate integration - strips language from beginning of url path
-			if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true ) {
-				global $q_config;
-				if ( isset($q_config['enabled_languages']) ) {
-					foreach($q_config['enabled_languages'] as $language) {
-						$url_parts['path'] = preg_replace('/^\/' . $language . '\//', '/', $url_parts['path']);
-					}
-				}
-			}
-
-			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
-				$post = $postID[1];
-			} else if ( $this->getPlugin()->isUrlLocal($url) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) { 
-				if ( get_option('show_on_front') == 'posts' ) {
-					$post = true;
-				} else {
-					$post = get_option('page_on_front');
-				}
-				if ( $this->getPlugin()->getSetting('frontpage') ) {
-					$force_ssl = true;
-				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
-					$force_ssl = false;
-				}
-			} else if ( $this->getPlugin()->isUrlLocal($url) && ($post = get_page_by_path($url_parts['path'])) ) {
-				$post = $post->ID;
-			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-			} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
-				if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
-					$post = true;
-					$force_ssl = true;
-				} else if ( is_multisite() ) {
-					// get_blog_details returns an object with a property of blog_id
-					if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
-						// set $blog_id using $blog_details->blog_id
-						$blog_id = $blog_details->blog_id;
-						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $scheme != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
-							$this->_html = str_replace($url, str_replace('http', 'https', $url), $this->_html);
-						}
-					}
-				}
-			}
-
-			if ( isset($post) ) {
-				// Always change links to HTTPS when logged in via different SSL Host
-				if ( $type == 'a' && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
-					$force_ssl = true;
-				} else if ( (int) $post > 0 ) {
-					$force_ssl = apply_filters('force_ssl', $force_ssl, $post );
-				}
-
-				if ( $force_ssl == true || strpos(get_option('home'), 'https') !== 0 ) {
-					$updated = $this->getPlugin()->makeUrlHttps($url);
-					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-				} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
-					$updated = $this->getPlugin()->makeUrlHttp($url);
-					$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-				}
+			if ( $force_ssl == true ) {
+				$updated = $this->getPlugin()->makeUrlHttps($url);
+				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
+			} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
+				$updated = $this->getPlugin()->makeUrlHttp($url);
+				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			}
 
 			// Add log entry if this change hasn't been logged

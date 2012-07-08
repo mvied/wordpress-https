@@ -48,7 +48,7 @@ spl_autoload_register('wphttps_autoloader');
 if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS;
 	$wordpress_https->setSlug('wordpress-https');
-	$wordpress_https->setVersion('3.0.5b1');
+	$wordpress_https->setVersion('3.1');
 	$wordpress_https->setLogger(WordPressHTTPS_Logger::getInstance());
 	$wordpress_https->setPluginUrl(plugins_url('', __FILE__));
 	$wordpress_https->setDirectory(dirname(__FILE__));

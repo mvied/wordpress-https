@@ -7,10 +7,7 @@
  *
  */
 
-require_once('Mvied/Module.php');
-require_once('Mvied/Module/Interface.php');
-
-class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_Interface {
+class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize
@@ -51,7 +48,18 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_I
 		}
 
 		// Check if the page needs to be redirected
-		add_action('template_redirect', array(&$this, 'redirect_check'));
+		add_action('template_redirect', array(&$this, 'redirect_check'), 10, 1);
+		add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
+	}
+
+	/**
+	 * Removes redirect_count cookie.
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function clear_redirect_count_cookie() {
+		setcookie('redirect_count', null, -time(), '/');
 	}
 
 	/**
@@ -95,7 +103,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Module implements Mvied_Module_I
 		}
 		
 		if ( $post->ID > 0 ) {
-			$force_ssl = apply_filters('force_ssl', null, $post->ID );
+			$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 		}
 		
 		// Secure Front Page

@@ -7,10 +7,7 @@
  *
  */
 
-require_once('Mvied/Module.php');
-require_once('Mvied/Module/Interface.php');
-
-class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module_Interface {
+class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize
@@ -37,8 +34,10 @@ class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module
 		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
 		
 		// Filter force_ssl
-		add_filter('force_ssl', array(&$this, 'secure_child_post'), 10, 2);
-		add_filter('force_ssl', array(&$this, 'secure_post'), 9, 2);
+		add_filter('force_ssl', array(&$this, 'secure_child_post'), 10, 3);
+		add_filter('force_ssl', array(&$this, 'secure_different_host_admin'), 9, 3);
+		add_filter('force_ssl', array(&$this, 'secure_post'), 8, 3);
+		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 1, 3);
 
 		// Filter URL's on SSL pages
 		if ( $this->getPlugin()->isSsl() ) {
@@ -157,11 +156,92 @@ class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module
 	 *
 	 * @param boolean $force_ssl
 	 * @param int $post_id
+	 * @param string $url
 	 * @return boolean $force_ssl
 	 */
-	public function secure_post( $force_ssl, $post_id ) {
-		if ( is_numeric($post_id) ) {
+	public function secure_post( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( $url != '' ) {
+			$url_parts = parse_url($url);
+			if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+				if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
+				}
+				if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+					$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
+				}
+			}
+
+			// qTranslate integration - strips language from beginning of url path
+			if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true ) {
+				global $q_config;
+				if ( isset($q_config['enabled_languages']) ) {
+					foreach($q_config['enabled_languages'] as $language) {
+						$url_parts['path'] = preg_replace('/^\/' . $language . '\//', '/', $url_parts['path']);
+					}
+				}
+			}
+
+			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
+				$post = $postID[1];
+			} else if ( $this->getPlugin()->isUrlLocal($url) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) { 
+				if ( get_option('show_on_front') == 'page' ) {
+					$post = get_option('page_on_front');
+				}
+				if ( $this->getPlugin()->getSetting('frontpage') ) {
+					$force_ssl = true;
+				}
+			} else if ( $this->getPlugin()->isUrlLocal($url) && ($post = get_page_by_path($url_parts['path'])) ) {
+				$post = $post->ID;
+			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
+			} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+				if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
+					$force_ssl = true;
+				} else if ( is_multisite() ) {
+					// get_blog_details returns an object with a property of blog_id
+					if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
+						// set $blog_id using $blog_details->blog_id
+						$blog_id = $blog_details->blog_id;
+						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $url_parts['scheme'] != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+							$force_ssl = true;
+						}
+					}
+				}
+			}
+		}
+		if ( (int) $post > 0 ) {
 			$force_ssl = (( get_post_meta($post_id, 'force_ssl', true) == 1 ) ? true : $force_ssl);
+		}
+		return $force_ssl;
+	}
+
+	/**
+	 * Always secure pages when using a different SSL Host.
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function secure_exclusive( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( is_null($force_ssl) && strpos(get_option('home'), 'https') != 0 && $this->getPlugin()->getSetting('exclusive_https') ) {
+			$force_ssl = false;
+		}
+		return $force_ssl;
+	}
+
+	/**
+	 * Always secure pages when using a different SSL Host.
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function secure_different_host_admin( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+			$force_ssl = true;
 		}
 		return $force_ssl;
 	}
@@ -172,10 +252,11 @@ class WordPressHTTPS_Module_Filters extends Mvied_Module implements Mvied_Module
 	 *
 	 * @param boolean $force_ssl
 	 * @param int $post_id
+	 * @param string $url
 	 * @return boolean $force_ssl
 	 */
-	public function secure_child_post( $force_ssl, $post_id ) {
-		if ( is_numeric($post_id) ) {
+	public function secure_child_post( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( $post_id > 0 ) {
 			$postParent = get_post($post_id);
 			while ( $postParent->post_parent ) {
 				$postParent = get_post( $postParent->post_parent );

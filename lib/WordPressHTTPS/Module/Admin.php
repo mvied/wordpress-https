@@ -9,10 +9,7 @@
  *
  */
 
-require_once('Mvied/Module.php');
-require_once('Mvied/Module/Interface.php');
-
-class WordPressHTTPS_Module_Admin extends Mvied_Module implements Mvied_Module_Interface {
+class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize Module

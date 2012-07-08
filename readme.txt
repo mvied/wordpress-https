@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 3.0.4
+Stable tag: 3.1
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
@@ -49,24 +49,24 @@ Most insecure content warnings can generally be resolved by changing absolute re
 
 = Is there a hook or filter to force pages to be secure? =
 Yes! Here is an example of how to use the 'force_ssl' filter to force a page to be secure.
-`function custom_force_ssl( $force_ssl, $post_id ) {
+`function custom_force_ssl( $force_ssl, $post_id = 0, $url = '' ) {
 	if ( $post_id == 5 ) {
 		return true
 	}
 	return $force_ssl;
 }
 
-add_filter('force_ssl' , 'custom_force_ssl', 10, 2);`
+add_filter('force_ssl' , 'custom_force_ssl', 10, 3);`
 
 You can also use this filter to filter pages based on their URL. Let's say you have an E-commerce site and all of your E-commerce URL's contain 'store'.
-`function store_force_ssl( $force_ssl, $post_id ) {
-	if ( strpos($_SERVER['REQUEST_URI'], 'store') !== false ) {
+`function store_force_ssl( $force_ssl, $post_id = 0, $url = '' ) {
+	if ( strpos($url, 'store') !== false ) {
 		$force_ssl = true;
 	}
 	return $force_ssl;
 }
 
-add_filter('force_ssl', 'store_force_ssl', 10, 2);`
+add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 
 == Screenshots ==
 1. WordPress HTTPS Settings screen
@@ -77,8 +77,12 @@ add_filter('force_ssl', 'store_force_ssl', 10, 2);`
 * SSL Domain Mapping
 
 == Changelog ==
-= 3.0.5 =
+= 3.1 =
+* Memory optimization.
 * Users receiving 404 errors on every page when using Shared SSL should now be able to use those Shared SSL's that previously did not work.
+* Added support for qTranslate.
+* Added support for securing custom post types.
+* Added $url to the force_ssl filter as the third arguement.
 = 3.0.4 =
 * Fixed multiple bugs for sites using SSL for the entire site.
 * Bug Fix - plugin should no longer try to load hidden files as modules.

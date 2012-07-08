@@ -9,10 +9,7 @@
  * 
  */
 
-require_once('Mvied/Module.php');
-require_once('Mvied/Module/Interface.php');
-
-class WordPressHTTPS_Module_Admin_Post extends Mvied_Module implements Mvied_Module_Interface {
+class WordPressHTTPS_Module_Admin_Post extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize Module 
@@ -35,24 +32,21 @@ class WordPressHTTPS_Module_Admin_Post extends Mvied_Module implements Mvied_Mod
 	 * @return void
 	 */
 	public function add_meta_box_post() {
-		add_meta_box(
-			$this->getPlugin()->getSlug(),
-			__( 'HTTPS', $this->getPlugin()->getSlug() ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'post',
-			'side',
-			'high',
-			array( 'metabox' => 'post' )
+		$args = array(
+			'public' => true,
 		);
-		add_meta_box(
-			$this->getPlugin()->getSlug(),
-			__( 'HTTPS', $this->getPlugin()->getSlug() ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'page',
-			'side',
-			'high',
-			array( 'metabox' => 'post' )
-		);
+		$post_types = get_post_types( $args );
+		foreach($post_types as $post_type ) {
+			add_meta_box(
+				$this->getPlugin()->getSlug(),
+				__( 'HTTPS', $this->getPlugin()->getSlug() ),
+				array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+				$post_type,
+				'side',
+				'core',
+				array( 'metabox' => 'post' )
+			);
+		};
 	}
 
 	/**
