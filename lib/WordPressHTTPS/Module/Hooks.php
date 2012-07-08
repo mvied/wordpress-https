@@ -34,7 +34,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		add_action('wp_print_styles', array(&$this, 'fix_styles'), 100, 0);
 
 		// Filter redirects in admin panel
-		if ( is_admin() && $this->getPlugin()->getSetting('ssl_admin') ) {
+		if ( is_admin() && ( $this->getPlugin()->getSetting('ssl_admin') || $this->getPlugin()->isSsl() ) ) {
 			add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
 		}
 
@@ -66,16 +66,18 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function fix_scripts() {
 		global $wp_scripts;
-		foreach ( (array)$wp_scripts->registered as $script ) {
-			if ( strpos($script->src, 'http') !== 0 ) {
-				$script->src = site_url($script->src);
+		if ( isset($wp_scripts) && sizeof($wp_scripts->registered) > 0 ) {
+			foreach ( $wp_scripts->registered as $script ) {
+				if ( strpos($script->src, 'http') !== 0 ) {
+					$script->src = site_url($script->src);
+				}
+				if ( $this->getPlugin()->isSsl() ) {
+					$script->src = $this->getPlugin()->makeUrlHttps($script->src);
+				} else {
+					$script->src = $this->getPlugin()->makeUrlHttp($script->src);
+				}
 			}
-			if ( $this->getPlugin()->isSsl() ) {
-				$script->src = $this->getPlugin()->makeUrlHttps($script->src);
-			} else {
-				$script->src = $this->getPlugin()->makeUrlHttp($script->src);
-			}
-		}
+	}
 	}
 
 	/**
@@ -86,14 +88,16 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function fix_styles() {
 		global $wp_styles;
-		foreach ( (array)$wp_styles->registered as $style ) {
-			if ( strpos($style->src, 'http') !== 0 ) {
-				$style->src = site_url($style->src);
-			}
-			if ( $this->getPlugin()->isSsl() ) {
-				$style->src = $this->getPlugin()->makeUrlHttps($style->src);
-			} else {
-				$style->src = $this->getPlugin()->makeUrlHttp($style->src);
+		if ( isset($wp_styles) && sizeof($wp_styles->registered) > 0 ) {
+			foreach ( (array)$wp_styles->registered as $style ) {
+				if ( strpos($style->src, 'http') !== 0 ) {
+					$style->src = site_url($style->src);
+				}
+				if ( $this->getPlugin()->isSsl() ) {
+					$style->src = $this->getPlugin()->makeUrlHttps($style->src);
+				} else {
+					$style->src = $this->getPlugin()->makeUrlHttp($style->src);
+				}
 			}
 		}
 	}
