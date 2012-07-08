@@ -32,15 +32,20 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		// Filter admin_url
 		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
 
+		// Filter site_url
+		add_filter('site_url', array(&$this, 'site_url'), 10, 4);
+
+		// Filter bloginfo
+		add_filter('bloginfo_url', array(&$this, 'bloginfo_url'), 10, 2);
+
 		// Filter force_ssl
-		add_filter('force_ssl', array(&$this, 'secure_child_post'), 10, 3);
-		add_filter('force_ssl', array(&$this, 'secure_different_host_admin'), 9, 3);
-		add_filter('force_ssl', array(&$this, 'secure_post'), 8, 3);
-		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 1, 3);
+		add_filter('force_ssl', array(&$this, 'secure_different_host_admin'), 20, 3);
+		add_filter('force_ssl', array(&$this, 'secure_child_post'), 30, 3);
+		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
+		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
 		// Filter URL's on SSL pages
 		if ( $this->getPlugin()->isSsl() ) {
-			add_filter('site_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('template_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('stylesheet_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
 		}
@@ -57,14 +62,30 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 *
 	 * @param string $url
 	 * @param string $path
-	 * @param string $scheme
+	 * @param int $blog_id
 	 * @return string $url
 	 */
-	public function admin_url( $url, $path, $scheme ) {
-		if ( ( $scheme == 'https' || $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && parse_url($url, PHP_URL_HOST) == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
+	public function admin_url( $url, $path, $blog_id ) {
+		if ( ( $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && parse_url($url, PHP_URL_HOST) == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
 		}
+		return $url;
+	}
 
+	/**
+	 * Site URL
+	 * WordPress Filter - site_url
+	 *
+	 * @param string $url
+	 * @param string $path
+	 * @param string $scheme
+	 * @param int $blog_id
+	 * @return string $url
+	 */
+	public function site_url( $url, $path, $scheme, $blog_id ) {
+		if ( $scheme == 'https' ) {
+			$url = $this->getPlugin()->makeUrlHttps($url);
+		}
 		return $url;
 	}
 
@@ -99,6 +120,23 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		}
 		
 		return $avatar;
+	}
+
+	/**
+	 * Blog Info
+	 * WordPress Filter - bloginfo_url
+	 *
+	 * @param string $result
+	 * @param string $show
+	 * @return string $result
+	 */
+	public function bloginfo_url( $result = '', $show = '' ) {
+		if ( $this->getPlugin()->isSsl() ) {
+			$result = rtrim($this->getPlugin()->makeUrlHttps(rtrim($result, '/') . '/'), '/');
+		} else if ( strpos(get_option('home'), 'https') !== 0 ) {
+			$result = rtrim($this->getPlugin()->makeUrlHttp(rtrim($result, '/') . '/'), '/');
+		}
+		return $result;
 	}
 
 	/**

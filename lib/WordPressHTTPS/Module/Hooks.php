@@ -133,7 +133,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->isSsl() ) || ( $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
 			$secure = true;
 		}
-		$secure = apply_filters('secure_auth_cookie', $secure, $user_id);
+		$secure = apply_filters('secure_auth_cookie', @$secure, $user_id);
 
 		if( $scheme == 'logged_in' ) {
 			$cookie_name = LOGGED_IN_COOKIE;
@@ -143,6 +143,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		} else {
 			$cookie_name = AUTH_COOKIE;
 			$scheme = 'auth';
+			$secure = false;
 		}
 
 		//$cookie_domain = COOKIE_DOMAIN;
@@ -175,7 +176,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 			$cookie_path = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path;
 			$cookie_path_site = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_site;
 			$cookie_path_plugins = rtrim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . $cookie_path_plugins;
-			$cookie_path_admin = $cookie_path_site . 'wp-admin';
+			$cookie_path_admin = rtrim($cookie_path_site, '/') . '/wp-admin';
 		}
 
 		if ( $scheme == 'logged_in' ) {
