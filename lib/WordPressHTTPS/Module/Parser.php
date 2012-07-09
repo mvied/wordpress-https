@@ -92,7 +92,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
 			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
-		} else if ( $updated == false && $url->getScheme() == 'http' ) {
+		} else if ( $updated == false && strpos($url, 'http://') == 0 ) {
 			$log = '[WARNING] Unsecure Element: <' . $type . '> - ' . $url;
 		}
 		if ( isset($log) && ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
