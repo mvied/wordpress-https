@@ -90,7 +90,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return string $url
 	 */
 	public function site_url( $url, $path, $scheme, $blog_id ) {
-		if ( $scheme == 'https' ) {
+		if ( $scheme == 'https' || ( $scheme != 'http' && $this->getPlugin()->isSsl() ) ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
 		}
 		return $url;
