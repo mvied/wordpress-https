@@ -44,7 +44,7 @@ Most insecure content warnings can generally be resolved by changing absolute re
  <li>Elements loaded via JavaScript that are hard-coded to HTTP. Usually this can be fixed by altering the JavaScript calling these elements.</li>
  <li>External elements that can not be delivered over HTTPS. These elements will have to be removed from the page, or hosted locally so that they can be loaded over HTTPS.</li>
  <li>YouTube videos - YouTube allows videos to use HTTPS. <a href="http://support.google.com/youtube/bin/answer.py?hl=en&answer=171780&expand=UseHTTPS">How to embed a YouTube video</a>.</li>
- <li>Google Maps - Loading Google maps over HTTPS requires a Google Maps API Premiere account. (<a href="http://code.google.com/apis/maps/faq.html#ssl" target="_blank">source</a>)</li>
+ <li>Google Maps - Using Google Maps API V3, you can use HTTPS. Using V2, HTTPS requires a Google Maps API Premiere account. (<a href="http://code.google.com/apis/maps/faq.html#ssl" target="_blank">source</a>)</li>
 </ul>
 
 = Is there a hook or filter to force pages to be secure? =
