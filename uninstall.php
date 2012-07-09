@@ -21,6 +21,7 @@ delete_option('wordpress-https_ssl_host_subdomain');
 delete_option('wordpress-https_version');
 delete_option('wordpress-https_debug');
 delete_option('wordpress-https_admin_menu');
+delete_option('wordpress-https_secure_filter');
 
 // Delete force_ssl custom_field from posts and pages
 delete_metadata('post', null, 'force_ssl', null, true);
