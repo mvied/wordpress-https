@@ -73,7 +73,6 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == To Do ==
-* qTranslate Support
 * SSL Domain Mapping
 
 == Changelog ==
