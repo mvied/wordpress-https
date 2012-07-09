@@ -186,57 +186,59 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	public function secure_post( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $url != '' ) {
 			$url_parts = parse_url($url);
-			if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
-				if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
-					$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
-				}
-				if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
-					$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
-				}
-			}
-
-			// qTranslate integration - strips language from beginning of url path
-			if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true ) {
-				global $q_config;
-				if ( isset($q_config['enabled_languages']) ) {
-					foreach($q_config['enabled_languages'] as $language) {
-						$url_parts['path'] = preg_replace('/^\/' . $language . '\//', '/', $url_parts['path']);
+			if ( $this->getPlugin()->isUrlLocal($url) ) {
+				if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+					if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
+						$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
+					}
+					if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+						$url_parts['path'] = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $url_parts['path']);
 					}
 				}
-			}
 
-			// Check secure filters
-			if ( sizeof($this->getPlugin()->getSetting('secure_filter')) > 0 ) {
-				foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
-					if ( strpos($url, $filter) !== false ) {
+				// qTranslate integration - strips language from beginning of url path
+				if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true ) {
+					global $q_config;
+					if ( isset($q_config['enabled_languages']) ) {
+						foreach($q_config['enabled_languages'] as $language) {
+							$url_parts['path'] = preg_replace('/^\/' . $language . '\//', '/', $url_parts['path']);
+						}
+					}
+				}
+
+				// Check secure filters
+				if ( sizeof($this->getPlugin()->getSetting('secure_filter')) > 0 ) {
+					foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
+						if ( strpos($url, $filter) !== false ) {
+							$force_ssl = true;
+						}
+					}
+				}
+
+				if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
+					$post = $postID[1];
+				} else if ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) {
+					if ( get_option('show_on_front') == 'page' ) {
+						$post = get_option('page_on_front');
+					}
+					if ( $this->getPlugin()->getSetting('frontpage') ) {
+						$force_ssl = true;
+					}
+				} else if ( $post = get_page_by_path($url_parts['path']) ) {
+					$post = $post->ID;
+				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
+				} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+					if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
 						$force_ssl = true;
 					}
 				}
-			}
-
-			if ( $this->getPlugin()->isUrlLocal($url) && preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
-				$post = $postID[1];
-			} else if ( $this->getPlugin()->isUrlLocal($url) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) {
-				if ( get_option('show_on_front') == 'page' ) {
-					$post = get_option('page_on_front');
-				}
-				if ( $this->getPlugin()->getSetting('frontpage') ) {
-					$force_ssl = true;
-				}
-			} else if ( $this->getPlugin()->isUrlLocal($url) && ($post = get_page_by_path($url_parts['path'])) ) {
-				$post = $post->ID;
-			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-			} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
-				if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
-					$force_ssl = true;
-				} else if ( is_multisite() ) {
-					// get_blog_details returns an object with a property of blog_id
-					if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
-						// set $blog_id using $blog_details->blog_id
-						$blog_id = $blog_details->blog_id;
-						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $url_parts['scheme'] != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
-							$force_ssl = true;
-						}
+			} else if ( is_multisite() ) {
+				// get_blog_details returns an object with a property of blog_id
+				if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
+					// set $blog_id using $blog_details->blog_id
+					$blog_id = $blog_details->blog_id;
+					if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $url_parts['scheme'] != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+						$force_ssl = true;
 					}
 				}
 			}
