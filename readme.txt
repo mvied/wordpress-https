@@ -83,7 +83,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Users receiving 404 errors on every page when using Shared SSL should now be able to use those Shared SSL's that previously did not work.
 * Added support for qTranslate.
 * Added support for securing custom post types.
-* Added $url to the force_ssl filter as the third arguement.
+* Added $url to the force_ssl filter as the third arguement. See FAQ for example usage.
 = 3.0.4 =
 * Fixed multiple bugs for sites using SSL for the entire site.
 * Bug Fix - plugin should no longer try to load hidden files as modules.
