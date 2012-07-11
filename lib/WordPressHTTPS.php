@@ -339,6 +339,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 
 		if ( $url ) {
 			$path = ( isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
+			if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
+				$path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
+			}
+
 			if ( $this->getHttpsUrl()->getPath() != '/' ) {
 				$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
 			}

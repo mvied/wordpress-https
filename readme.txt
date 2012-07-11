@@ -76,6 +76,9 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * SSL Domain Mapping
 
 == Changelog ==
+= 3.1.2 =
+* Bug Fix - Redirects were removing URL parameters.
+* Bug Fix - Removed loginout filter that was changing links to plain text.
 = 3.1.1 =
 * Bug Fix - Fixed bug in Parser.
 = 3.1 =
