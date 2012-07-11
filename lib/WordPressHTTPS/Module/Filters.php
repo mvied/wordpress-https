@@ -54,7 +54,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		if ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) {
 			add_filter('logout_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
 			add_filter('login_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
-			add_filter('loginout', array($this->getPlugin(), 'makeUrlHttps'), 10);
 		}
 
 		$filters = array('page_link', 'post_link', 'category_link', 'archives_link', 'tag_link', 'search_link');
