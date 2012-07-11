@@ -33,7 +33,11 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('bloginfo_url', array(&$this, 'secure_url'), 10);
 		add_filter('includes_url', array(&$this, 'secure_url'), 10);
 		add_filter('plugins_url', array(&$this, 'secure_url'), 10);
+		add_filter('logout_url', array(&$this, 'secure_url'), 10);
+		add_filter('login_url', array(&$this, 'secure_url'), 10);
 		add_filter('wp_get_attachment_url', array(&$this, 'secure_url'), 10);
+		add_filter('template_directory_uri', array(&$this, 'secure_url'), 10);
+		add_filter('stylesheet_directory_uri', array(&$this, 'secure_url'), 10);
 
 		// Filter admin_url
 		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
@@ -46,18 +50,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('force_ssl', array(&$this, 'secure_child_post'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
-
-		// Filter stylesheet directories
-		if ( $this->getPlugin()->isSsl() ) {
-			add_filter('template_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
-			add_filter('stylesheet_directory_uri', array($this->getPlugin(), 'makeUrlHttps'), 10);
-		}
-
-		// Filter login/logout URL's
-		if ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) {
-			add_filter('logout_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
-			add_filter('login_url', array($this->getPlugin(), 'makeUrlHttps'), 10);
-		}
 
 		$filters = array('page_link', 'post_link', 'category_link', 'archives_link', 'tag_link', 'search_link');
 		foreach( $filters as $filter ) {
@@ -139,7 +131,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return string $url
 	 */
 	public function secure_url( $url = '' ) {
-		if ( $this->getPlugin()->isSsl() ) {
+		if ( $this->getPlugin()->isSsl() || ( $this->getPlugin()->getSetting('ssl_admin') && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
 		} else if ( strpos(get_option('home'), 'https') !== 0 ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
