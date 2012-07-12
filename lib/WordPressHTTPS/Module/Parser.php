@@ -199,7 +199,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @return void
 	 */
 	public function fixCssElements() {
-		preg_match_all('/(import|background)[:]?[^u]*url\([\'"]?(http:\/\/[^)]+)[\'"]?\)/im', $this->_html, $matches);
+		preg_match_all('/(import|background)[:]?[^u]*url\([\'"]?(http:\/\/[^)]+)[\'")]?\)/im', $this->_html, $matches);
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$css = $matches[0][$i];
 			$url = $matches[2][$i];
