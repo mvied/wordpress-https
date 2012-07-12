@@ -21,6 +21,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Filter SSL Host path out of request
 			add_filter('request', array(&$this, 'request'), 10, 1);
+			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
 
 		// Add SSL Host to allowed redirect hosts
@@ -147,8 +148,28 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return array $request
 	 */
 	public function request( $request ) {
-	    $request['pagename'] = str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/', '', @$request['pagename']);
+		$pagename = rtrim(str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/', '', ( isset($request['pagename']) ? $request['pagename'] : $_SERVER['REQUEST_URI'] )), '/');
+	    $request['pagename'] = rtrim($this->getPlugin()->getHttpUrl()->getPath() . '/' . $pagename, '/');
 	    return $request;
+	}
+
+	/**
+	 * Rewrite Rules
+	 *
+	 * @param array $rules
+	 * @return array $rules
+	 */
+	public function rewrite_rules( $rules = array() ) {
+		$requestPath = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $_SERVER['REQUEST_URI']);
+		if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+			$httpsPath = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $this->getPlugin()->getHttpsUrl()->getPath());
+		} else {
+			$httpsPath = $this->getPlugin()->getHttpsUrl()->getPath();
+		}
+		if ( $httpsPath != '/' ) {
+			$rules['^'  . $httpsPath . '([\w\/]+)'] = 'index.php?pagename=$matches[1]';
+		}
+		return $rules;
 	}
 
 	/**
