@@ -154,7 +154,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	}
 
 	/**
-	 * Rewrite Rules
+	 * Add rewrite rule to recognize additional path information on SSL Host
 	 *
 	 * @param array $rules
 	 * @return array $rules
