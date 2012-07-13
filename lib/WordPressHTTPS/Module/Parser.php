@@ -148,7 +148,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
 					$url_parts = parse_url($matches[1][$i]);
-					if ( $url_parts && strpos($url_parts['path'], 'wp-admin') === false && strpos($url_parts['path'], 'wp-login') === false ) {
+					if ( $url_parts && strpos($url_parts['path'], $this->getPlugin()->getHttpsUrl()) !== false && strpos($url_parts['path'], 'wp-admin') === false && strpos($url_parts['path'], 'wp-login') === false ) {
 						$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
 					}
 				}
