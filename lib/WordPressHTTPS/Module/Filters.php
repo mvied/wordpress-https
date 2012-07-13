@@ -21,6 +21,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Filter SSL Host path out of request
 			add_filter('request', array(&$this, 'request'), 10, 1);
+			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
 
@@ -167,7 +168,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			$httpsPath = $this->getPlugin()->getHttpsUrl()->getPath();
 		}
 		if ( $httpsPath != '/' ) {
-			$rules['^'  . $httpsPath . '([\w\/]+)'] = 'index.php?pagename=$matches[1]';
+			$rules['^'  . $httpsPath . '([^\'"]+)'] = 'index.php?pagename=$matches[1]';
 		}
 		return $rules;
 	}
