@@ -77,8 +77,10 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 
 == Changelog ==
 = 3.1.2 =
-* Bug Fix - Redirects were removing URL parameters.
+* Bug Fix - Redirects should no longer remove URL parameters.
 * Bug Fix - Removed loginout filter that was changing links to plain text.
+* Bug Fix - Plugin should no longer cause JavaScript errors from removing quotes from the end of URL's.
+* Bug Fix - CSS backgrounds that do not have quotes should no longer break debug output.
 = 3.1.1 =
 * Bug Fix - Fixed bug in Parser.
 = 3.1 =
