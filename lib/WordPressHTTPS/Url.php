@@ -479,9 +479,9 @@ class WordPressHTTPS_Url {
 	public static function fromString( $string ) {
 		$url = new WordPressHTTPS_Url;
 
-		@preg_match_all('/((http|https):\/\/[^\'"]+)[\'"]?/i', $string, $url_parts);
-		if ( isset($url_parts[1][0]) ) {
-			if ( $url_parts = parse_url( $url_parts[1][0] ) ) {
+		@preg_match_all('/((http|https):\/\/[^\'"]+)([\'"]?)/i', $string, $matches);
+		if ( isset($matches[1][0]) ) {
+			if ( $url_parts = parse_url( $matches[1][0] ) ) {
 				foreach( $url_parts as $key => $value ) {
 					$property = '_' . $key;
 					$camelCase = create_function('$c', 'return strtoupper($c[1]);');
@@ -489,6 +489,11 @@ class WordPressHTTPS_Url {
 					if ( method_exists($url, $method) ) {
 						call_user_func(array($url, $method), $value);
 					}
+				}
+
+				// Avoid stripping quote if one came in
+				if ( isset($matches[3][0]) ) {
+					$url->setPath($url->getPath() . $matches[3][0]);
 				}
 
 				return $url;
