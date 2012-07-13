@@ -136,12 +136,12 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') && !is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
 			$url = clone $this->getPlugin()->getHttpsUrl();
 			$url->setScheme('http');
-			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"\)]*)[\'"]?/im', $this->_html, $httpsMatches);
 
 			if ( $this->getPlugin()->isSsl() ) {
 				$url = clone $this->getPlugin()->getHttpUrl();
 				$url->setScheme('https');
-				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
+				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"\)]*)[\'"]?/im', $this->_html, $httpMatches);
 			}
 
 			$matches = array_merge($httpMatches, $httpsMatches);
@@ -164,9 +164,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 */
 	public function fixElements() {
 		if ( is_admin() ) {
-			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"\)]+)[\'"\)][^>]*>/im', $this->_html, $matches);
 		} else {
-			preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img|input|embed|param)[^>]+[\'"]((http|https):\/\/[^\'"\)]+)[\'"\)][^>]*>/im', $this->_html, $matches);
 		}
 
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -183,9 +183,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 				( $type == 'input' && strpos($html, 'image') !== false ) ||
 				( $type == 'param' && strpos($html, 'movie') !== false )
 			) {
-				if ( $scheme == 'http' && $this->getPlugin()->isSsl() ) {
+				if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 					$this->secureElement($url, $type);
-				} else if ( $scheme == 'https' && !$this->getPlugin()->isSsl() && strpos($url, 'wp-admin') === false ) {
+				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 					$this->unsecureElement($url, $type);
 				}
 			}
@@ -199,13 +199,13 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @return void
 	 */
 	public function fixCssElements() {
-		preg_match_all('/(import|background)[:]?[^u]*url\([\'"]?(http:\/\/[^)]+)[\'")]?\)/im', $this->_html, $matches);
+		preg_match_all('/(import|background)[:]?[^u]*url\([\'"]?(http:\/\/[^\'"\)]+)[\'"\)]?\)/im', $this->_html, $matches);
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$css = $matches[0][$i];
 			$url = $matches[2][$i];
-			if ( $this->getPlugin()->isSsl() ) {
+			if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 				$this->secureElement($url, 'style');
-			} else {
+			} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 				$this->unsecureElement($url, 'style');
 			}
 		}
@@ -247,9 +247,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @return void
 	 */
 	public function fixExtensions() {
-		@preg_match_all('/(http|https):\/\/[^\'"]+[\'"]+/i', $this->_html, $matches);
+		@preg_match_all('/(http|https):\/\/[^\'"\)\s]+[\'"\)]+/i', $this->_html, $matches);
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
-			$url = rtrim($matches[0][$i], '\'"');
+			$url = $matches[0][$i];
 			$filename = basename($url);
 			$scheme = $matches[1][$i];
 
@@ -265,9 +265,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 				}
 
 				if ( strpos($filename, '.' . $extension) !== false ) {
-					if ( $this->getPlugin()->isSsl() ) {
+					if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 						$this->secureElement($url, $type);
-					} else {
+					} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 						$this->unsecureElement($url, $type);
 					}
 				}
