@@ -53,7 +53,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
-		$filters = array('page_link', 'post_link', 'category_link', 'archives_link', 'tag_link', 'search_link');
+		$filters = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link', 'day_link', 'month_link', 'year_link', 'comment_reply_link', 'category_link', 'author_link', 'archives_link', 'tag_link', 'search_link');
 		foreach( $filters as $filter ) {
 			add_filter($filter, array(&$this, 'secure_post_link'), 10);
 		}
