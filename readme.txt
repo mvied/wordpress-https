@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
@@ -76,6 +76,9 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * SSL Domain Mapping
 
 == Changelog ==
+= 3.1.3 =
+* Bug Fix - Temporarily removed request filter. Too experimental.
+* Bug Fix - Fixed bug where a bad setting for ssl_host would cause the code to fail.
 = 3.1.2 =
 * Bug Fix - Redirects should no longer remove URL parameters.
 * Bug Fix - Removed loginout filter that was changing links to plain text.
