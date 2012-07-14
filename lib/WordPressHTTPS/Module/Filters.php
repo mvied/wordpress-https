@@ -16,11 +16,11 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return void
 	 */
 	public function init() {
-		// Prevent WordPress' canonical redirect when using a different SSL Host
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->isSsl() ) {
+			// Prevent WordPress' canonical redirect when using a different SSL Host
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Filter SSL Host path out of request
-			add_filter('request', array(&$this, 'request'), 10, 1);
+			//add_filter('request', array(&$this, 'request'), 10, 1);
 			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
