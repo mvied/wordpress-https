@@ -237,7 +237,9 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 * @return void
 	 */
 	public function clear_redirect_count_cookie() {
-		setcookie('redirect_count', null, -time(), '/');
+		if ( isset($_COOKIE['redirect_count']) ) {
+			setcookie('redirect_count', null, -time(), '/');
+		}
 	}
 
 	/**
