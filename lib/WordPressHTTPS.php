@@ -101,7 +101,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$this->setHttpsUrl(WordPressHTTPS_Url::fromString('https://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH)));
 
 		// If using a different host for SSL
-		if ( $this->getSetting('ssl_host') && $this->getSetting('ssl_host') != $this->getHttpsUrl()->toString() ) {
+		if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' && $this->getSetting('ssl_host') != $this->getHttpsUrl()->toString() ) {
 			// Assign HTTPS URL to SSL Host
 			$this->setSetting('ssl_host_diff', 1);
 			$this->setHttpsUrl(WordPressHTTPS_Url::fromString( rtrim($this->getSetting('ssl_host'), '/') . '/' ));

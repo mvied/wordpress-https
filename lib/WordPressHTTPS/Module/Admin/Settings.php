@@ -194,7 +194,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 									if ( $this->getPlugin()->isSsl() ) {
 										$logout = true;
 									}
-									$_POST[$key] = $ssl_host->setPort('');
+									$_POST[$key] = $ssl_host->setPort('')->toString();
 								/*} else {
 									$errors[] = '<strong>SSL Host</strong> - Invalid WordPress installation at ' . $ssl_host;
 									$_POST[$key] = get_option($key);
