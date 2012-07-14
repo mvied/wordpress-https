@@ -152,6 +152,11 @@ class WordPressHTTPS extends Mvied_Plugin {
 			}
 		}
 
+		// To fix a bug that saved the ssl_host as an object
+		if ( ! is_string($this->getSetting('ssl_host')) ) {
+			$this->setSetting('ssl_host', '');
+		}
+
 		// Checks to see if the SSL Host is a subdomain
 		$http_domain = $this->getHttpUrl()->getBaseHost();
 		$https_domain = $this->getHttpsUrl()->getBaseHost();
