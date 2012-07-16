@@ -91,7 +91,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
-			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . rtrim($url, '\'")') . ' => ' . rtrim($updated, '\'")');
+			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
 		} else if ( $updated == false && strpos($url, 'http://') == 0 ) {
 			$log = '[WARNING] Unsecure Element: <' . $type . '> - ' . $url;
 		}
@@ -117,7 +117,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
-			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . rtrim($url, '\'")') . ' => ' . rtrim($updated, '\'")');
+			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
 		}
 		if ( isset($log) && ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
 			$this->getPlugin()->getLogger()->log($log);
@@ -249,11 +249,11 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @return void
 	 */
 	public function fixExtensions() {
-		@preg_match_all('/(http|https):\/\/[^\'"\)\s]+[\'"\)]?/i', $this->_html, $matches);
-		for ($i = 0; $i < sizeof($matches[0]); $i++) {
-			$url = $matches[0][$i];
+		@preg_match_all('/((http|https):\/\/[^\'"\)\s]+)[\'"\)]?/i', $this->_html, $matches);
+		for ($i = 0; $i < sizeof($matches[1]); $i++) {
+			$url = $matches[1][$i];
 			$filename = basename($url);
-			$scheme = $matches[1][$i];
+			$scheme = $matches[2][$i];
 
 			foreach( $this->_extensions as $extension ) {
 				if ( $extension == 'js' ) {
