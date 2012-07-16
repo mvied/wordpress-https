@@ -43,48 +43,60 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
 		'admin_menu' =>             'side',  // HTTPS Admin Menu location
-		'secure_filter' =>          array(), // Array of expressions to secure URL's against
+		'secure_filter' =>          array(), // Expressions to secure URL's against
+		'ssl_host_mapping' =>       array(), // External SSL Hosts whose HTTPS content is on another domain
 	);
 
 	/**
-	 * Set HTTP Url
-	 * 
-	 * @param string $http_url
-	 * @return object $this
+	 * Default External SSL Host Mapping
+	 * @var array
 	 */
-	public function setHttpUrl( $http_url ) {
-		$this->_http_url = $http_url;
-		return $this;
-	}
-	
+	public static $ssl_host_mapping = array(
+		'w.sharethis.com' => 'ws.sharethis.com',
+		'\d.gravatar.com' => 'secure.gravatar.com',
+	);
+
 	/**
 	 * Get HTTP Url
 	 * 
 	 * @param none
-	 * @return string
+	 * @return WordPressHTTPS_Url
 	 */
 	public function getHttpUrl() {
+		if ( !isset($this->_http_url) ) {
+			$this->_http_url = WordPressHTTPS_Url::fromString('http://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH));
+		}
 		return $this->_http_url;
 	}
-	
-	/**
-	 * Set HTTPS Url
-	 * 
-	 * @param string $https_url
-	 * @return object $this
-	 */
-	public function setHttpsUrl( $https_url ) {
-		$this->_https_url = $https_url;
-		return $this;
-	}
-	
+
 	/**
 	 * Get HTTPS Url
 	 * 
 	 * @param none
-	 * @return string
+	 * @return WordPressHTTPS_Url
 	 */
 	public function getHttpsUrl() {
+		if ( !isset($this->_https_url) ) {
+			$this->_https_url = WordPressHTTPS_Url::fromString('https://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH));
+
+			// If using a different host for SSL
+			if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' && $this->getSetting('ssl_host') != $this->_https_url->toString() ) {
+				// Assign HTTPS URL to SSL Host
+				$this->setSetting('ssl_host_diff', 1);
+				$this->_https_url = WordPressHTTPS_Url::fromString( rtrim($this->getSetting('ssl_host'), '/') . '/' );
+			} else {
+				$this->setSetting('ssl_host_diff', 0);
+			}
+
+			// Prepend SSL Host path
+			if ( strpos($this->_https_url->getPath(), $this->getHttpUrl()->getPath()) === false ) {
+				$this->_https_url->setPath( $this->_https_url->getPath() . $this->getHttpUrl()->getPath() );
+			}
+
+			// Add SSL Port to HTTPS URL
+			$this->_https_url->setPort($this->getSetting('ssl_port'));
+		}
+
 		return $this->_https_url;
 	}
 	
@@ -95,38 +107,16 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return void
 	 */
 	public function init() {
-		// HTTP URL
-		$this->setHttpUrl(WordPressHTTPS_Url::fromString('http://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH)));
-		// HTTPS URL
-		$this->setHttpsUrl(WordPressHTTPS_Url::fromString('https://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH)));
-
-		// If using a different host for SSL
-		if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' && $this->getSetting('ssl_host') != $this->getHttpsUrl()->toString() ) {
-			// Assign HTTPS URL to SSL Host
-			$this->setSetting('ssl_host_diff', 1);
-			$this->setHttpsUrl(WordPressHTTPS_Url::fromString( rtrim($this->getSetting('ssl_host'), '/') . '/' ));
-		} else {
-			$this->setSetting('ssl_host_diff', 0);
-		}
-		
-		// Prepend SSL Host path
-		if ( strpos($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath()) === false ) {
-			$this->getHttpsUrl()->setPath( $this->getHttpsUrl()->getPath() . $this->getHttpUrl()->getPath() );
-		}
-
-		// Add SSL Port to HTTPS URL
-		$this->getHttpsUrl()->setPort($this->getSetting('ssl_port'));
-
 		$this->getLogger()->log('Version: ' . $this->getVersion());
-		$this->getLogger()->log('HTTP URL: ' . $this->getHttpUrl());
-		$this->getLogger()->log('HTTPS URL: ' . $this->getHttpsUrl());
+		$this->getLogger()->log('HTTP URL: ' . $this->getHttpUrl()->toString());
+		$this->getLogger()->log('HTTPS URL: ' . $this->getHttpsUrl()->toString());
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Diff Host: ' . ( $this->getSetting('ssl_host_diff') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Subdomain: ' . ( $this->getSetting('ssl_host_subdomain') ? 'Yes' : 'No' ));
 		$this->getLogger()->log('Proxy: ' . ( $this->getSetting('ssl_proxy') === 'auto' ? 'Auto' : ( $this->getSetting('ssl_proxy') ? 'Yes' : 'No' ) ));
 		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', (array)$this->getSetting('secure_external_urls')) . ' ]');
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
-		
+
 		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
 		if ( ( $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
 			setcookie(constant('TEST_COOKIE'), 'WP Cookie check', 0);
@@ -145,16 +135,32 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return void
 	 */
 	public function install() {
-		// Add WordPress HTTPS settings to WordPress options
-		foreach ( $this->getSettings() as $option => $value ) {
-			if ( get_option($option) === false ) {
-				add_option($option, $value);
-			}
-		}
+		global $wpdb;
 
-		// To fix a bug that saved the ssl_host as an object
-		if ( ! is_string($this->getSetting('ssl_host')) ) {
-			$this->setSetting('ssl_host', '');
+		if ( function_exists('is_multisite') && is_multisite() && isset($_GET['networkwide']) && $_GET['networkwide'] == 1 ) {
+			$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs));
+		} else {
+			$blogs = array($wpdb->blogid);
+		}
+		foreach ( $blogs as $blog_id ) {
+			// Add Settings
+			foreach ( $this->getSettings() as $option => $value ) {
+				if ( get_blog_option($blog_id, $option) === false ) {
+					add_blog_option($blog_id, $option, $value);
+				}
+			}
+
+			// Fix a bug that saved the ssl_host as an object
+			if ( ! is_string($this->getSetting('ssl_host', $blog_id)) ) {
+				$this->setSetting('ssl_host', $this->_settings['ssl_host'], $blog_id);
+				$this->setSetting('ssl_port', $this->_settings['ssl_port'], $blog_id);
+				$this->setSetting('ssl_host_diff', $this->_settings['ssl_host_diff'], $blog_id);
+				$this->setSetting('ssl_host_subdomain', $this->_settings['ssl_host_subdomain'], $blog_id);
+			}
+
+			// Reset cache
+			$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
+			$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
 		}
 
 		// Checks to see if the SSL Host is a subdomain
@@ -162,11 +168,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$https_domain = $this->getHttpsUrl()->getBaseHost();
 
 		if ( $this->getHttpsUrl()->setScheme('http')->toString() != $this->getHttpUrl()->toString() && $http_domain == $https_domain ) {
-			$this->setSetting('ssl_host_subdomain', 1);
+			$this->setSetting('ssl_host_subdomain', 1, $blog_id);
 		} else {
-			$this->setSetting('ssl_host_subdomain', 0);
+			$this->setSetting('ssl_host_subdomain', 0, $blog_id);
 		}
 	}
+
 	/**
 	 * Is Local URL
 	 * 
@@ -192,39 +199,44 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttps( $string ) {
+		if ( !is_string($string) ) {
+			return $string;
+		}
+
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				$url->setScheme('https');
-				$url->setHost($this->getHttpsUrl()->getHost());
-				$url->setPort($this->getHttpsUrl()->getPort());
-
-				if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
+				$updated = clone $url;
+				$updated->setScheme('https');
+				$updated->setHost($this->getHttpsUrl()->getHost());
+				$updated->setPort($this->getHttpsUrl()->getPort());
+				if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
 					if ( $this->getHttpUrl()->getPath() == '/' ) {
-						$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $url->getPath());
+						$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
 					} else {
-						$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $url->getPath()));
+						$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
 					}
 				}
 
-				$string = $url->toString();
+				$string = str_replace($url, $updated, $string);
 			} else {
-				if ( $url->getScheme() == 'http' && @in_array($url, $this->getSetting('secure_external_urls')) == false && @in_array($url, $this->getSetting('unsecure_external_urls')) == false ) {
-					$test_url = clone $url;
-					$test_url->setScheme('https');
-					if ( $test_url->isValid() ) {
+				$updated = clone $url;
+				$updated = WordPressHTTPS_Url::fromString( apply_filters('https_external_url', $updated->setScheme('https')->toString()) );
+				if ( @in_array($updated->toString(), $this->getSetting('secure_external_urls')) == false && @in_array($updated->toString(), $this->getSetting('unsecure_external_urls')) == false ) {
+					if ( $updated->isValid() ) {
 						// Cache this URL as available over HTTPS for future reference
-						$this->addSecureExternalUrl($url->toString());
+						$this->addSecureExternalUrl($updated->toString());
 					} else {
 						// If not available over HTTPS, mark as an unsecure external URL
-						$this->addUnsecureExternalUrl($url->toString());
+						$this->addUnsecureExternalUrl($updated->toString());
 					}
 				}
 
-				if ( in_array($url->toString(), $this->getSetting('secure_external_urls')) ) {
-					$string = str_replace($url, str_replace('http://', 'https://', $url), $string);
+				if ( $url->toString() != $updated->toString() || in_array($updated->toString(), $this->getSetting('secure_external_urls')) ) {
+					$string = str_replace($url, $updated, $string);
 				}
 			}
+			unset($updated);
 			unset($url);
 		}
 		return $string;
@@ -237,23 +249,28 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttp( $string ) {
+		if ( !is_string($string) ) {
+			return $string;
+		}
+
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				$url->setScheme('http');
-				$url->setHost($this->getHttpUrl()->getHost());
-				$url->setPort($this->getHttpUrl()->getPort());
+				$updated = clone $url;
+				$updated->setScheme('http');
+				$updated->setHost($this->getHttpUrl()->getHost());
+				$updated->setPort($this->getHttpUrl()->getPort());
 
-				if ( $this->getSetting('ssl_host_diff') && strpos($url->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
-					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $url->getPath()));
+				if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
+					$updated->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $updated->getPath()));
 				}
 
-				$string = $url->toString();
+				$string = str_replace($url, $updated, $string);
 			} else {
-				if ( $url ) {
-					$string = str_replace($url, str_replace('https://', 'http://', $url), $string);
-				}
+				$updated = apply_filters('http_external_url', str_replace('https://', 'http://', $url));
+				$string = str_replace($url, $updated, $string);
 			}
+			unset($updated);
 			unset($url);
 		}
 		return $string;

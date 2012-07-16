@@ -20,7 +20,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			// Prevent WordPress' canonical redirect when using a different SSL Host
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Filter SSL Host path out of request
-			//add_filter('request', array(&$this, 'request'), 10, 1);
+			add_filter('request', array(&$this, 'request'), 10, 1);
 			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
@@ -40,6 +40,10 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('wp_get_attachment_url', array(&$this, 'secure_url'), 10);
 		add_filter('template_directory_uri', array(&$this, 'secure_url'), 10);
 		add_filter('stylesheet_directory_uri', array(&$this, 'secure_url'), 10);
+		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
+
+		// Custom filter secure_external_url
+		add_filter('https_external_url', array(&$this, 'domain_mapping'), 10);
 
 		// Filter admin_url
 		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
@@ -105,6 +109,24 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	}
 
 	/**
+	 * Domain Mapping
+	 *
+	 * @param string $url
+	 * @return string $url
+	 */
+	public function domain_mapping( $url ) {
+		if ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) && sizeof($this->getPlugin()->getSetting('ssl_host_mapping')) > 0 ) {
+			foreach( $this->getPlugin()->getSetting('ssl_host_mapping') as $http_domain => $https_domain ) {
+				preg_match('/' . $http_domain . '/', $url, $matches);
+				if ( sizeof($matches) > 0 ) {
+					$url = preg_replace('/' . $http_domain . '/', $https_domain, $url);
+				}
+			}
+		}
+		return $url;
+	}
+
+	/**
 	 * Get Avatar
 	 * WordPress Filter - get_avatar
 	 *
@@ -127,7 +149,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 
 	/**
 	 * Secure URL
-	 * WordPress Filter - bloginfo_url, includes_url
 	 *
 	 * @param string $url
 	 * @return string $url
@@ -150,8 +171,9 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 */
 	public function request( $request ) {
 		if ( !is_admin() && ( sizeof($request) == 1 || isset($request['pagename']) ) ) {
-			$pagename = str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/') . '/', '', ( isset($request['pagename']) ? $request['pagename'] : $_SERVER['REQUEST_URI'] ));
-			$request['pagename'] = rtrim(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/') . '/' . $pagename, '/');
+			$pagename = str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/'), '', ( isset($request['pagename']) ? $request['pagename'] : $_SERVER['REQUEST_URI'] ));
+			$pagename = rtrim(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/') . '/' . $pagename, '/') . '/';
+			$request['pagename'] = $pagename;
 		}
 		return $request;
 	}
@@ -201,6 +223,8 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return boolean $force_ssl
 	 */
 	public function secure_post( $force_ssl, $post_id = 0, $url = '' ) {
+		global $wpdb;
+
 		if ( $url != '' ) {
 			$url_parts = parse_url($url);
 			if ( $this->getPlugin()->isUrlLocal($url) ) {
@@ -224,7 +248,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				}
 
 				// Check secure filters
-				if ( sizeof($this->getPlugin()->getSetting('secure_filter')) > 0 ) {
+				if ( sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
 					foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
 						if ( strpos($url, $filter) !== false ) {
 							$force_ssl = true;
@@ -244,18 +268,33 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				} else if ( $post = get_page_by_path($url_parts['path']) ) {
 					$post = $post->ID;
 				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-				} else if ( ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
-					if ( ! is_multisite() || ( is_multisite() && strpos($url_parts['host'], $this->getPlugin()->getHttpsUrl()->getHost()) !== false ) ) {
-						$force_ssl = true;
+				} else if ( ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) ) {
+					$force_ssl = true;
+				}
+			}
+
+			if ( function_exists('is_multisite') && is_multisite() ) {
+				$url_path = '/';
+				$url_path_segments = explode('/', $url_parts['path']);
+				if ( sizeof($url_path_segments) > 1 ) {
+					foreach( $url_path_segments as $url_path_segment ) {
+						if ( !$blog_id && $url_path_segment != '' ) {
+							$url_path .= '/' . $url_path_segment . '/';
+							if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
+								break;
+							}
+						}
 					}
 				}
-			} else if ( is_multisite() ) {
-				// get_blog_details returns an object with a property of blog_id
-				if ( $blog_details = get_blog_details( array( 'domain' => $url_parts['host'] )) ) {
-					// set $blog_id using $blog_details->blog_id
-					$blog_id = $blog_details->blog_id;
-					if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && $url_parts['scheme'] != 'https' && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+				if ( !$blog_id ) {
+					$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
+				}
+
+				if ( $blog_id && $blog_id != $wpdb->blogid ) {
+					if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
 						$force_ssl = true;
+					} else {
+						$force_ssl = false;
 					}
 				}
 			}

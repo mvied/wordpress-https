@@ -22,7 +22,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'save' ) {
 				add_action('plugins_loaded', array(&$this, 'save'), 1);
 			}
-			
+
 			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 
 			// Add scripts
@@ -48,12 +48,21 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			array( 'metabox' => 'settings' )
 		);
 		add_meta_box(
+			$this->getPlugin()->getSlug() . '_domain_mapping',
+			__( 'Domain Mapping', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
+			'main',
+			'core',
+			array( 'metabox' => 'domain_mapping' )
+		);
+		add_meta_box(
 			$this->getPlugin()->getSlug() . '_filters',
 			__( 'URL Filters', $this->getPlugin()->getSlug() ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
-			'core',
+			'default',
 			array( 'metabox' => 'filters' )
 		);
 		add_meta_box(
@@ -98,7 +107,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
-			'core',
+			'low',
 			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate2.php' )
 		);
 	}
@@ -239,6 +248,17 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			$this->getPlugin()->setSetting('secure_filter', $filters);
 		} else if ( isset($_POST['filters-reset']) ) {
 			$this->getPlugin()->setSetting('secure_filter', array());
+			$reload = true;
+		} else if ( isset($_POST['domain_mapping-save']) ) {
+			$ssl_host_mapping = array();
+			for( $i=0; $i<sizeof($_POST['http_domain']); $i++ ) {
+				if ( isset($_POST['http_domain'][$i]) && $_POST['http_domain'][$i] != '' && isset($_POST['https_domain'][$i]) && $_POST['https_domain'][$i] != '' ) {
+					$ssl_host_mapping[$_POST['http_domain'][$i]] = $_POST['https_domain'][$i];
+				}
+			}
+			$this->getPlugin()->setSetting('ssl_host_mapping', $ssl_host_mapping);
+		} else if ( isset($_POST['domain_mapping-reset']) ) {
+			$this->getPlugin()->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping);
 			$reload = true;
 		}
 

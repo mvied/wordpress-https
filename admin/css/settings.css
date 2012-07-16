@@ -84,7 +84,8 @@
 	margin-top: 5px;
 }
 #wphttps-main #settings-reset,
-#wphttps-main #filters-reset {
+#wphttps-main #filters-reset,
+#wphttps-main #domain_mapping-reset {
 	float: left;
 	margin-right: 10px;
 }
@@ -106,4 +107,14 @@
 #wphttps-main #secure_filter_row textarea {
 	width: 95%;
 	height: 120px;
+}
+
+#wphttps-main #domain_mapping {
+	width: auto;
+}
+#wphttps-main #domain_mapping td {
+	padding: 10px;
+}
+#wphttps-main #domain_mapping input {
+	width: 200px;
 }

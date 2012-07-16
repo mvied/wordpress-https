@@ -50,7 +50,6 @@ if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https->setSlug('wordpress-https');
 	$wordpress_https->setVersion('3.1.3');
 	$wordpress_https->setLogger(WordPressHTTPS_Logger::getInstance());
-	$wordpress_https->setPluginUrl(plugins_url('', __FILE__));
 	$wordpress_https->setDirectory(dirname(__FILE__));
 	$wordpress_https->setModuleDirectory(dirname(__FILE__) . '/lib/WordPressHTTPS/Module/');
 
@@ -63,9 +62,10 @@ if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 			$wordpress_https->setSetting($key, $default);
 		}
 	}
-
+wp_enqueue_script( 'sharethis', 'http://w.sharethis.com/button/buttons.js', array(), false, true );
 	// Initialize Plugin
 	$wordpress_https->init();
+	$wordpress_https->setPluginUrl(plugins_url('', __FILE__));
 
 	// Register activation hook. Must be called outside of a class.
 	register_activation_hook(__FILE__, array($wordpress_https, 'install'));
