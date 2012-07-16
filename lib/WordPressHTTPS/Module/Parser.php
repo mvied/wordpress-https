@@ -136,12 +136,12 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') && !is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
 			$url = clone $this->getPlugin()->getHttpsUrl();
 			$url->setScheme('http');
-			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"\)]*)[\'"]?/im', $this->_html, $httpsMatches);
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 
 			if ( $this->getPlugin()->isSsl() ) {
 				$url = clone $this->getPlugin()->getHttpUrl();
 				$url->setScheme('https');
-				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"\)]*)[\'"]?/im', $this->_html, $httpMatches);
+				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
 			}
 
 			$matches = array_merge($httpMatches, $httpsMatches);
@@ -164,9 +164,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 */
 	public function fixElements() {
 		if ( is_admin() ) {
-			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"\)]+)[\'"\)][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 		} else {
-			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"\)]+)[\'"\)][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 		}
 
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -249,7 +249,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 * @return void
 	 */
 	public function fixExtensions() {
-		@preg_match_all('/(http|https):\/\/[^\'"\)\s]+[\'"\)]+/i', $this->_html, $matches);
+		@preg_match_all('/(http|https):\/\/[^\'"\)\s]+[\'"\)]?/i', $this->_html, $matches);
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$url = $matches[0][$i];
 			$filename = basename($url);
