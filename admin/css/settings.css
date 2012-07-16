@@ -109,12 +109,19 @@
 	height: 120px;
 }
 
-#wphttps-main #domain_mapping {
-	width: auto;
-}
 #wphttps-main #domain_mapping td {
 	padding: 10px;
 }
+#wphttps-main #domain_mapping .http_domain .label,
+#wphttps-main #domain_mapping .https_domain .label {
+	width: 23%;
+	display: block;
+	float: left;
+	text-align: right;
+	padding-right: 2%;
+} 
 #wphttps-main #domain_mapping input {
-	width: 200px;
+	width: 71%;
+	padding-left: 2%;
+	padding-right: 2%;
 }
