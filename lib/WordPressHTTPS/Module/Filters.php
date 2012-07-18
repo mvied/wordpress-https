@@ -273,7 +273,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				}
 			}
 
-			if ( function_exists('is_multisite') && is_multisite() ) {
+			if ( is_multisite() ) {
 				$url_path = '/';
 				$url_path_segments = explode('/', $url_parts['path']);
 				if ( sizeof($url_path_segments) > 1 ) {
