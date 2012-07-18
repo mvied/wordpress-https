@@ -281,7 +281,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				}
 			}
 		}
-		if ( (int) $post > 0 ) {
+		if ( isset($post) && (int) $post > 0 ) {
 			$force_ssl = (( get_post_meta($post, 'force_ssl', true) == 1 ) ? true : $force_ssl);
 		}
 		return $force_ssl;
