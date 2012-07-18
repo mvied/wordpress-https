@@ -203,7 +203,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 			return $string;
 		}
 
-		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
+		$url = WordPressHTTPS_Url::fromString( $string );
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
 				if ( $url->getScheme() == 'http' || $this->getSetting('ssl_host_diff') ) {
@@ -253,10 +253,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 			return $string;
 		}
 
-		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
+		$url = WordPressHTTPS_Url::fromString( $string );
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				if ( $url->getScheme() == 'https' || $this->getSetting('ssl_host_diff') ) {
+				if ( $url->getScheme() == 'http' || $this->getSetting('ssl_host_diff') ) {
 					$updated = clone $url;
 					$updated->setScheme('http');
 					$updated->setHost($this->getHttpUrl()->getHost());
@@ -270,9 +270,9 @@ class WordPressHTTPS extends Mvied_Plugin {
 				$updated = apply_filters('http_external_url', str_replace('https://', 'http://', $url));
 				$string = str_replace($url, $updated, $string);
 			}
-			unset($updated);
-			unset($url);
 		}
+		unset($updated);
+		unset($url);
 		return $string;
 	}
 
