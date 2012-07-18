@@ -62,7 +62,7 @@ if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 			$wordpress_https->setSetting($key, $default);
 		}
 	}
-wp_enqueue_script( 'sharethis', 'http://w.sharethis.com/button/buttons.js', array(), false, true );
+
 	// Initialize Plugin
 	$wordpress_https->init();
 	$wordpress_https->setPluginUrl(plugins_url('', __FILE__));
