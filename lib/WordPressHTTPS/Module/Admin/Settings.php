@@ -134,7 +134,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/settings.css', $this->getPlugin()->getVersion(), true);
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/settings.css', array(), $this->getPlugin()->getVersion());
 		wp_enqueue_script('jquery-form');
 		wp_enqueue_script('post');
 		

@@ -39,7 +39,7 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-global', $this->getPlugin()->getPluginUrl() . '/admin/css/admin.css', $this->getPlugin()->getVersion(), true);
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-global', $this->getPlugin()->getPluginUrl() . '/admin/css/admin.css', array(), $this->getPlugin()->getVersion());
 	}
 
 	/**
