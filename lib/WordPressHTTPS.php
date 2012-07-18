@@ -206,19 +206,20 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				$updated = clone $url;
-				$updated->setScheme('https');
-				$updated->setHost($this->getHttpsUrl()->getHost());
-				$updated->setPort($this->getHttpsUrl()->getPort());
-				if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
-					if ( $this->getHttpUrl()->getPath() == '/' ) {
-						$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
-					} else {
-						$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+				if ( $url->getScheme() == 'http' || $this->getSetting('ssl_host_diff') ) {
+					$updated = clone $url;
+					$updated->setScheme('https');
+					$updated->setHost($this->getHttpsUrl()->getHost());
+					$updated->setPort($this->getHttpsUrl()->getPort());
+					if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
+						if ( $this->getHttpUrl()->getPath() == '/' ) {
+							$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
+						} else {
+							$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+						}
 					}
+					$string = str_replace($url, $updated, $string);
 				}
-
-				$string = str_replace($url, $updated, $string);
 			} else {
 				$updated = clone $url;
 				$updated = WordPressHTTPS_Url::fromString( apply_filters('https_external_url', $updated->setScheme('https')->toString()) );
@@ -231,7 +232,6 @@ class WordPressHTTPS extends Mvied_Plugin {
 						$this->addUnsecureExternalUrl($updated->toString());
 					}
 				}
-
 				if ( $url->toString() != $updated->toString() || in_array($updated->toString(), $this->getSetting('secure_external_urls')) ) {
 					$string = str_replace($url, $updated, $string);
 				}
@@ -256,16 +256,16 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$url = WordPressHTTPS_Url::fromString( $string ); // URL to replace HTTP URL
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				$updated = clone $url;
-				$updated->setScheme('http');
-				$updated->setHost($this->getHttpUrl()->getHost());
-				$updated->setPort($this->getHttpUrl()->getPort());
-
-				if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
-					$updated->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $updated->getPath()));
+				if ( $url->getScheme() == 'https' || $this->getSetting('ssl_host_diff') ) {
+					$updated = clone $url;
+					$updated->setScheme('http');
+					$updated->setHost($this->getHttpUrl()->getHost());
+					$updated->setPort($this->getHttpUrl()->getPort());
+					if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
+						$updated->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $updated->getPath()));
+					}
+					$string = str_replace($url, $updated, $string);
 				}
-
-				$string = str_replace($url, $updated, $string);
 			} else {
 				$updated = apply_filters('http_external_url', str_replace('https://', 'http://', $url));
 				$string = str_replace($url, $updated, $string);
