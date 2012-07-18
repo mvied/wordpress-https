@@ -19,8 +19,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->isSsl() ) {
 			// Prevent WordPress' canonical redirect when using a different SSL Host
 			remove_filter('template_redirect', 'redirect_canonical');
-			// Filter SSL Host path out of request
-			add_filter('request', array(&$this, 'request'), 10, 1);
 			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
@@ -160,22 +158,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
 		}
 		return $url;
-	}
-
-	/**
-	 * Filter Request
-	 * WordPress Filter - request
-	 *
-	 * @param array $request
-	 * @return array $request
-	 */
-	public function request( $request ) {
-		if ( !is_admin() && ( sizeof($request) == 1 || isset($request['pagename']) ) ) {
-			$pagename = str_replace(trim($this->getPlugin()->getHttpsUrl()->getPath(), '/'), '', ( isset($request['pagename']) ? $request['pagename'] : $_SERVER['REQUEST_URI'] ));
-			$pagename = rtrim(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/') . '/' . $pagename, '/') . '/';
-			$request['pagename'] = $pagename;
-		}
-		return $request;
 	}
 
 	/**
