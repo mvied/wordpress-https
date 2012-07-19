@@ -28,7 +28,6 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 
 		// Add global admin scripts
 		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
-
 	}
 
 	/**
