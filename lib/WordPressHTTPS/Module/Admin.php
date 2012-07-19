@@ -66,7 +66,7 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function meta_box_render( $module, $metabox = array() ) {
 		if ( isset($metabox['args']['metabox']) ) {
-			include('admin/templates/metabox/' . $metabox['args']['metabox'] . '.php');
+			include($this->getPlugin()->getDirectory() . '/admin/templates/metabox/' . $metabox['args']['metabox'] . '.php');
 		}
 	}
 

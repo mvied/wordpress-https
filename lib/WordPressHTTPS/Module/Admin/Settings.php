@@ -150,7 +150,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 * @return void
 	 */
 	public function render() {
-		require_once('admin/templates/settings.php');
+		require_once($this->getPlugin()->getDirectory() . '/admin/templates/settings.php');
 	}
 	
 	/**
