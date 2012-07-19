@@ -206,7 +206,9 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$url = WordPressHTTPS_Url::fromString( $string );
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				if ( $url->getScheme() == 'http' || $this->getSetting('ssl_host_diff') ) {
+				$has_path = ( ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false );
+				$has_port = ( (int)$this->getHttpsUrl()->getPort() > 0 ? strpos($url, $this->getHttpsUrl()->getPort()) !== false : true );
+				if ( $url->getScheme() == 'http' || ( $this->getSetting('ssl_host_diff') && $has_path && $has_port ) ) {
 					$updated = clone $url;
 					$updated->setScheme('https');
 					$updated->setHost($this->getHttpsUrl()->getHost());
@@ -256,7 +258,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$url = WordPressHTTPS_Url::fromString( $string );
 		if ( $url ) {
 			if ( $this->isUrlLocal($url) ) {
-				if ( $url->getScheme() == 'http' || $this->getSetting('ssl_host_diff') ) {
+				if ( $url->getScheme() == 'https' ) {
 					$updated = clone $url;
 					$updated->setScheme('http');
 					$updated->setHost($this->getHttpUrl()->getHost());
