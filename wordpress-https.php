@@ -33,8 +33,8 @@ $include_paths = array(
 set_include_path(implode(PATH_SEPARATOR, $include_paths));
 
 function wphttps_autoloader($class) {
-	$filename = str_replace('_', '/', $class) . '.php';
-	@include $filename;
+	$filename = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
+	@include __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . $filename;
 }
 spl_autoload_register('wphttps_autoloader');
 
