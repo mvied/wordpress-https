@@ -133,22 +133,20 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	public function normalizeElements() {
 		$httpMatches = array();
 		$httpsMatches = array();
-		if ( $this->getPlugin()->getSetting('ssl_host_diff') && !is_admin() && $GLOBALS['pagenow'] != 'wp-login.php' ) {
+		if ( $this->getPlugin()->getSetting('ssl_host_diff') && !is_admin() ) {
 			$url = clone $this->getPlugin()->getHttpsUrl();
 			$url->setScheme('http');
 			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpsMatches);
 
-			if ( $this->getPlugin()->isSsl() ) {
-				$url = clone $this->getPlugin()->getHttpUrl();
-				$url->setScheme('https');
-				preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
-			}
+			$url = clone $this->getPlugin()->getHttpUrl();
+			$url->setScheme('https');
+			preg_match_all('/(' . str_replace('/', '\/', preg_quote($url->toString())) . '[^\'"]*)[\'"]?/im', $this->_html, $httpMatches);
 
 			$matches = array_merge($httpMatches, $httpsMatches);
 			for ($i = 0; $i < sizeof($matches[0]); $i++) {
 				if ( isset($matches[1][$i]) ) {
 					$url_parts = parse_url($matches[1][$i]);
-					if ( $url_parts && strpos($url_parts['path'], $this->getPlugin()->getHttpsUrl()) !== false && strpos($url_parts['path'], 'wp-admin') === false && strpos($url_parts['path'], 'wp-login') === false ) {
+					if ( $url_parts && strpos($url_parts['path'], 'wp-admin') === false && strpos($url_parts['path'], 'wp-login') === false ) {
 						$this->_html = str_replace($url, $this->getPlugin()->makeUrlHttp($url), $this->_html);
 					}
 				}
