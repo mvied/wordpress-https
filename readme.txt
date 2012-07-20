@@ -75,6 +75,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
+* ClouldFlare support.
 * Bug Fix - Temporarily removed request filter. Too experimental.
 * Bug Fix - Fixed bug where a bad setting for ssl_host would cause the code to fail.
 = 3.1.2 =
