@@ -210,8 +210,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttps( $string ) {
-		if ( !is_string($string) ) {
-			return $string;
+		if ( (string)$string == '' ) {
+			return false;
 		}
 
 		$url = WordPressHTTPS_Url::fromString( $string );
@@ -262,8 +262,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return string $string
 	 */
 	public function makeUrlHttp( $string ) {
-		if ( !is_string($string) ) {
-			return $string;
+		if ( (string)$string == '' ) {
+			return false;
 		}
 
 		$url = WordPressHTTPS_Url::fromString( $string );
