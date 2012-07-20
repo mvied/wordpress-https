@@ -16,6 +16,11 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 * @return void
 	 */
 	public function init() {
+		// Force SSL Admin
+		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
+			$this->getPlugin()->redirect('https');
+		}
+
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 			// Remove SSL Host authentication cookies on logout
 			add_action('clear_auth_cookie', array(&$this, 'clear_cookies'));
@@ -132,12 +137,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function redirect_check() {
 		global $post;
-		
-		// Force SSL Admin
-		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
-			$this->getPlugin()->redirect('https');
-		}
-		
+
 		if ( ! (is_single() || is_page() || is_front_page() || is_home()) ) {
 			return false;
 		}
