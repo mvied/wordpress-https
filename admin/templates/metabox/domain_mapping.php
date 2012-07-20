@@ -11,35 +11,47 @@
 	foreach( $ssl_host_mapping as $http_domain => $https_domain ) {
 ?>
 	<tr valign="top" class="domain_mapping_row">
+		<td class="http_scheme">
+			<span class="label">http://</span>
+		</td>
 		<td class="http_domain">
-			<span class="label">http://</span><input type="text" name="http_domain[]" value="<?=$http_domain?>" />
+			<input type="text" name="http_domain[]" value="<?=$http_domain?>" />
 		</td>
 		<td class="arrow">
 			<span class="label">&gt;</span>
 		</td>
+		<td class="https_scheme">
+			<span class="label">https://</span>
+		</td>
 		<td class="https_domain">
-			<span class="label">https://</span><input type="text" name="https_domain[]" value="<?=$https_domain?>" />
+			<input type="text" name="https_domain[]" value="<?=$https_domain?>" />
 		</td>
 		<td class="controls">
-			<a class="remove" href="#">Remove</a>
-			<a class="add" href="#">Add</a>
+			<a class="remove" href="#" title="Remove URL Filter">Remove</a>
+			<a class="add" href="#" title="Add URL Filter">Add</a>
 		</td>
 	</tr>
 
 <?php } ?>
 	<tr valign="top" class="domain_mapping_row">
+		<td class="http_scheme">
+			<span class="label">http://</span>
+		</td>
 		<td class="http_domain">
-			<span class="label">http://</span><input type="text" name="http_domain[]" value="" />
+			<input type="text" name="http_domain[]" value="" />
 		</td>
 		<td class="arrow">
 			<span class="label">&gt;</span>
 		</td>
+		<td class="https_scheme">
+			<span class="label">https://</span>
+		</td>
 		<td class="https_domain">
-			<span class="label">https://</span><input type="text" name="https_domain[]" value="" />
+			<input type="text" name="https_domain[]" value="" />
 		</td>
 		<td class="controls">
-			<a class="remove" href="#">Remove</a>
-			<a class="add" href="#">Add</a>
+			<a class="remove" href="#" title="Remove URL Filter">Remove</a>
+			<a class="add" href="#" title="Add URL Filter">Add</a>
 		</td>
 	</tr>
 </table>
