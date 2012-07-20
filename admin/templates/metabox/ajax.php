@@ -1,5 +1,5 @@
 <?php 
-	$nonce = wp_create_nonce($metabox['id']);
+	$nonce = wp_create_nonce($this->getPlugin()->getSlug());
 ?><script type="text/javascript">
 jQuery(document).ready(function($) {
 	var loading = $('<img alt="Loading..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="loading" />');
@@ -12,7 +12,7 @@ jQuery(document).ready(function($) {
 		data: {
 			id : '<?php echo $metabox['id']; ?>',
 			url : '<?php echo $metabox['args']['url']; ?>',
-			nonce : '<?php echo $nonce; ?>'
+			_nonce : '<?php echo $nonce; ?>'
 		},
 		success: function(response) {
 			$('#<?php echo $metabox['id']; ?> .inside').html(response);
