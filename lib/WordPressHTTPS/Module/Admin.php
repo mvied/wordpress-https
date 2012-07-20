@@ -19,7 +19,11 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function init() {
 		// Add admin menus
-		add_action('admin_menu', array(&$this, 'menu'));
+		add_action('admin_menu', array(&$this, 'admin_menu'));
+
+		if ( is_multisite() ) {
+			//add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
+		}
 
 		// Load on plugins page
 		if ( $GLOBALS['pagenow'] == 'plugins.php' ) {
@@ -48,12 +52,23 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 	 * @param none
 	 * @return void
 	 */
-	public function menu() {
+	public function admin_menu() {
 		if ( $this->getPlugin()->getSetting('admin_menu') === 'side' ) {
 			add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'), '', 88);
 		} else {
 			add_options_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Settings'), 'dispatch'));
 		}
+	}
+
+	/**
+	 * Network admin panel menu option
+	 * WordPress Hook - network_admin_menu
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function network_admin_menu() {
+		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Admin\Network'), 'dispatch'), '', 88);
 	}
 
 	/**

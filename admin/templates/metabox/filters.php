@@ -13,7 +13,7 @@
 	</tr>
 </table>
 
-<input type="hidden" name="action" value="save" />
+<input type="hidden" name="action" value="settings-save" />
 
 <p class="button-controls">
 	<input type="submit" name="filters-save" value="Save Changes" class="button-primary" id="filters-save" />

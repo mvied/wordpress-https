@@ -84,6 +84,7 @@
 	margin-top: 5px;
 }
 #wphttps-main #settings-reset,
+#wphttps-main #network-settings-reset,
 #wphttps-main #filters-reset,
 #wphttps-main #domain_mapping-reset {
 	float: left;

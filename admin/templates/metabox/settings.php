@@ -97,7 +97,7 @@
 	</tr>
 </table>
 
-<input type="hidden" name="action" value="save" />
+<input type="hidden" name="action" value="settings-save" />
 <input type="hidden" name="ssl_host_subdomain" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_subdomain') != 1) ? 0 : 1); ?>" />
 <input type="hidden" name="ssl_host_diff" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_diff') != 1) ? 0 : 1); ?>" />
 
