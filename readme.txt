@@ -76,6 +76,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
 * ClouldFlare support.
+* Substantial memory optimization.
 * Bug Fix - Visiting the admin panel over HTTP when using Shared SSL should no longer log the user out, but will not redirect accordingly.
 * Bug Fix - Ranom 404 errors should be gone.
 * Bug Fix - Fixed bug where a bad setting for ssl_host would cause the code to fail.
