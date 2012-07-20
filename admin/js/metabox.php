@@ -1,13 +1,6 @@
 <?php
 
-$include_paths = array(
-	get_include_path(),
-	realpath(dirname(__FILE__) . '/../../../../..'),
-	realpath(dirname(__FILE__) . '/../../lib')
-);
-set_include_path(implode(PATH_SEPARATOR, $include_paths));
-require_once('wp-load.php');
-require_once('WordPressHTTPS.php');
+require_once(realpath(dirname(__FILE__) . '/../../../../..') . '/wp-load.php');
 
 // Disable errors
 error_reporting(0);
@@ -21,7 +14,7 @@ header('Cache-Control: post-check=0, pre-check=0', FALSE);
 header('Pragma: no-cache');
 header("Vary: Accept-Encoding");
 
-if ( ! wp_verify_nonce($_POST['nonce'], $_POST['id']) ) {
+if ( ! wp_verify_nonce($_POST['_nonce'], 'wordpress-https') ) {
 	exit;
 }
 
