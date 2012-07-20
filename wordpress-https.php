@@ -27,7 +27,7 @@
 
 function wphttps_autoloader($class) {
 	$filename = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
-	@include __DIR__ . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . $filename;
+	@include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . $filename;
 }
 spl_autoload_register('wphttps_autoloader');
 
@@ -38,7 +38,7 @@ spl_autoload_register('wphttps_autoloader');
  */
 //define('WPHTTPS_RESET', true);
 
-if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
+if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') && class_exists('WordPressHTTPS') ) {
 	$wordpress_https = new WordPressHTTPS;
 	$wordpress_https->setSlug('wordpress-https');
 	$wordpress_https->setVersion('3.2');
