@@ -19,16 +19,16 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 */
 	public function init() {
 		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
-			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'save' ) {
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'settings-save' ) {
 				add_action('plugins_loaded', array(&$this, 'save'), 1);
 			}
 
+			// Add meta boxes
 			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 
 			// Add scripts
 			add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
 		}
-		
 	}
 
 	/**
@@ -160,6 +160,10 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 * @return void
 	 */
 	public function save() {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug() . '-options') ) {
+			return false;
+		}
+
 		$errors = array();
 		$reload = false;
 		$logout = false;
@@ -182,6 +186,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 							if ( strpos($_POST[$key], 'http://') === false && strpos($_POST[$key], 'https://') === false ) {
 								$_POST[$key] = 'https://' . $_POST[$key];
 							}
+
 							$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
 							// Add Port
