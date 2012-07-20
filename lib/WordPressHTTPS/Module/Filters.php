@@ -313,8 +313,10 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return boolean $force_ssl
 	 */
 	public function secure_different_host_admin( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
-			$force_ssl = true;
+		if ( $post_id > 0 || ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) ) {
+			if ( ! $this->getPlugin()->getSetting('exclusive_https') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+				$force_ssl = true;
+			}
 		}
 		return $force_ssl;
 	}
