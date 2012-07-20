@@ -76,8 +76,10 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
 * ClouldFlare support.
-* Bug Fix - Temporarily removed request filter. Too experimental.
+* Bug Fix - Visiting the admin panel over HTTP when using Shared SSL should no longer log the user out, but will not redirect accordingly.
+* Bug Fix - Ranom 404 errors should be gone.
 * Bug Fix - Fixed bug where a bad setting for ssl_host would cause the code to fail.
+* Bug Fix - CSS backgrounds that do not have quotes should no longer break debug output.
 = 3.1.2 =
 * Bug Fix - Redirects should no longer remove URL parameters.
 * Bug Fix - Removed loginout filter that was changing links to plain text.
