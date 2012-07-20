@@ -83,7 +83,11 @@ class WordPressHTTPS extends Mvied_Plugin {
 			if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' && $this->getSetting('ssl_host') != $this->_https_url->toString() ) {
 				// Assign HTTPS URL to SSL Host
 				$this->setSetting('ssl_host_diff', 1);
-				$this->_https_url = WordPressHTTPS_Url::fromString( rtrim($this->getSetting('ssl_host'), '/') . '/' );
+				$ssl_host = rtrim($this->getSetting('ssl_host'), '/') . '/';
+				if ( strpos($ssl_host, 'http://') === false && strpos($ssl_host, 'https://') === false ) {
+					$ssl_host = 'https://' . $ssl_host;
+				}
+				$this->_https_url = WordPressHTTPS_Url::fromString( $ssl_host );
 			} else {
 				$this->setSetting('ssl_host_diff', 0);
 			}
@@ -163,6 +167,11 @@ class WordPressHTTPS extends Mvied_Plugin {
 			// Reset cache
 			$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
 			$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
+
+			// Set default domain mapping
+			if ( $this->getSetting('ssl_host_mapping') == array() ) {
+				$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
+			}
 		}
 
 		// Checks to see if the SSL Host is a subdomain
