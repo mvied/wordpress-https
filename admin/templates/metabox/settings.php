@@ -31,7 +31,7 @@
 				<label for="exclusive_https">
 					<input type="hidden" name="exclusive_https" value="0" />
 					<input name="exclusive_https" type="checkbox" id="exclusive_https" value="1"<?php echo (($this->getPlugin()->getSetting('exclusive_https')) ? ' checked="checked"' : ''); ?> />
-					Posts and pages without <a href="<?php echo parse_url($this->getPlugin()->getPluginUrl(), PHP_URL_PATH); ?>/screenshot-2.png" class="thickbox">Force SSL</a> enabled will be redirected to HTTP.
+					Any page that is not secured via <a href="<?php echo parse_url($this->getPlugin()->getPluginUrl(), PHP_URL_PATH); ?>/screenshot-2.png" class="thickbox">Force SSL</a> or URL Filters will be redirected to HTTP.
 				</label>
 			</fieldset>
 		</td>
