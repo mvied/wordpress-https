@@ -71,8 +71,17 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
-			'core',
+			'high',
 			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/updates.php' )
+		);
+		add_meta_box(
+			$this->getPlugin()->getSlug() . '_support',
+			__( 'Support', $this->getPlugin()->getSlug() ),
+			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
+			'toplevel_page_' . $this->getPlugin()->getSlug(),
+			'side',
+			'high',
+			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/support.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_rate',
@@ -91,15 +100,6 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			'side',
 			'core',
 			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate.php' )
-		);
-		add_meta_box(
-			$this->getPlugin()->getSlug() . '_support',
-			__( 'Support', $this->getPlugin()->getSlug() ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'toplevel_page_' . $this->getPlugin()->getSlug(),
-			'side',
-			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/support.php' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',

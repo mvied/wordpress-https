@@ -36,6 +36,18 @@
 			</fieldset>
 		</td>
 	</tr>
+	<tr valign="top" id="remove_unsecure_row">
+		<th scope="row">Remove Unsecure Elements</th>
+		<td>
+			<fieldset>
+				<label for="remove_unsecure">
+					<input type="hidden" name="remove_unsecure" value="0" />
+					<input name="remove_unsecure" type="checkbox" id="remove_unsecure" value="1"<?php echo (($this->getPlugin()->getSetting('remove_unsecure')) ? ' checked="checked"' : ''); ?> />
+					If possible, remove external elements that can not be loaded over HTTPS. This may prevent other plugins' features from working. This can not always catch everything. Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/" target="_blank">FAQ</a>.
+				</label>
+			</fieldset>
+		</td>
+	</tr>
 	<tr valign="top" id="ssl_admin_row">
 		<th scope="row">Force SSL Administration</th>
 		<td>

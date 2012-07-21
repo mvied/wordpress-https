@@ -81,23 +81,35 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 */
 	public function secureElement( $url, $type = '' ) {
 		$updated = false;
+		$result = false;
 		$upload_dir = wp_upload_dir();
 		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
 
 		if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
 			$updated = $this->getPlugin()->makeUrlHttps($url);
-			$this->_html = str_replace($url, $updated, $this->_html);
+			if ( $url != $updated ) {
+				$this->_html = str_replace($url, $updated, $this->_html);
+			} else {
+				$updated = false;
+			}
 		}
-	
+
 		// Add log entry if this change hasn't been logged
-		if ( $updated && $url != $updated ) {
+		if ( $updated ) {
 			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
-		} else if ( $updated == false && strpos($url, 'http://') == 0 ) {
-			$log = '[WARNING] Unsecure Element: <' . $type . '> - ' . $url;
+			$result = true;
+		} else if ( strpos($url, 'http://') === 0 ) {
+			if ( $this->getPlugin()->getSetting('remove_unsecure') ) {
+				$log = '[FIXED] Removed Unsecure Element: <' . $type . '> - ' . $url;
+			} else {
+				$log = '[WARNING] Unsecure Element: <' . $type . '> - ' . $url;
+			}
 		}
 		if ( isset($log) && ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
 			$this->getPlugin()->getLogger()->log($log);
 		}
+
+		return $result;
 	}
 
 	/**
@@ -162,9 +174,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 */
 	public function fixElements() {
 		if ( is_admin() ) {
-			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s?)+/im', $this->_html, $matches);
 		} else {
-			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s?)+/im', $this->_html, $matches);
 		}
 
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -182,7 +194,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 				( $type == 'param' && strpos($html, 'movie') !== false )
 			) {
 				if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
-					$this->secureElement($url, $type);
+					if ( !$this->secureElement($url, $type) && $this->getPlugin()->getSetting('remove_unsecure') ) {
+						$this->_html = str_replace($html, '', $this->_html);
+					}
 				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 					$this->unsecureElement($url, $type);
 				}

@@ -37,7 +37,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'unsecure_external_urls' => array(), // Unsecure external URL's
 		'ssl_host_diff' =>          0,       // Is SSL Host different than WordPress host
 		'ssl_host_subdomain' =>     0,       // Is SSL Host a subdomain of WordPress host
-		'exclusive_https' =>        0,       // Exclusively force SSL on posts and pages with the `Force SSL` option checked.
+		'exclusive_https' =>        0,       // Redirect pages that are not secured to HTTP
+		'remove_unsecure' =>        0,       // Remove unsecure elements from HTML
 		'frontpage' =>              0,       // Force SSL on front page
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
 		'ssl_proxy' =>              0,       // Proxy detection
@@ -122,7 +123,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 
 		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
-		if ( ( $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
+		if ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' ) {
 			setcookie(constant('TEST_COOKIE'), 'WP Cookie check', 0);
 			if ( $this->getSetting('ssl_admin') ) {
 				$this->redirect('https');
@@ -236,17 +237,22 @@ class WordPressHTTPS extends Mvied_Plugin {
 				}
 			} else {
 				$updated = clone $url;
-				$updated = WordPressHTTPS_Url::fromString( apply_filters('https_external_url', $updated->setScheme('https')->toString()) );
+				$updated = WordPressHTTPS_Url::fromString( apply_filters('https_external_url', $updated->toString()) );
 				if ( @in_array($updated->toString(), $this->getSetting('secure_external_urls')) == false && @in_array($updated->toString(), $this->getSetting('unsecure_external_urls')) == false ) {
-					if ( $updated->isValid() ) {
+					$test = clone $updated;
+					$test->setScheme('https');
+					if ( $test->isValid() ) {
 						// Cache this URL as available over HTTPS for future reference
 						$this->addSecureExternalUrl($updated->toString());
+						$updated->setScheme('https');
 					} else {
 						// If not available over HTTPS, mark as an unsecure external URL
 						$this->addUnsecureExternalUrl($updated->toString());
 					}
+				} else if ( in_array($updated->toString(), $this->getSetting('secure_external_urls')) ) {
+					$updated->setScheme('https');
 				}
-				if ( $url->toString() != $updated->toString() || in_array($updated->toString(), $this->getSetting('secure_external_urls')) ) {
+				if ( $url->toString() != $updated->toString() ) {
 					$string = str_replace($url, $updated, $string);
 				}
 			}

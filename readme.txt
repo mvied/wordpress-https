@@ -77,6 +77,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
+* Added Remove Unsecure Elements option. If possible, this option removes external elements from the page that can not be loaded over HTTPS, preventing insecure content errors without modifying any code.
 * ClouldFlare support.
 * Substantial memory optimization.
 * Bug Fix - Visiting the admin panel over HTTP when using Shared SSL should no longer log the user out, but will not redirect accordingly.
