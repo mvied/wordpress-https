@@ -40,7 +40,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('stylesheet_directory_uri', array(&$this, 'secure_url'), 10);
 		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
 
-		// Custom filter secure_external_url
+		// Custom filter https_external_url
 		add_filter('https_external_url', array(&$this, 'domain_mapping'), 10);
 
 		// Filter admin_url
