@@ -240,17 +240,3 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Upgrade Notice ==
 = 3.2 =
 You may lose your SSL Host setting upon upgrading if it is not default (matching your Site URL).
-= 1.7 =
-1.6.5 created a bug in which external elements were no longer forced to HTTPS. Please update to fix this.
-= 1.6.1 =
-Version 1.6.1 fixes a bug with using a static page for the posts page.
-= 1.0.1 =
-Version 1.0.1 fixes a bug in 1.0 that made it to release. Apologies!
-= 1.0 =
-Version 1.0 gives you the ability to disable WordPress 3.0+ from changing all of your page, category and post links to HTTPS.
-= 0.5.1 =
-Fixes `PHP Warning:  Invalid argument supplied for foreach()` error.
-= 0.3 =
-Version 0.3 gives you the option to change external elements to HTTPS if the external server allows the elements to be accessed via HTTPS.
-= 0.2 =
-Version 0.1 did not correctly detect HTTPS on IIS and possibly other servers. Please update to version 0.2 to fix this issue.
