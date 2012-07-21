@@ -275,7 +275,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 				} else if ( in_array($extension, array('jpg', 'jpeg', 'png', 'gif')) ) {
 					$type = 'img';
 				} else {
-					$type = '';
+					continue;
 				}
 
 				if ( strpos($filename, '.' . $extension) !== false ) {

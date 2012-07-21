@@ -77,12 +77,20 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 					$script->src = site_url($script->src);
 				}
 				if ( $this->getPlugin()->isSsl() ) {
-					$script->src = $this->getPlugin()->makeUrlHttps($script->src);
+					$updated = $this->getPlugin()->makeUrlHttps($script->src);
+					$script->src = $updated;
 				} else {
-					$script->src = $this->getPlugin()->makeUrlHttp($script->src);
+					$updated = $this->getPlugin()->makeUrlHttp($script->src);
+					$script->src = $updated;
+				}
+				if ( $script->src != $updated ) {
+					$log = '[FIXED] Element: <script> - ' . $url . ' => ' . $updated;
+					if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+						$this->getPlugin()->getLogger()->log($log);
+					}
 				}
 			}
-	}
+		}
 	}
 
 	/**
@@ -99,9 +107,17 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 					$style->src = site_url($style->src);
 				}
 				if ( $this->getPlugin()->isSsl() ) {
-					$style->src = $this->getPlugin()->makeUrlHttps($style->src);
+					$updated = $this->getPlugin()->makeUrlHttps($style->src);
+					$style->src = $updated;
 				} else {
-					$style->src = $this->getPlugin()->makeUrlHttp($style->src);
+					$updated = $this->getPlugin()->makeUrlHttp($style->src);
+					$style->src = $updated;
+				}
+				if ( $style->src != $updated ) {
+					$log = '[FIXED] Element: <link> - ' . $url . ' => ' . $updated;
+					if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+						$this->getPlugin()->getLogger()->log($log);
+					}
 				}
 			}
 		}
