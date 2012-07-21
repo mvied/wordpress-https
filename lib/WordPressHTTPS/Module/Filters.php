@@ -71,7 +71,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 	 * @return string $url
 	 */
 	public function admin_url( $url, $path, $blog_id ) {
-		if ( ( $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && parse_url($url, PHP_URL_HOST) == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
+		if ( ( $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php') ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && parse_url($url, PHP_URL_HOST) == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
 		}
 		return $url;

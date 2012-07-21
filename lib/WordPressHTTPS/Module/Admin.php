@@ -26,7 +26,7 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module implements Mvied_P
 		}
 
 		// Load on plugins page
-		if ( $GLOBALS['pagenow'] == 'plugins.php' ) {
+		if ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'plugins.php' ) {
 			add_filter( 'plugin_row_meta', array(&$this, 'plugin_links'), 10, 2);
 		}
 
