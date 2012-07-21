@@ -124,7 +124,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
 		if ( ( $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
 			setcookie(constant('TEST_COOKIE'), 'WP Cookie check', 0);
-			if ( $this->getSetting('ssl_admin') && ! $this->isSsl() ) {
+			if ( $this->getSetting('ssl_admin') ) {
 				$this->redirect('https');
 			}
 		}

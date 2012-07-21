@@ -17,7 +17,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	 */
 	public function init() {
 		// Force SSL Admin
-		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->isSsl() ) {
+		if ( ( is_admin() || $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') ) {
 			$this->getPlugin()->redirect('https');
 		}
 
