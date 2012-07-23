@@ -110,6 +110,19 @@
 	height: 120px;
 }
 
+#wphttps-main #admin_menu_row fieldset {
+	margin-top: 5px;
+}
+
+#wphttps-main input[type="checkbox"] {
+	float: left;
+}
+#wphttps-main p.description {
+	margin: 7px 0 0 10px;
+	width: 80%;
+	display: block;
+	float: left;
+}
 #wphttps-main #domain_mapping td {
 	padding: 10px 0;
 }
