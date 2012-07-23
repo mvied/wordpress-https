@@ -255,6 +255,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 					$string = str_replace($url, $updated, $string);
 				}
 			}
+			unset($test);
 			unset($updated);
 			unset($url);
 		}
