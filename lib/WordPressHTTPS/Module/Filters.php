@@ -232,7 +232,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				// Check secure filters
 				if ( sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
 					foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
-						if ( strpos($url, $filter) !== false ) {
+						if ( preg_match('/' . str_replace('/', '\/', $filter) . '/', $url) === 1 ) {
 							$force_ssl = true;
 						}
 					}
@@ -243,9 +243,6 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 				} else if ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) {
 					if ( get_option('show_on_front') == 'page' ) {
 						$post = get_option('page_on_front');
-					}
-					if ( $this->getPlugin()->getSetting('frontpage') ) {
-						$force_ssl = true;
 					}
 				} else if ( $post = get_page_by_path($url_parts['path']) ) {
 					$post = $post->ID;

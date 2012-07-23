@@ -80,6 +80,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Added Remove Unsecure Elements option. If possible, this option removes external elements from the page that can not be loaded over HTTPS, preventing insecure content errors without modifying any code.
 * ClouldFlare support.
 * Substantial memory optimization.
+* Removed Secure Front Page option. This can now be achieved through URL Filters.
 * Bug Fix - Visiting the admin panel over HTTP when using Shared SSL should no longer log the user out, but will not redirect accordingly.
 * Bug Fix - Ranom 404 errors should be gone.
 * Bug Fix - Fixed bug where a bad setting for ssl_host would cause the code to fail.
