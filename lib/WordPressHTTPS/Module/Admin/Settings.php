@@ -226,7 +226,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 						}
 					} else if ( $key == 'ssl_admin' ) {
 						if ( force_ssl_admin() && $this->getPlugin()->getSetting('ssl_host_diff') ) {
-							$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN should not be set to true in your wp-config.php.';
+							$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN should not be set to true in your wp-config.php while using a non-default SSL Host.';
 							$_POST[$key] = 0;
 						// If forcing SSL Admin and currently not SSL, logout user
 						} else if ( $_POST[$key] == 1 && !$this->getPlugin()->isSsl() ) {
