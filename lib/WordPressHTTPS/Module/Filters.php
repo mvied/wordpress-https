@@ -50,6 +50,7 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 		add_filter('site_url', array(&$this, 'site_url'), 10, 4);
 
 		// Filter force_ssl
+		add_filter('force_ssl', array(&$this, 'secure_wordpress_forms'), 20, 3);
 		add_filter('force_ssl', array(&$this, 'secure_different_host_admin'), 20, 3);
 		add_filter('force_ssl', array(&$this, 'secure_child_post'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
@@ -314,6 +315,22 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 			if ( ! $this->getPlugin()->getSetting('exclusive_https') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
 				$force_ssl = true;
 			}
+		}
+		return $force_ssl;
+	}
+
+	/**
+	 * Secure WordPress forms
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function secure_wordpress_forms( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( $this->getPlugin()->isSsl() && $this->getPlugin()->isUrlLocal($url) && ( strpos($url, 'wp-pass.php') !== false || strpos($url, 'wp-comments-post.php') !== false ) ) {
+			$force_ssl = true;
 		}
 		return $force_ssl;
 	}
