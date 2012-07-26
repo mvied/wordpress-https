@@ -239,7 +239,9 @@ class WordPressHTTPS_Module_Filters extends Mvied_Plugin_Module implements Mvied
 					}
 				}
 
-				if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
+				if ( isset($post_id) && $post_id > 0 ) {
+					$post = $post_id;
+				} else if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 					$post = $postID[1];
 				} else if ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) {
 					if ( get_option('show_on_front') == 'page' ) {
