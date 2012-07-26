@@ -1,7 +1,7 @@
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
-<p>Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use regular expressions.</p>
+<p>Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use <a href="#TB_inline?height=155&width=350&inlineId=regex-help&" class="thickbox" title="Regular Expressions Help">regular expressions</a>.</p>
 
 <table class="form-table" id="domain_mapping">
 	<thead>

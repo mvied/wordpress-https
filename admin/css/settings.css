@@ -176,3 +176,18 @@
 	background: url(images/arrow_right.png) no-repeat 50% 50%;	
 	margin: 0 auto;
 }
+
+#wphttps-main #regex-help {
+	display: none;
+}
+table.regex-help {
+	border-collapse: collapse;
+}
+table.regex-help tr {
+	border: 1px solid #000;
+	border-width: 1px 1px 0 0;
+}
+table.regex-help td, table.regex-help th {
+	border: 1px solid #000;
+	border-width: 0 0 1px 1px;
+}
