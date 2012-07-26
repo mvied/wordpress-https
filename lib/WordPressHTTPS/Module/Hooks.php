@@ -38,11 +38,6 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		// Filter styles
 		add_action('wp_print_styles', array(&$this, 'fix_styles'), 100, 0);
 
-		// Filter redirects in admin panel
-		if ( is_admin() && ( $this->getPlugin()->getSetting('ssl_admin') || $this->getPlugin()->isSsl() ) ) {
-			add_action('wp_redirect', array($this->getPlugin(), 'redirectAdmin'), 10, 1);
-		}
-
 		// Run proxy check
 		if ( $this->getPlugin()->getSetting('ssl_proxy') === 'auto' ) {
 			// If page is not SSL and no proxy cookie is detected, run proxy check

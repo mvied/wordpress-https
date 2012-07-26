@@ -228,9 +228,15 @@ class WordPressHTTPS extends Mvied_Plugin {
 					if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
 						if ( $this->getHttpUrl()->getPath() == '/' ) {
 							$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
-						} else {
+						} else if ( strpos($updated->getPath(), $this->getHttpUrl()->getPath()) !== false ) {
 							$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+						} else if ( strpos($updated->getPath(), rtrim($this->getHttpUrl()->getPath(), '/')) !== false ) {
+							$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
 						}
+					}
+					if ( strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $url, $redirect) && isset($redirect[1]) ) {
+						$redirect_url = $redirect[1];
+						$url = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $url);
 					}
 					$string = str_replace($url, $updated, $string);
 				}
@@ -283,6 +289,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 					$updated->setPort($this->getHttpUrl()->getPort());
 					if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) !== false ) {
 						$updated->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $updated->getPath()));
+					}
+					if ( strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $url, $redirect) && isset($redirect[1]) ) {
+						$redirect_url = $redirect[1];
+						$url = str_replace($redirect_url, urlencode($this->makeUrlHttp(urldecode($redirect_url))), $url);
 					}
 					$string = str_replace($url, $updated, $string);
 				}
@@ -371,41 +381,19 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return void
 	 */
 	public function redirect( $scheme = 'https' ) {
-		if ( !$this->isSsl() && $scheme == 'https' ) {
-			$url = clone $this->getHttpsUrl();
-			$url->setScheme($scheme);
-		} else if ( $this->isSsl() && $scheme == 'http' ) {
-			$url = clone $this->getHttpUrl();
-			$url->setScheme($scheme);
+		$current_path = ( isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
+		if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
+			$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
+		}
+		$current_url = site_url($current_path);
+
+		if ( $scheme == 'https' ) {
+			$url = $this->makeUrlHttps($current_url);
 		} else {
-			$url = false;
+			$url = $this->makeUrlHttp($current_url);
 		}
 
-		if ( $url ) {
-			$path = ( isset($_SERVER['REDIRECT_URL']) ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
-			if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
-				$path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
-			}
-
-			if ( $this->getHttpsUrl()->getPath() != '/' ) {
-				$path = str_replace($this->getHttpsUrl()->getPath(), '', $path);
-			}
-			$path = ltrim($path, '/');
-
-			if ( $scheme == 'https' ) {
-				if ( $this->getSetting('ssl_host_diff') && $this->getHttpUrl()->getPath() != '/' ) {
-					$url->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $_SERVER['REQUEST_URI']));
-				} else {
-					$url->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . '/' . $path);
-				}
-			} else if ($scheme == 'http' ) {
-				if ( $this->getSetting('ssl_host_diff') &&  $this->getHttpsUrl()->getPath() != '/' ) {
-					$url->setPath(str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $_SERVER['REQUEST_URI']));
-				} else {
-					$url->setPath(rtrim($this->getHttpUrl()->getPath(), '/') . '/' . $path);
-				}
-			}
-
+		if ( $current_url != $url ) {
 			// Use a cookie to detect redirect loops
 			$redirect_count = ( isset($_COOKIE['redirect_count']) && is_numeric($_COOKIE['redirect_count']) ? (int)$_COOKIE['redirect_count']+1 : 1 );
 			setcookie('redirect_count', $redirect_count, 0, '/');
@@ -422,32 +410,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 			} else {
 				// End all output buffering and redirect
 				while(@ob_end_clean());
-
-				// If redirecting to an admin page
-				if ( strpos($url->getPath(), 'wp-admin') !== false || strpos($url->getPath(), 'wp-login') !== false ) {
-					$url = WordPressHTTPS_Url::fromString($this->redirectAdmin($url));
-				}
-
 				header("Location: " . $url, true, 301);
 			}
 			exit();
 		}
 	}
-	
-	/**
-	 * WP Redirect Admin
-	 * WordPress Filter - wp_redirect_admin
-	 *
-	 * @param string $url
-	 * @return string $url
-	 */
-	public function redirectAdmin( $url ) {
-		$url = $this->makeUrlHttps($url);
 
-		// Fix redirect_to
-		preg_match('/redirect_to=([^&]+)/i', $url, $redirect);
-		$redirect_url = @$redirect[1];
-		$url = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $url);
-		return $url;
-	}
 }
