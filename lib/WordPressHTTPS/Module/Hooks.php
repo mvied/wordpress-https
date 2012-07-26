@@ -34,9 +34,11 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 
 		// Filter scripts
 		add_action('wp_print_scripts', array(&$this, 'fix_scripts'), 100, 0);
+		add_action('admin_print_scripts', array(&$this, 'fix_scripts'), 100, 0);
 
 		// Filter styles
 		add_action('wp_print_styles', array(&$this, 'fix_styles'), 100, 0);
+		add_action('admin_print_styles', array(&$this, 'fix_styles'), 100, 0);
 
 		// Run proxy check
 		if ( $this->getPlugin()->getSetting('ssl_proxy') === 'auto' ) {
