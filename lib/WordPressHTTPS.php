@@ -234,9 +234,9 @@ class WordPressHTTPS extends Mvied_Plugin {
 							$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
 						}
 					}
-					if ( strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $url, $redirect) && isset($redirect[1]) ) {
+					if ( strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
 						$redirect_url = $redirect[1];
-						$url = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $url);
+						$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
 					}
 					$string = str_replace($url, $updated, $string);
 				}
@@ -385,11 +385,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 		if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
 			$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
 		}
-		$current_url = site_url($current_path);
 
 		if ( $scheme == 'https' ) {
+			$current_url = $this->getHttpsUrl() . $current_path;
 			$url = $this->makeUrlHttps($current_url);
 		} else {
+			$current_url = $this->getHttpUrl() . $current_path;
 			$url = $this->makeUrlHttp($current_url);
 		}
 
