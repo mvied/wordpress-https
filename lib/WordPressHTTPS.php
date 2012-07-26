@@ -164,6 +164,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 				$this->setSetting('ssl_host_subdomain', $this->_settings['ssl_host_subdomain'], $blog_id);
 			}
 
+			// If secure front page option exists, create front page filter
+			if ( $this->getSetting('frontpage') ) {
+				$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim($this->getHttpUrl(), '/') . '/$')));
+				$this->setSetting('frontpage', 0);
+			}
+
 			// Reset cache
 			$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
 			$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
