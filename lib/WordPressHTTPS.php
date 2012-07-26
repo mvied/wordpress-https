@@ -387,10 +387,13 @@ class WordPressHTTPS extends Mvied_Plugin {
 		}
 
 		if ( $scheme == 'https' ) {
-			$current_url = $this->getHttpsUrl() . $current_path;
+			$current_url = rtrim($this->getHttpUrl(), '/') . $current_path;
+		} else {
+			$current_url = rtrim($this->getHttpsUrl(), '/') . $current_path;
+		}
+		if ( !$this->isSsl() ) {
 			$url = $this->makeUrlHttps($current_url);
 		} else {
-			$current_url = $this->getHttpUrl() . $current_path;
 			$url = $this->makeUrlHttp($current_url);
 		}
 
