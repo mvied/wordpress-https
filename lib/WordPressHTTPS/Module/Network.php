@@ -43,7 +43,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module implements Mvied
 	 * @return void
 	 */
 	public function network_admin_menu() {
-		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Network'), 'dispatch'), '', 88);
+		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array(&$this, 'dispatch'), '', 88);
 	}
 
 	/**
@@ -108,6 +108,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module implements Mvied
 			return false;
 		}
 
+		$message = "Network settings saved.";
 		$errors = array();
 		$reload = false;
 		$logout = false;
@@ -131,7 +132,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module implements Mvied
 				}
 				echo "\t</ul>\n</div>\n";
 			} else {
-				echo "<div class=\"updated below-h2 fade wphttps-message\" id=\"message\"><p>Settings saved.</p></div>\n";
+				echo "<div class=\"updated below-h2 fade wphttps-message\" id=\"message\"><p>" . $message . "</p></div>\n";
 				if ( $logout || $reload ) {
 					echo "<script type=\"text/javascript\">window.location.reload();</script>";
 				}
