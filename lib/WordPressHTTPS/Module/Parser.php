@@ -311,7 +311,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			if ( $force_ssl == true ) {
 				$updated = $this->getPlugin()->makeUrlHttps($url);
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-			} else if ( $this->getPlugin()->isUrlLocal($url) && $this->getPlugin()->getSetting('exclusive_https') ) {
+			} else if ( $this->getPlugin()->isUrlLocal($url) && $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
 				$updated = $this->getPlugin()->makeUrlHttp($url);
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			}

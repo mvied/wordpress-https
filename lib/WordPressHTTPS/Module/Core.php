@@ -48,6 +48,8 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		add_filter('force_ssl', array(&$this, 'secure_wordpress_forms'), 20, 3);
 		add_filter('force_ssl', array(&$this, 'secure_different_host_admin'), 20, 3);
 		add_filter('force_ssl', array(&$this, 'secure_child_post'), 30, 3);
+		add_filter('force_ssl', array(&$this, 'secure_admin'), 30, 3);
+		add_filter('force_ssl', array(&$this, 'secure_login'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
@@ -56,9 +58,13 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 			add_filter($filter, array(&$this, 'secure_post_link'), 10);
 		}
 
-		// Force SSL Admin
-		if ( ( is_admin() || isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' ) && $this->getPlugin()->getSetting('ssl_admin') ) {
-			$this->getPlugin()->redirect('https');
+		// Force SSL Admin / Login
+		if ( is_admin() || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
+			if ( $this->getPlugin()->getSetting('ssl_admin') || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' && $this->getPlugin()->getSetting('ssl_login') ) ) {
+				$this->getPlugin()->redirect('https');
+			} else if ( $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
+				$this->getPlugin()->redirect('http');
+			}
 		}
 
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
@@ -152,9 +158,10 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 * @return string $url
 	 */
 	public function secure_url( $url = '' ) {
-		if ( $this->getPlugin()->isSsl() || ( $this->getPlugin()->getSetting('ssl_admin') && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) ) {
+		$force_ssl = apply_filters('force_ssl', null, 0, $url);
+		if ( $force_ssl ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
-		} else if ( strpos(get_option('home'), 'https') !== 0 ) {
+		} else if (  $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
 		}
 		return $url;
@@ -189,10 +196,43 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $force_ssl ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
-		} else if ( $this->getPlugin()->getSetting('exclusive_https') ) {
+		} else if ( $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
 			$url = $this->getPlugin()->makeUrlHttp($url);
 		}
 		return $url;
+	}
+
+	/**
+	 * Secure Admin
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function secure_admin( $force_ssl, $post_id = 0, $url = '' ) {
+		//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
+		if ( $url != '' && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) {
+			$force_ssl = true;
+		}
+		return $force_ssl;
+	}
+
+	/**
+	 * Secure Login
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function secure_login( $force_ssl, $post_id = 0, $url = '' ) {
+		if ( $url != '' && force_ssl_login() && strpos($url, 'wp-login') !== false ) {
+			$force_ssl = true;
+		}
+		return $force_ssl;
 	}
 
 	/**
@@ -239,9 +279,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 					}
 				} else if ( $post = get_page_by_path($url_parts['path']) ) {
 					$post = $post->ID;
-				//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-				} else if ( ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( strpos($url_parts['path'], 'wp-admin') !== false || strpos($url_parts['path'], 'wp-login') !== false ) ) {
-					$force_ssl = true;
 				}
 			}
 
@@ -287,7 +324,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 * @return boolean $force_ssl
 	 */
 	public function secure_exclusive( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( is_null($force_ssl) && strpos(get_option('home'), 'https') !== 0 && $this->getPlugin()->getSetting('exclusive_https') ) {
+		if ( is_null($force_ssl) && $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
 			$force_ssl = false;
 		}
 		return $force_ssl;
