@@ -393,8 +393,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 		}
 
 		if ( $scheme == 'https' ) {
+			$current_path = str_replace($this->getHttpUrl()->getPath(), '', $current_path);
 			$current_url = rtrim($this->getHttpUrl(), '/') . $current_path;
 		} else {
+			$current_path = str_replace($this->getHttpsUrl()->getPath(), '', $current_path);
 			$current_url = rtrim($this->getHttpsUrl(), '/') . $current_path;
 		}
 		if ( !$this->isSsl() ) {
