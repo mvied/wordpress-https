@@ -153,13 +153,7 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 	public function redirect_check() {
 		global $post;
 
-		if ( ! (is_single() || is_page() || is_front_page() || is_home()) ) {
-			return false;
-		}
-
-		if ( $post->ID > 0 ) {
-			$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		}
+		$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
 
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';
