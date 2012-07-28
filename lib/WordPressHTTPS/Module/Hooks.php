@@ -71,20 +71,19 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		if ( isset($wp_scripts) && sizeof($wp_scripts->registered) > 0 ) {
 			foreach ( $wp_scripts->registered as $script ) {
 				if ( in_array($script->handle, $wp_scripts->queue) ) {
-					if ( strpos($script->src, 'http') !== 0 ) {
-						$script->src = site_url($script->src);
-					}
-					if ( $this->getPlugin()->isSsl() ) {
-						$updated = $this->getPlugin()->makeUrlHttps($script->src);
-						$script->src = $updated;
-					} else {
-						$updated = $this->getPlugin()->makeUrlHttp($script->src);
-						$script->src = $updated;
-					}
-					if ( $script->src != $updated ) {
-						$log = '[FIXED] Element: <script> - ' . $url . ' => ' . $updated;
-						if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
-							$this->getPlugin()->getLogger()->log($log);
+					if ( strpos($script->src, 'http') === 0 ) {
+						if ( $this->getPlugin()->isSsl() ) {
+							$updated = $this->getPlugin()->makeUrlHttps($script->src);
+							$script->src = $updated;
+						} else {
+							$updated = $this->getPlugin()->makeUrlHttp($script->src);
+							$script->src = $updated;
+						}
+						if ( $script->src != $updated ) {
+							$log = '[FIXED] Element: <script> - ' . $url . ' => ' . $updated;
+							if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+								$this->getPlugin()->getLogger()->log($log);
+							}
 						}
 					}
 				}
@@ -103,20 +102,19 @@ class WordPressHTTPS_Module_Hooks extends Mvied_Plugin_Module implements Mvied_P
 		if ( isset($wp_styles) && sizeof($wp_styles->registered) > 0 ) {
 			foreach ( (array)$wp_styles->registered as $style ) {
 				if ( in_array($style->handle, $wp_styles->queue) ) {
-					if ( strpos($style->src, 'http') !== 0 ) {
-						$style->src = site_url($style->src);
-					}
-					if ( $this->getPlugin()->isSsl() ) {
-						$updated = $this->getPlugin()->makeUrlHttps($style->src);
-						$style->src = $updated;
-					} else {
-						$updated = $this->getPlugin()->makeUrlHttp($style->src);
-						$style->src = $updated;
-					}
-					if ( $style->src != $updated ) {
-						$log = '[FIXED] Element: <link> - ' . $url . ' => ' . $updated;
-						if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
-							$this->getPlugin()->getLogger()->log($log);
+					if ( strpos($style->src, 'http') === 0 ) {
+						if ( $this->getPlugin()->isSsl() ) {
+							$updated = $this->getPlugin()->makeUrlHttps($style->src);
+							$style->src = $updated;
+						} else {
+							$updated = $this->getPlugin()->makeUrlHttp($style->src);
+							$style->src = $updated;
+						}
+						if ( $style->src != $updated ) {
+							$log = '[FIXED] Element: <link> - ' . $url . ' => ' . $updated;
+							if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
+								$this->getPlugin()->getLogger()->log($log);
+							}
 						}
 					}
 				}
