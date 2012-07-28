@@ -62,7 +62,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module implements Mvie
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
-			'core',
+			'high',
 			array( 'metabox' => 'settings' )
 		);
 		add_meta_box(
