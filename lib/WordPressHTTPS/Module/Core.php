@@ -37,9 +37,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		add_filter('stylesheet_directory_uri', array(&$this, 'secure_url'), 10);
 		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
 		add_filter('get_avatar', array(&$this, 'secure_url'), 10);
-
-		// Filter admin_url
-		add_filter('admin_url', array(&$this, 'admin_url'), 10, 3);
+		add_filter('admin_url', array(&$this, 'secure_url'), 10);
 
 		// Filter site_url
 		add_filter('site_url', array(&$this, 'site_url'), 10, 4);
@@ -56,15 +54,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		$filters = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link', 'day_link', 'month_link', 'year_link', 'comment_reply_link', 'category_link', 'author_link', 'archives_link', 'tag_link', 'search_link');
 		foreach( $filters as $filter ) {
 			add_filter($filter, array(&$this, 'secure_post_link'), 10);
-		}
-
-		// Force SSL Admin / Login
-		if ( is_admin() || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' ) ) {
-			if ( $this->getPlugin()->getSetting('ssl_admin') || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' && $this->getPlugin()->getSetting('ssl_login') ) ) {
-				$this->getPlugin()->redirect('https');
-			} else if ( $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
-				$this->getPlugin()->redirect('http');
-			}
 		}
 
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
@@ -101,42 +90,11 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 			}
 		}
 
-		// Check if the page needs to be redirected
-		add_action('template_redirect', array(&$this, 'redirect_check'), 10, 1);
+		// Remove redirect_count cookie
 		add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
-	}
 
-	/**
-	 * Admin URL
-	 * WordPress Filter - admin_url
-	 *
-	 * @param string $url
-	 * @param string $path
-	 * @param int $blog_id
-	 * @return string $url
-	 */
-	public function admin_url( $url, $path, $blog_id ) {
-		if ( ( $this->getPlugin()->getSetting('ssl_admin') || ( ( is_admin() || ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php') ) && $this->getPlugin()->isSsl() ) ) && ( ! is_multisite() || ( is_multisite() && parse_url($url, PHP_URL_HOST) == $this->getPlugin()->getHttpsUrl()->getHost() ) ) ) {
-			$url = $this->getPlugin()->makeUrlHttps($url);
-		}
-		return $url;
-	}
-
-	/**
-	 * Site URL
-	 * WordPress Filter - site_url
-	 *
-	 * @param string $url
-	 * @param string $path
-	 * @param string $scheme
-	 * @param int $blog_id
-	 * @return string $url
-	 */
-	public function site_url( $url, $path, $scheme, $blog_id ) {
-		if ( $scheme == 'https' || ( $scheme != 'http' && $this->getPlugin()->isSsl() ) ) {
-			$url = $this->getPlugin()->makeUrlHttps($url);
-		}
-		return $url;
+		// Check if the page needs to be redirected
+		$this->redirect_check();
 	}
 
 	/**
@@ -161,7 +119,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $force_ssl ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
-		} else if (  $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
+		} else if ( !is_null($force_ssl) && !$force_ssl ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
 		}
 		return $url;
@@ -187,6 +145,26 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	}
 
 	/**
+	 * Site URL
+	 * WordPress Filter - site_url
+	 *
+	 * @param string $url
+	 * @param string $path
+	 * @param string $scheme
+	 * @param int $blog_id
+	 * @return string $url
+	 */
+	public function site_url( $url, $path, $scheme, $blog_id ) {
+		$force_ssl = apply_filters('force_ssl', null, 0, $url);
+		if ( $force_ssl ) {
+			$url = $this->getPlugin()->makeUrlHttps($url);
+		} else if ( !is_null($force_ssl) && !$force_ssl ) {
+			$url = $this->getPlugin()->makeUrlHttp($url);
+		}
+		return $url;
+	}
+
+	/**
 	 * Secure Post Link
 	 *
 	 * @param string $url
@@ -196,7 +174,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $force_ssl ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
-		} else if ( $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
+		} else if ( !is_null($force_ssl) && !$force_ssl ) {
 			$url = $this->getPlugin()->makeUrlHttp($url);
 		}
 		return $url;
@@ -212,9 +190,13 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 * @return boolean $force_ssl
 	 */
 	public function secure_admin( $force_ssl, $post_id = 0, $url = '' ) {
-		//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-		if ( $url != '' && ( $this->getPlugin()->isSsl() || $this->getPlugin()->getSetting('ssl_admin') ) && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) {
-			$force_ssl = true;
+		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) {
+			if ( $this->getPlugin()->getSetting('exclusive_https') && !$this->getPlugin()->getSetting('ssl_admin') ) {
+				$force_ssl = false;
+			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
+			} else if ( ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+				$force_ssl = true;
+			}
 		}
 		return $force_ssl;
 	}
@@ -229,8 +211,12 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 * @return boolean $force_ssl
 	 */
 	public function secure_login( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( $url != '' && force_ssl_login() && strpos($url, 'wp-login') !== false ) {
-			$force_ssl = true;
+		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
+			if ( force_ssl_login() && preg_match('/wp-login\.php$/', $url) === 1 ) {
+				$force_ssl = true;
+			} else if ( $this->getPlugin()->getSetting('ssl_login') && preg_match('/wp-login\.php/', $url) === 1 ) {
+				$force_ssl = true;
+			}
 		}
 		return $force_ssl;
 	}
@@ -324,7 +310,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 * @return boolean $force_ssl
 	 */
 	public function secure_exclusive( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( is_null($force_ssl) && $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
+		if ( is_null($force_ssl) && $this->getPlugin()->isUrlLocal($url) && $this->getPlugin()->getSetting('exclusive_https') ) {
 			$force_ssl = false;
 		}
 		return $force_ssl;
@@ -341,7 +327,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	 */
 	public function secure_different_host_admin( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $post_id > 0 || ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) ) {
-			if ( ! $this->getPlugin()->getSetting('exclusive_https') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+			if ( !$this->getPlugin()->getSetting('exclusive_https') && !$this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
 				$force_ssl = true;
 			}
 		}

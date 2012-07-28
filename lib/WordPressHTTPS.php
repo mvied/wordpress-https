@@ -39,6 +39,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'ssl_host_subdomain' =>     0,       // Is SSL Host a subdomain of WordPress host
 		'exclusive_https' =>        0,       // Redirect pages that are not secured to HTTP
 		'remove_unsecure' =>        0,       // Remove unsecure elements from HTML
+		'ssl_login' =>              0,       // Force SSL Login (Not the same as FORCE_SSL_LOGIN)
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
 		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
@@ -240,7 +241,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 							$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
 						}
 					}
-					if ( strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
+					if ( ( ( $this->isSsl() && !$this->getSetting('exclusive_https') ) || $this->getSetting('ssl_admin') ) && strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
 						$redirect_url = $redirect[1];
 						$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
 					}

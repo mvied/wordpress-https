@@ -53,7 +53,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 		$this->fixElements();
 		$this->fixCssElements();
 		$this->fixRelativeElements();
-		
+
 		// Output logger contents to browsers console if in Debug Mode
 		if ( $this->getPlugin()->getSetting('debug') == true ) {
 			$this->consoleLog();
@@ -174,9 +174,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 	 */
 	public function fixElements() {
 		if ( is_admin() ) {
-			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s?)+/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s*)?/im', $this->_html, $matches);
 		} else {
-			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s?)+/im', $this->_html, $matches);
+			preg_match_all('/\<(script|link|img|input|embed|param|iframe)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>(<\/(script|link|img|input|embed|param|iframe)>\s*)?/im', $this->_html, $matches);
 		}
 
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
@@ -306,12 +306,16 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_
 			$scheme = $matches[3][$i];
 			$updated = false;
 
+			if ( !$this->getPlugin()->isUrlLocal($url) ) {
+				continue;
+			}
+
 			$force_ssl = apply_filters('force_ssl', null, 0, $url );
 
 			if ( $force_ssl == true ) {
 				$updated = $this->getPlugin()->makeUrlHttps($url);
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
-			} else if ( $this->getPlugin()->isUrlLocal($url) && $this->getPlugin()->getSetting('exclusive_https') && strpos(get_option('home'), 'https') !== 0 ) {
+			} else if ( strpos(get_option('home'), 'https') !== 0 && !is_null($force_ssl) && !$force_ssl ) {
 				$updated = $this->getPlugin()->makeUrlHttp($url);
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			}

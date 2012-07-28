@@ -27,7 +27,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module implements Mv
 			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 		}
 		
-		add_filter('force_ssl', array(&$this, 'secure_filter_url'), 40, 3);
+		add_filter('force_ssl', array(&$this, 'secure_filter_url'), 10, 3);
 	}
 
 	/**
@@ -41,7 +41,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module implements Mv
 	 */
 	public function secure_filter_url( $force_ssl, $post_id = 0, $url = '' ) {
 		// Check secure filters
-		if ( sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
+		if ( is_null($force_ssl) && sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
 			foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
 				if ( preg_match('/' . str_replace('/', '\/', $filter) . '/', $url) === 1 ) {
 					$force_ssl = true;
