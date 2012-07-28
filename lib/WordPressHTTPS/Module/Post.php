@@ -1,6 +1,6 @@
 <?php 
 /**
- * Admin Post Module
+ * Post Module
  * 
  * Adds settings to the edit post screen.
  *
@@ -9,7 +9,7 @@
  * 
  */
 
-class WordPressHTTPS_Module_Admin_Post extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
+class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize Module 

@@ -1,7 +1,7 @@
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
-<input type="hidden" name="action" value="network-save" />
+<input type="hidden" name="action" value="wphttps-network" />
 
 <p class="button-controls">
 	<input type="submit" name="settings-save" value="Save Changes" class="button-primary" id="network-settings-save" />

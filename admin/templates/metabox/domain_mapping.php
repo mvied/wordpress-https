@@ -56,7 +56,7 @@
 	</tr>
 </table>
 
-<input type="hidden" name="action" value="settings-save" />
+<input type="hidden" name="action" value="wphttps-domain-mapping" />
 
 <p class="button-controls">
 	<input type="submit" name="domain_mapping-save" value="Save Changes" class="button-primary" id="domain_mapping-save" />

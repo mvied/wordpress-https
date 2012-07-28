@@ -33,9 +33,6 @@ Once you have identified the insecure elements, you need to figure out what them
  <li>The element is internal (hosted on your server) but does not get changed to HTTPS. This is often due to a background image in CSS or an image or file path in JavaScript being hard-coded to HTTP inside of a CSS file. The plugin can not fix these. The image paths must be changed to relative links. For example `http://www.example.com/wp-content/themes/mytheme/images/background.jpg` to simply `/wp-content/themes/mytheme/images/background.jpg`. Ensure you copy the entire path, including the prepended slash (very important).</li>
 </ul>
 
-= I'm receiving a blank page with no error when I activate the plugin. What gives? =
-This is most commonly due to PHP's memory limit being too low. Check your Apache error logs just to be sure. Talk to your hosting provider about increading PHP's memory limit.
-
 = I can't get into my admin panel. How do I fix it? =
 Go to /wp-content/plugins/wordpress-https/wordpress-https.php and uncomment (remove the two forward slashes before) the line below, or go to your wp-config.php file and add this line. Hit any page on your site, and then remove it or comment it out again.
 `define('WPHTTPS_RESET', true);`
@@ -46,8 +43,14 @@ To make your entire website secure, you simply need to change your site url to u
 = How do I make only certain pages secure? =
 The plugin adds a meta box to the add/edit post screen entitled HTTPS. In that meta box, a checkbox for 'Secure Post' has been added to make this process easy. See Screenshots if you're having a hard time finding it.
 
+= I'm using Force SSL Administration and all of the links to the front-end of my site are HTTPS. Why? =
+For many users this behavior is desirable. If you would like links the the front-end of your site to be HTTP, enable Force SSL Exclusively and do not secure your front-end pages.
+
 = I'm getting 404 errors on all of my pages. Why? =
 If you're using a public/shared SSL, try disabling your custom permalink structure. Some public/shared SSL's have issues with WordPress' permalinks because of the way they are configured. If you continue to recieve 404 errors, there may be no way to use WordPress with that particular public/shared SSL.
+
+= I'm receiving a blank page with no error. What gives? =
+This is most commonly due to PHP's memory limit being too low. Check your Apache error logs just to be sure. Talk to your hosting provider about increading PHP's memory limit.
 
 = Is there a hook or filter to force pages to be secure? =
 Yes! Here is an example of how to use the 'force_ssl' filter to force a page to be secure.

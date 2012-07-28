@@ -9,7 +9,7 @@
  * 
  */
 
-class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
+class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize Module
@@ -19,7 +19,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 */
 	public function init() {
 		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
-			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'settings-save' ) {
+			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'wphttps-settings' ) {
 				add_action('plugins_loaded', array(&$this, 'save'), 1);
 			}
 
@@ -27,7 +27,25 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 
 			// Add scripts
-			add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
+			add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+		}
+
+		// Add admin menus
+		add_action('admin_menu', array(&$this, 'admin_menu'));
+	}
+
+	/**
+	 * Admin panel menu option
+	 * WordPress Hook - admin_menu
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function admin_menu() {
+		if ( $this->getPlugin()->getSetting('admin_menu') === 'side' ) {
+			add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Settings'), 'dispatch'), '', 88);
+		} else {
+			add_options_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Settings'), 'dispatch'));
 		}
 	}
 
@@ -46,24 +64,6 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			'main',
 			'core',
 			array( 'metabox' => 'settings' )
-		);
-		add_meta_box(
-			$this->getPlugin()->getSlug() . '_domain_mapping',
-			__( 'Domain Mapping', $this->getPlugin()->getSlug() ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'toplevel_page_' . $this->getPlugin()->getSlug(),
-			'main',
-			'core',
-			array( 'metabox' => 'domain_mapping' )
-		);
-		add_meta_box(
-			$this->getPlugin()->getSlug() . '_filters',
-			__( 'URL Filters', $this->getPlugin()->getSlug() ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'toplevel_page_' . $this->getPlugin()->getSlug(),
-			'main',
-			'default',
-			array( 'metabox' => 'filters' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_updates',
@@ -133,7 +133,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 	 * @param none
 	 * @return void
 	 */
-	public function enqueue_scripts() {
+	public function admin_enqueue_scripts() {
 		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/settings.css', array(), $this->getPlugin()->getVersion());
 		wp_enqueue_script('jquery-form');
 		wp_enqueue_script('post');
@@ -168,13 +168,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 		$errors = array();
 		$reload = false;
 		$logout = false;
-		if ( isset($_POST['settings-reset']) ) {
-			foreach ($this->getPlugin()->getSettings() as $key => $default) {
-				$this->getPlugin()->setSetting($key, $default);
-			}
-			$this->getPlugin()->install();
-			$reload = true;
-		} else if ( isset($_POST['settings-save']) ) {
+		if ( isset($_POST['settings-save']) ) {
 			foreach ($this->getPlugin()->getSettings() as $key => $default) {
 				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
 					$_POST[$key] = 0;
@@ -228,7 +222,6 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 					} else if ( $key == 'ssl_admin' ) {
 						if ( force_ssl_admin() && $this->getPlugin()->getSetting('ssl_host_diff') ) {
 							$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN should not be set to true in your wp-config.php while using a non-default SSL Host.';
-							$_POST[$key] = 0;
 						// If forcing SSL Admin and currently not SSL, logout user
 						} else if ( $_POST[$key] == 1 && !$this->getPlugin()->isSsl() ) {
 							$logout = true;
@@ -248,25 +241,11 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 					$this->getPlugin()->setSetting($key, $_POST[$key]);
 				}
 			}
-		} else if ( isset($_POST['filters-save']) ) {
-			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
-			$filters = array_filter($filters); // Removes blank array items
-			$this->getPlugin()->setSetting('secure_filter', $filters);
-			$message = "URL Filters saved.";
-		} else if ( isset($_POST['filters-reset']) ) {
-			$this->getPlugin()->setSetting('secure_filter', array());
-			$reload = true;
-		} else if ( isset($_POST['domain_mapping-save']) ) {
-			$ssl_host_mapping = array();
-			for( $i=0; $i<sizeof($_POST['http_domain']); $i++ ) {
-				if ( isset($_POST['http_domain'][$i]) && $_POST['http_domain'][$i] != '' && isset($_POST['https_domain'][$i]) && $_POST['https_domain'][$i] != '' ) {
-					$ssl_host_mapping[$_POST['http_domain'][$i]] = $_POST['https_domain'][$i];
-				}
+		} else if ( isset($_POST['settings-reset']) ) {
+			foreach ($this->getPlugin()->getSettings() as $key => $default) {
+				$this->getPlugin()->setSetting($key, $default);
 			}
-			$this->getPlugin()->setSetting('ssl_host_mapping', $ssl_host_mapping);
-			$message = "Domain Mapping saved.";
-		} else if ( isset($_POST['domain_mapping-reset']) ) {
-			$this->getPlugin()->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping);
+			$this->getPlugin()->install();
 			$reload = true;
 		}
 
@@ -274,23 +253,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			wp_logout();
 		}
 
-		if ( array_key_exists('ajax', $_POST) ) {
-			error_reporting(0);
-			while(@ob_end_clean());
-			if ( sizeof( $errors ) > 0 ) {
-				echo "<div class=\"error below-h2 fade wphttps-message\" id=\"message\">\n\t<ul>\n";
-				foreach ( $errors as $error ) {
-					echo "\t\t<li><p>".$error."</p></li>\n";
-				}
-				echo "\t</ul>\n</div>\n";
-			} else {
-				echo "<div class=\"updated below-h2 fade wphttps-message\" id=\"message\"><p>" . $message . "</p></div>\n";
-				if ( $logout || $reload ) {
-					echo "<script type=\"text/javascript\">window.location.reload();</script>";
-				}
-			}
-			exit();
-		}
+		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
 	}
 	
 }

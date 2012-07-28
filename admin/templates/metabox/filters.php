@@ -11,7 +11,7 @@
 		</td>
 	</tr>
 </table>
-<input type="hidden" name="action" value="settings-save" />
+<input type="hidden" name="action" value="wphttps-filters" />
 <p class="button-controls">
 	<input type="submit" name="filters-save" value="Save Changes" class="button-primary" id="filters-save" />
 	<input type="submit" name="filters-reset" value="Reset" class="button-secondary" id="filters-reset" />

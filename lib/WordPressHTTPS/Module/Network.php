@@ -9,7 +9,7 @@
  * 
  */
 
-class WordPressHTTPS_Module_Admin_Network extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
+class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
 
 	/**
 	 * Initialize Module
@@ -21,7 +21,7 @@ class WordPressHTTPS_Module_Admin_Network extends Mvied_Plugin_Module implements
 		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 			// Network admin
 			if ( strpos($_SERVER['REQUEST_URI'], 'wp-admin/network') !== false ) {
-				if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'network-save' ) {
+				if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'wphttps-network' ) {
 					add_action('plugins_loaded', array(&$this, 'save'), 1);
 				}
 
@@ -29,6 +29,21 @@ class WordPressHTTPS_Module_Admin_Network extends Mvied_Plugin_Module implements
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
 			}
 		}
+
+		if ( is_multisite() ) {
+			//add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
+		}
+	}
+
+	/**
+	 * Network admin panel menu option
+	 * WordPress Hook - network_admin_menu
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function network_admin_menu() {
+		add_menu_page('HTTPS', 'HTTPS', 'manage_options', $this->getPlugin()->getSlug(), array($this->getPlugin()->getModule('Network'), 'dispatch'), '', 88);
 	}
 
 	/**

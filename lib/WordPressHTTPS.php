@@ -432,4 +432,27 @@ class WordPressHTTPS extends Mvied_Plugin {
 		}
 	}
 
+	/**
+	 * Get relevent files and directories within WordPress
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function getDirectories() {
+		$directories = array();
+		$scannedDirectories = array();
+		$directories[] = get_theme_root() . '/' . get_template();
+
+		foreach( $directories as $directory ) {
+			$scannedDirectories[$directory]['name'] = $directory;
+			if ( is_readable($directory) && ($files = scandir($directory)) ) {
+				$scannedDirectories[$directory]['files'] = $files;
+				unset($files); 
+			} else {
+				$scannedDirectories[$directory]['error'] = "Unable to read directory.";
+			}
+		}
+		return $scannedDirectories;
+	}
+
 }
