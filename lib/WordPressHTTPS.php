@@ -166,7 +166,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 
 			// If secure front page option exists, create front page filter
 			if ( $this->getSetting('frontpage') ) {
-				$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim($this->getHttpUrl(), '/') . '/$')));
+				$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim(str_replace('http://', '', $this->getHttpUrl()->toString()), '/') . '/$')));
 				$this->setSetting('frontpage', 0);
 			}
 
