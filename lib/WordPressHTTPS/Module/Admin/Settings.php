@@ -164,6 +164,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			return false;
 		}
 
+		$message = "Settings saved.";
 		$errors = array();
 		$reload = false;
 		$logout = false;
@@ -251,6 +252,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
 			$filters = array_filter($filters); // Removes blank array items
 			$this->getPlugin()->setSetting('secure_filter', $filters);
+			$message = "URL Filters saved.";
 		} else if ( isset($_POST['filters-reset']) ) {
 			$this->getPlugin()->setSetting('secure_filter', array());
 			$reload = true;
@@ -262,6 +264,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 				}
 			}
 			$this->getPlugin()->setSetting('ssl_host_mapping', $ssl_host_mapping);
+			$message = "Domain Mapping saved.";
 		} else if ( isset($_POST['domain_mapping-reset']) ) {
 			$this->getPlugin()->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping);
 			$reload = true;
@@ -281,7 +284,7 @@ class WordPressHTTPS_Module_Admin_Settings extends Mvied_Plugin_Module implement
 				}
 				echo "\t</ul>\n</div>\n";
 			} else {
-				echo "<div class=\"updated below-h2 fade wphttps-message\" id=\"message\"><p>Settings saved.</p></div>\n";
+				echo "<div class=\"updated below-h2 fade wphttps-message\" id=\"message\"><p>" . $message . "</p></div>\n";
 				if ( $logout || $reload ) {
 					echo "<script type=\"text/javascript\">window.location.reload();</script>";
 				}
