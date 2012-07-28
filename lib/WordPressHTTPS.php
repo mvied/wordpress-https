@@ -122,15 +122,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$this->getLogger()->log('Secure External URLs: [ ' . implode(', ', (array)$this->getSetting('secure_external_urls')) . ' ]');
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 
-		// Redirect login page. This is not pluggable due to the redirect methods used in wp-login.php
-		if ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'wp-login.php' ) {
-			setcookie(constant('TEST_COOKIE'), 'WP Cookie check', 0);
-			if ( $this->getSetting('ssl_admin') ) {
-				$this->redirect('https');
-			}
-		}
-
 		parent::init();
+		do_action($this->getSlug() . '_init');
 	}
 
 	/**
