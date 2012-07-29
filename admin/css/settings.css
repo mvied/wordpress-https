@@ -118,10 +118,14 @@
 	float: left;
 }
 #wphttps-main p.description {
-	margin: 7px 0 0 10px;
+	margin: .5em 0 0 10px;
 	width: 80%;
 	display: block;
 	float: left;
+	line-height: 1.2em;
+}
+#wphttps-main #secure_filter_row p.description {
+	margin: 0;
 }
 #wphttps-main #domain_mapping td {
 	padding: 10px 0;
