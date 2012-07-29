@@ -28,18 +28,18 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 
 		// Filter URL's
 		add_filter('bloginfo_url', array(&$this, 'secure_url'), 10);
-		add_filter('plugins_url', array(&$this, 'secure_url'), 10);
 		add_filter('logout_url', array(&$this, 'secure_url'), 10);
 		add_filter('login_url', array(&$this, 'secure_url'), 10);
-		add_filter('wp_get_attachment_url', array(&$this, 'secure_url'), 10);
-		add_filter('template_directory_uri', array(&$this, 'secure_url'), 10);
-		add_filter('stylesheet_directory_uri', array(&$this, 'secure_url'), 10);
 		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
-		add_filter('get_avatar', array(&$this, 'secure_url'), 10);
 		add_filter('admin_url', array(&$this, 'secure_url'), 10);
 
-		// Filter includes_url
-		add_filter('includes_url', array(&$this, 'includes_url'), 10);
+		// Filter Element URL's
+		add_filter('get_avatar', array(&$this, 'element_url'), 10);
+		add_filter('wp_get_attachment_url', array(&$this, 'element_url'), 10);
+		add_filter('template_directory_uri', array(&$this, 'element_url'), 10);
+		add_filter('stylesheet_directory_uri', array(&$this, 'element_url'), 10);
+		add_filter('plugins_url', array(&$this, 'element_url'), 10);
+		add_filter('includes_url', array(&$this, 'element_url'), 10);
 
 		// Filter site_url
 		add_filter('site_url', array(&$this, 'site_url'), 10, 4);
@@ -128,12 +128,12 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	}
 
 	/**
-	 * Includes URL
+	 * Secure Element URL
 	 *
 	 * @param string $url
 	 * @return string $url
 	 */
-	public function includes_url( $url = '' ) {
+	public function element_url( $url = '' ) {
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $this->getPlugin()->isSsl() || $force_ssl ) {
 			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
