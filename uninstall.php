@@ -15,13 +15,15 @@ $options = array(
 	'wordpress-https_ssl_port',
 	'wordpress-https_exclusive_https',
 	'wordpress-https_frontpage',
+	'wordpress-https_ssl_login',
 	'wordpress-https_ssl_admin',
 	'wordpress-https_ssl_proxy',
 	'wordpress-https_ssl_host_subdomain',
 	'wordpress-https_version',
 	'wordpress-https_debug',
 	'wordpress-https_admin_menu',
-	'wordpress-https_secure_filter'
+	'wordpress-https_secure_filter',
+	'wordpress-https_ssl_host_mapping'
 );
 
 if ( is_multisite() && isset($_GET['networkwide']) && $_GET['networkwide'] == 1 ) {
