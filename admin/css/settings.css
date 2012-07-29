@@ -125,7 +125,8 @@
 	line-height: 1.2em;
 }
 #wphttps-main #secure_filter_row p.description {
-	margin: 0;
+	margin: .5em 10px 0 0;
+	width: auto;
 }
 #wphttps-main #domain_mapping td {
 	padding: 10px 0;
