@@ -39,9 +39,11 @@ Go to /wp-content/plugins/wordpress-https/wordpress-https.php and uncomment (rem
 
 = How do I make my whole website secure? =
 To make your entire website secure, you simply need to change your site url to use HTTPS instead of HTTP. Please read <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">how to change the site url</a>.
+Alternatively, you can use URL Filters in the WordPress HTTPS Settings to secure your entire site by putting just '/' as a filter. This will cause any URL with a forward slash to be secure (all of them).
 
 = How do I make only certain pages secure? =
 The plugin adds a meta box to the add/edit post screen entitled HTTPS. In that meta box, a checkbox for 'Secure Post' has been added to make this process easy. See Screenshots if you're having a hard time finding it.
+Alternatively, you can use URL Filters to secure post and pages by their permalink.
 
 = I'm using Force SSL Administration and all of the links to the front-end of my site are HTTPS. Why? =
 For many users this behavior is desirable. If you would like links the the front-end of your site to be HTTP, enable Force SSL Exclusively and do not secure your front-end pages.
