@@ -58,7 +58,7 @@ This is most commonly due to PHP's memory limit being too low. Check your Apache
 Yes! Here is an example of how to use the 'force_ssl' filter to force a page to be secure.
 `function custom_force_ssl( $force_ssl, $post_id = 0, $url = '' ) {
 	if ( $post_id == 5 ) {
-		return true
+		$force_ssl = true;
 	}
 	return $force_ssl;
 }
