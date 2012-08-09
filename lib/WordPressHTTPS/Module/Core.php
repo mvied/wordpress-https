@@ -120,9 +120,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	public function secure_url( $url = '' ) {
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $force_ssl ) {
-			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
+			$url = $this->getPlugin()->makeUrlHttps($url);
 		} else if ( !is_null($force_ssl) && !$force_ssl ) {
-			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
+			$url = $this->getPlugin()->makeUrlHttp($url);
 		}
 		return $url;
 	}
@@ -484,7 +484,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	public function redirect_check() {
 		global $post;
 
-		$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
+		$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $_SERVER['REQUEST_URI'] );
 
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';

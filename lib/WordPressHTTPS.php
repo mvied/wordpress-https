@@ -386,18 +386,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 			$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
 		}
 
+		$current_url = ( $this->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $current_path;
 		if ( $scheme == 'https' ) {
-			if ( $this->getHttpUrl()->getPath() != '/' ) {
-				$current_path = str_replace($this->getHttpUrl()->getPath(), '', $current_path);
-			}
-			$current_url = rtrim($this->getHttpUrl(), '/') . '/' . ltrim($current_path, '/');
-		} else {
-			if ( $this->getHttpsUrl()->getPath() != '/' ) {
-				$current_path = str_replace($this->getHttpsUrl()->getPath(), '', $current_path);
-			}
-			$current_url = rtrim($this->getHttpsUrl(), '/') . '/' . ltrim($current_path, '/');
-		}
-		if ( !$this->isSsl() ) {
 			$url = $this->makeUrlHttps($current_url);
 		} else {
 			$url = $this->makeUrlHttp($current_url);
