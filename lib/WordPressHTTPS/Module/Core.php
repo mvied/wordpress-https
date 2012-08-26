@@ -96,7 +96,11 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 		add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 
 		// Check if the page needs to be redirected
-		add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'redirect_check'));
+		if ( is_admin() || preg_match('/wp-login\.php/', $GLOBALS['pagenow']) === 1 ) {
+			add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'redirect_check'));
+		} else {
+			add_action('template_redirect', array(&$this, 'redirect_check'));
+		}
 	}
 
 	/**
