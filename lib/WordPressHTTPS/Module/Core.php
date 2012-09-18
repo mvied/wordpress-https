@@ -140,9 +140,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	public function element_url( $url = '' ) {
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
 		if ( $this->getPlugin()->isSsl() || $force_ssl ) {
-			$url = rtrim($this->getPlugin()->makeUrlHttps(rtrim($url, '/') . '/'), '/');
+			$url = $this->getPlugin()->makeUrlHttps($url);
 		} else if ( !is_null($force_ssl) && !$force_ssl ) {
-			$url = rtrim($this->getPlugin()->makeUrlHttp(rtrim($url, '/') . '/'), '/');
+			$url = $this->getPlugin()->makeUrlHttp($url);
 		}
 		return $url;
 	}
