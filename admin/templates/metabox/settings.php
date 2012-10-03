@@ -24,18 +24,6 @@
 			</fieldset>
 		</td>
 	</tr>
-	<tr valign="top" id="ssl_login_row">
-		<th scope="row">Force SSL Login</th>
-		<td>
-			<fieldset>
-				<label for="ssl_login">
-					<input type="hidden" name="ssl_login" value="0" />
-					<input name="ssl_login" type="checkbox" id="ssl_login" value="1"<?php echo ( $this->getPlugin()->getSetting('ssl_login') ? ' checked="checked"' : ''); ?> />
-					<p class="description">Always use HTTPS when logging in. This differs from <a href="http://codex.wordpress.org/Administration_Over_SSL#Example" target="_blank">FORCE_SSL_LOGIN</a>.</p>
-				</label>
-			</fieldset>
-		</td>
-	</tr>
 	<tr valign="top" id="ssl_admin_row">
 		<th scope="row">Force SSL Administration</th>
 		<td>

@@ -236,7 +236,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
 			if ( force_ssl_login() && preg_match('/wp-login\.php$/', $url) === 1 ) {
 				$force_ssl = true;
-			} else if ( $this->getPlugin()->getSetting('ssl_login') && preg_match('/wp-login\.php/', $url) === 1 ) {
+			} else if ( $this->getPlugin()->getSetting('ssl_admin') && preg_match('/wp-login\.php/', $url) === 1 ) {
 				$force_ssl = true;
 			}
 		}

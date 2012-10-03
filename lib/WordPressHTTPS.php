@@ -39,7 +39,6 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'ssl_host_subdomain' =>     0,       // Is SSL Host a subdomain of WordPress host
 		'exclusive_https' =>        0,       // Redirect pages that are not secured to HTTP
 		'remove_unsecure' =>        0,       // Remove unsecure elements from HTML
-		'ssl_login' =>              0,       // Force SSL Login (Not the same as FORCE_SSL_LOGIN)
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
 		'ssl_proxy' =>              0,       // Proxy detection
 		'debug' =>                  0,       // Debug Mode
