@@ -38,7 +38,7 @@ spl_autoload_register('wphttps_autoloader');
  */
 //define('WPHTTPS_RESET', true);
 
-if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') && class_exists('WordPressHTTPS') ) {
+if ( function_exists('get_bloginfo') && ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS;
 	$wordpress_https->setSlug('wordpress-https');
 	$wordpress_https->setVersion('3.2');
