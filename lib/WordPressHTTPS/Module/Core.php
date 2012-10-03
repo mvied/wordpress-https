@@ -255,8 +255,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	public function secure_post( $force_ssl, $post_id = 0, $url = '' ) {
 		global $wpdb;
 
-		if ( $url != '' ) {
-			$url_parts = parse_url($url);
+		if ( $url != '' && ($url_parts = parse_url($url)) ) {
 			if ( $this->getPlugin()->isUrlLocal($url) ) {
 				if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
 					if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
@@ -281,37 +280,37 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 					$post = $post_id;
 				} else if ( preg_match("/page_id=([\d]+)/", parse_url($url, PHP_URL_QUERY), $postID) ) {
 					$post = $postID[1];
-				} else if ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) {
+				} else if ( isset($url_parts['path']) && ( $url_parts['path'] == '' || $url_parts['path'] == '/' ) ) {
 					if ( get_option('show_on_front') == 'page' ) {
 						$post = get_option('page_on_front');
 					}
-				} else if ( $post = get_page_by_path($url_parts['path']) ) {
+				} else if ( isset($url_parts['path']) && ($post = get_page_by_path($url_parts['path'])) ) {
 					$post = $post->ID;
 				}
-			}
 
-			if ( is_multisite() ) {
-				$url_path = '/';
-				$url_path_segments = explode('/', $url_parts['path']);
-				if ( sizeof($url_path_segments) > 1 ) {
-					foreach( $url_path_segments as $url_path_segment ) {
-						if ( !$blog_id && $url_path_segment != '' ) {
-							$url_path .= '/' . $url_path_segment . '/';
-							if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
-								break;
+				if ( is_multisite() && isset($url_parts['host']) && isset($url_parts['path']) ) {
+					$blog_id = false;
+					$url_path = '/';
+					$url_path_segments = explode('/', $url_parts['path']);
+					if ( sizeof($url_path_segments) > 1 ) {
+						foreach( $url_path_segments as $url_path_segment ) {
+							if ( !$blog_id && $url_path_segment != '' ) {
+								$url_path .= '/' . $url_path_segment . '/';
+								if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
+									break;
+								}
 							}
 						}
 					}
-				}
-				if ( !$blog_id ) {
-					$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
-				}
-
-				if ( $blog_id && $blog_id != $wpdb->blogid ) {
-					if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
-						$force_ssl = true;
-					} else {
-						$force_ssl = false;
+					if ( !$blog_id ) {
+						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
+					}
+					if ( $blog_id && $blog_id != $wpdb->blogid ) {
+						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+							$force_ssl = true;
+						} else {
+							$force_ssl = false;
+						}
 					}
 				}
 			}
@@ -488,7 +487,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module implements Mvied_Pl
 	public function redirect_check() {
 		global $post;
 
-		$force_ssl = apply_filters('force_ssl', null, $post->ID, ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $_SERVER['REQUEST_URI'] );
+		$force_ssl = apply_filters('force_ssl', null, ( $post ? $post->ID : null ), ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $_SERVER['REQUEST_URI'] );
 
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';
