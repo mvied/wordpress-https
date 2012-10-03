@@ -9,7 +9,7 @@
  * 
  */
 
-class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
+class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module {
 
 	/**
 	 * Initialize Module 

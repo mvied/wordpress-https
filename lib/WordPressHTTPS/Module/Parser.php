@@ -7,7 +7,7 @@
  *
  */
 
-class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module implements Mvied_Plugin_Module_Interface {
+class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 
 	/**
 	 * HTML
