@@ -195,8 +195,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 */
 	public function isUrlLocal($url) {
 		if ( $url_parts = parse_url($url) && $this->getHttpUrl()->getHost() != $url_parts['host'] && $this->getHttpsUrl()->getHost() != $url_parts['host'] ) {
-				return false;
-			}
+			return false;
 		}
 		return true;
 	}
