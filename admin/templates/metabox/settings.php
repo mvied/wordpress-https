@@ -31,7 +31,7 @@
 				<label for="ssl_admin">
 					<input type="hidden" name="ssl_admin" value="0" />
 					<input name="ssl_admin" type="checkbox" id="ssl_admin" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getPlugin()->getSetting('ssl_admin')) ? ' checked="checked"' : '') ); ?> />
-					<p class="description">Always use HTTPS while in the admin panel. Force SSL Login is assumed. This setting is identical to <a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">FORCE_SSL_ADMIN</a>.</p>
+					<p class="description">Always use HTTPS while in the admin panel. This setting is identical to <a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">FORCE_SSL_ADMIN</a>.</p>
 				</label>
 			</fieldset>
 		</td>
