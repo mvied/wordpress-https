@@ -92,14 +92,13 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			}
 		}
 
-		// Remove redirect_count cookie
-		add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
-
 		// Check if the page needs to be redirected
 		if ( is_admin() || preg_match('/wp-login\.php/', $GLOBALS['pagenow']) === 1 ) {
 			add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'redirect_check'));
+			add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 		} else {
 			add_action('template_redirect', array(&$this, 'redirect_check'));
+			add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 		}
 	}
 
