@@ -81,6 +81,7 @@
 					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> <span>Auto</span>
 					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span>Yes</span>
 				</label>
+				<p class="description">If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No.</p>
 			</fieldset>
 		</td>
 	</tr>

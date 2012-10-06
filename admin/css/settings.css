@@ -81,7 +81,8 @@
 }
 #wphttps-main label.label-radio {
 	display: block;
-	margin-top: 5px;
+	margin: 5px 5px 0 0;
+	float: left;
 }
 #wphttps-main #settings-reset,
 #wphttps-main #network-settings-reset,
@@ -118,8 +119,8 @@
 	float: left;
 }
 #wphttps-main p.description {
-	margin: .5em 0 0 10px;
-	width: 80%;
+	margin: .5em 0 0 .5em;
+	width: 75%;
 	display: block;
 	float: left;
 	line-height: 1.2em;
@@ -127,6 +128,9 @@
 #wphttps-main #secure_filter_row p.description {
 	margin: .5em 10px 0 0;
 	width: auto;
+}
+#wphttps-main #ssl_proxy_row p.description {
+	width: 65%;
 }
 #wphttps-main #domain_mapping td {
 	padding: 10px 0;
