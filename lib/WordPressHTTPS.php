@@ -134,11 +134,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 	public function install() {
 		global $wpdb;
 
-		if ( function_exists('is_multisite') && is_multisite() && isset($_GET['networkwide']) && $_GET['networkwide'] == 1 ) {
+		if ( is_multisite() && is_network_admin() ) {
 			$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs));
 		} else {
 			$blogs = array($wpdb->blogid);
 		}
+
 		foreach ( $blogs as $blog_id ) {
 			// Add Settings
 			foreach ( $this->getSettings() as $option => $value ) {
@@ -158,9 +159,9 @@ class WordPressHTTPS extends Mvied_Plugin {
 			}
 
 			// If secure front page option exists, create front page filter
-			if ( $this->getSetting('frontpage') ) {
+			if ( $this->getSetting('frontpage', $blog_id) ) {
 				$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim(str_replace('http://', '', $this->getHttpUrl()->toString()), '/') . '/$')));
-				$this->setSetting('frontpage', 0);
+				$this->setSetting('frontpage', 0, $blog_id);
 			}
 
 			// Reset cache
@@ -168,7 +169,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 			$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
 
 			// Set default domain mapping
-			if ( $this->getSetting('ssl_host_mapping') == array() ) {
+			if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
 				$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
 			}
 		}
