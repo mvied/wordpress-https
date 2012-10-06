@@ -179,9 +179,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$https_domain = $this->getHttpsUrl()->getBaseHost();
 
 		if ( $this->getHttpsUrl()->setScheme('http')->toString() != $this->getHttpUrl()->toString() && $http_domain == $https_domain ) {
-			$this->setSetting('ssl_host_subdomain', 1, $blog_id);
+			$subdomain = true;
 		} else {
-			$this->setSetting('ssl_host_subdomain', 0, $blog_id);
+			$subdomain = false;
+		}
+		foreach ( $blogs as $blog_id ) {
+			$this->setSetting('ssl_host_subdomain', $subdomain, $blog_id);
 		}
 	}
 
