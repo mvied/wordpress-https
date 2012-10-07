@@ -93,7 +93,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		}
 
 		// Check if the page needs to be redirected
-		if ( is_admin() || preg_match('/wp-login\.php/', $GLOBALS['pagenow']) === 1 ) {
+		if ( is_admin() || ( isset($GLOBALS['pagenow']) && preg_match('/wp-login\.php/', $GLOBALS['pagenow']) === 1 ) ) {
 			add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'redirect_check'));
 			add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 		} else {
@@ -303,7 +303,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
 					}
 					if ( $blog_id && $blog_id != $wpdb->blogid ) {
-						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && is_user_logged_in() ) ) ) {
+						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
 							$force_ssl = true;
 						} else {
 							$force_ssl = false;
@@ -345,7 +345,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function secure_different_host_admin( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $post_id > 0 || ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) ) {
-			if ( !$this->getPlugin()->getSetting('exclusive_https') && !$this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && is_user_logged_in() ) {
+			if ( !$this->getPlugin()->getSetting('exclusive_https') && !$this->getPlugin()->getSetting('ssl_host_subdomain') && $this->getPlugin()->getSetting('ssl_host_diff') && $this->getPlugin()->getSetting('ssl_admin') && function_exists('is_user_logged_in') && is_user_logged_in() ) {
 				$force_ssl = true;
 			}
 		}
