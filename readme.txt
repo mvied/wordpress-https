@@ -82,6 +82,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.2.1 =
 * Added Network settings for multisite installations.
+* Bug Fix - Elements should now be properly secured by the file extension check in the Parser.
 * Bug Fix - FORCE_SSL_ADMIN option should no longer cause redirect loops if the ssl_admin setting is set to false.
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
