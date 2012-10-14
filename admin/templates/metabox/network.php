@@ -48,6 +48,11 @@
 	}
 
 	$defaults = $this->getPlugin()->getSetting('network_defaults');
+	if ( sizeof($defaults) == 0 ) {
+		foreach( $this->getPlugin()->getSettings() as $setting => $default ) {
+			$defaults[$setting] = $default;
+		}
+	}
 ?>
 
 	<tr>
