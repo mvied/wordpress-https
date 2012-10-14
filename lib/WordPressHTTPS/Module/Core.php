@@ -260,7 +260,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 		if ( $url != '' && ($url_parts = parse_url($url)) ) {
 			if ( $this->getPlugin()->isUrlLocal($url) ) {
-				if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' ) {
+				if ( $this->getPlugin()->getHttpsUrl()->getPath() != '/' && isset($url_parts['path']) ) {
 					if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 						$url_parts['path'] = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), '', $url_parts['path']);
 					}
@@ -270,7 +270,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 				}
 
 				// qTranslate integration - strips language from beginning of url path
-				if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true ) {
+				if ( defined('QTRANS_INIT') && constant('QTRANS_INIT') == true && isset($url_parts['path']) ) {
 					global $q_config;
 					if ( isset($q_config['enabled_languages']) ) {
 						foreach($q_config['enabled_languages'] as $language) {
