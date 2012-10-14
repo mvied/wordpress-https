@@ -58,7 +58,7 @@
 	<tr>
 		<td class="blog-blog"><strong>New Site Defaults</strong></td>
 		<td class="blog-host"><input name="blog_default[ssl_host]" type="text" class="regular-text code" value="<?=$defaults['ssl_host']?>" /></td>
-		<td class="blog-ssl_admin"><input type="hidden" name="blog_default[ssl_admin]" value="0" /><input name="blog_default[ssl_admin]" type="checkbox" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : ($defaults['ssl_admin'] ? ' checked="checked"' : '') ); ?> /></td>
+		<td class="blog-ssl_admin"><input type="hidden" name="blog_default[ssl_admin]" value="0" /><input name="blog_default[ssl_admin]" type="checkbox" value="1"<?php echo ($defaults['ssl_admin'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-exclusive_https"><input type="hidden" name="blog_default[exclusive_https]" value="0" /><input name="blog_default[exclusive_https]" type="checkbox" value="1"<?php echo ($defaults['exclusive_https'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-remove_unsecure"><input type="hidden" name="blog_default[remove_unsecure]" value="0" /><input name="blog_default[remove_unsecure]" type="checkbox" value="1"<?php echo ($defaults['remove_unsecure'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-debug"><input type="hidden" name="blog_default[debug]" value="0" /><input name="blog_default[debug]" type="checkbox" value="1"<?php echo ($defaults['debug'] ? ' checked="checked"' : ''); ?> /></td>
