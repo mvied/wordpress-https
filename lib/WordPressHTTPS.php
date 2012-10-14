@@ -145,13 +145,13 @@ class WordPressHTTPS extends Mvied_Plugin {
 		foreach ( $blogs as $blog_id ) {
 			// Add Settings
 			foreach ( $this->getSettings() as $option => $value ) {
-				if ( is_multisite() && get_blog_option($blog_id, $option) === false ) {
-					if ( isset($defaults[$option]) ) {
+				if ( is_multisite() ) {
+					if ( add_blog_option($blog_id, $option, $value) && isset($defaults[$option]) ) {
 						$value = $defaults[$option];
+						$this->setSetting($option, $value, $blog_id);
 					}
-					$this->setSetting($option, $value, $blog_id);
-				} else if ( get_option($option) === false ) {
-					$this->setSetting($option, $value);
+				} else {
+					add_option($option, $value);
 				}
 			}
 
