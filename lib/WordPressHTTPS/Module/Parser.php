@@ -278,7 +278,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					continue;
 				}
 
-				if ( strpos($filename, '.' . $extension) !== false ) {
+				if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
 					if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 						$this->secureElement($url, $type);
 					} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
