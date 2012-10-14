@@ -1,5 +1,5 @@
-#blog-table .blog-blog {
-	width: 15%;
+#blog-table .blog-host {
+	width: 100%;
 }
 #blog-table input[type="checkbox"] {
 	float: none;
