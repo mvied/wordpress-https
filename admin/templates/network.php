@@ -13,11 +13,8 @@ require_once('../includes/template.php'); // WordPress Dashboard Functions
 	wp_nonce_field('meta-box-order', 'meta-box-order-nonce', false );
 ?>
 	<div id="poststuff" class="columns metabox-holder">
-		<div class="postbox-container column-primary">
+		<div class="postbox-container">
 <?php do_meta_boxes('toplevel_page_' . $this->getPlugin()->getSlug() . '_network', 'main', $this); ?>
-		</div>
-		<div class="postbox-container column-secondary">
-<?php do_meta_boxes('toplevel_page_' . $this->getPlugin()->getSlug(), 'side', $this); // Use side from regular settings ?>
 		</div>
 	</div>
 </div>

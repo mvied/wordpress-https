@@ -45,6 +45,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'admin_menu' =>             'side',  // HTTPS Admin Menu location
 		'secure_filter' =>          array(), // Expressions to secure URL's against
 		'ssl_host_mapping' =>       array(), // External SSL Hosts whose HTTPS content is on another domain
+		'network_defaults' =>		array(), // Default settings for new blogs on a multisite network
 	);
 
 	/**
@@ -140,13 +141,17 @@ class WordPressHTTPS extends Mvied_Plugin {
 			$blogs = array($wpdb->blogid);
 		}
 
+		$defaults = $this->getSetting('network_defaults');
 		foreach ( $blogs as $blog_id ) {
 			// Add Settings
 			foreach ( $this->getSettings() as $option => $value ) {
 				if ( is_multisite() && get_blog_option($blog_id, $option) === false ) {
-					add_blog_option($blog_id, $option, $value);
+					if ( isset($defaults[$option]) ) {
+						$value = $defaults[$option];
+					}
+					$this->setSetting($option, $value, $blog_id);
 				} else if ( get_option($option) === false ) {
-					add_option($option, $value);
+					$this->setSetting($option, $value);
 				}
 			}
 

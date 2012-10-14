@@ -58,6 +58,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			add_filter($filter, array(&$this, 'secure_post_link'), 10);
 		}
 
+		// Run install when new blog is created
+		add_action('wpmu_new_blog', array($this->getPlugin(), 'install'), 10, 0);
+
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 			// Remove SSL Host authentication cookies on logout
 			add_action('clear_auth_cookie', array(&$this, 'clear_cookies'));

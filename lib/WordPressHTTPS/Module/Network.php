@@ -27,11 +27,14 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 
 				// Add meta boxes
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
+
+				// Add scripts
+				add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 			}
 		}
 
 		if ( is_multisite() ) {
-			//add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
+			add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
 		}
 	}
 
@@ -88,6 +91,17 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 	}
 
 	/**
+	 * Adds javascript and stylesheets to settings page in the admin panel.
+	 * WordPress Hook - enqueue_scripts
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function admin_enqueue_scripts() {
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-network-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/network.css', array($this->getPlugin()->getSlug() . '-admin-page'), $this->getPlugin()->getVersion());
+	}
+
+	/**
 	 * Render settings page
 	 *
 	 * @param none
@@ -112,10 +126,39 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 		$errors = array();
 		$reload = false;
 		$logout = false;
-		if ( isset($_POST['network-settings-reset']) ) {
+		if ( isset($_POST['network-settings-save']) ) {
+			if ( isset($_POST['blog']) && is_array($_POST['blog']) && sizeof($_POST['blog']) > 0 ) {
+				foreach( $_POST['blog'] as $blog_id => $setting ) {
+					foreach( $setting as $key => $value ) {
+						if ( $key == 'ssl_host' && $value != '' ) {
+							$blog_url = WordPressHTTPS_Url::fromString(get_site_url($blog_id, '', 'https'));
+							$value = strtolower($value);
+							// Add Scheme
+							if ( strpos($value, 'http://') === false && strpos($value, 'https://') === false ) {
+								$value = 'https://' . $value;
+							}
 
-		} else if ( isset($_POST['network-settings-save']) ) {
+							$ssl_host = WordPressHTTPS_Url::fromString($value);
 
+							// Add Port
+							$port = (($blog_url->getPort() && $blog_url->getPort() != 80 && $blog_url->getPort() != 443) ? $port : null);
+							$ssl_host->setPort($port);
+
+							// Add Path
+							if ( strpos($ssl_host->getPath(), $blog_url->getPath()) !== true ) {
+								$path = '/'. ltrim(str_replace(rtrim($blog_url->getPath(), '/'), '', $ssl_host->getPath()), '/');
+								$ssl_host->setPath(rtrim($path, '/') . $blog_url->getPath());
+							}
+							$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . '/');
+							$value = $ssl_host->toString();
+						}
+						$this->getPlugin()->setSetting($key, $value, $blog_id);
+					}
+				}
+			}
+			if ( isset($_POST['blog_default']) && is_array($_POST['blog_default']) && sizeof($_POST['blog_default']) > 0 ) {
+				$this->getPlugin()->setSetting('network_defaults', $_POST['blog_default']);
+			}
 		}
 
 		if ( $logout ) {
