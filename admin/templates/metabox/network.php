@@ -93,12 +93,5 @@ jQuery(document).ready(function($) {
 			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
 		}
 	});
-
-	$('#network-settings-reset').click(function(e, el) {
-	   if ( ! confirm('Are you sure you want to reset all WordPress HTTPS network settings?') ) {
-			e.preventDefault();
-			return false;
-	   }
-	});
 });
 </script>
