@@ -221,6 +221,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			} else if ( ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = true;
 			}
+			if ( !$this->getPlugin()->isSsl() && strpos($url, 'admin-ajax.php') !== false ) {
+				$force_ssl = false;
+			}
 		}
 		return $force_ssl;
 	}
