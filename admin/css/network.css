@@ -11,8 +11,11 @@
 	width: 1%;
 	text-align: center;
 }
+#blog-table .blog-proxy select {
+	width: 50px;
+}
 #blog-table .blog-admin_menu select {
-	width: 70px;
+	width: 78px;
 }
 #blog-table .blog-host input {
 	width: 100%;
