@@ -215,10 +215,10 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function secure_admin( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) && ( strpos($url, 'wp-admin') !== false || strpos($url, 'wp-login') !== false ) ) {
-			if ( $this->getPlugin()->getSetting('exclusive_https') && !$this->getPlugin()->getSetting('ssl_admin') ) {
+			if ( $this->getPlugin()->getSetting('exclusive_https') && !( force_ssl_admin() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = false;
 			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-			} else if ( ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+			} else if ( ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || force_ssl_admin() || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = true;
 			}
 		}
@@ -512,7 +512,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
-		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->isSsl() ) || ( $this->getPlugin()->getSetting('ssl_admin') && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
+		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->isSsl() ) || ( ( force_ssl_admin() || $this->getPlugin()->getSetting('ssl_admin') ) && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
 			$secure = true;
 		}
 		$secure = apply_filters('secure_auth_cookie', @$secure, $user_id);
