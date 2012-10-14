@@ -219,8 +219,16 @@ class WordPressHTTPS extends Mvied_Plugin {
 			return false;
 		}
 
-		$url = WordPressHTTPS_Url::fromString( $string );
-		if ( $url ) {
+		// If relative, prepend appropriate path
+		if ( strpos($string, '/') === 0 ) {
+			if ( $this->getSetting('ssl_host_diff') && strpos($string, $this->getHttpsUrl()->getPath()) === false ) {
+				if ( $this->getHttpUrl()->getPath() == '/' ) {
+					$string = rtrim($this->getHttpsUrl()->getPath(), '/') . $string;
+				} else {
+					$string = str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $string);
+				}
+			}
+		} else if ( $url = WordPressHTTPS_Url::fromString( $string ) ) {
 			if ( $this->isUrlLocal($url) ) {
 				$has_host = ( $this->getHttpUrl()->getHost() == $this->getHttpsUrl()->getHost() ) || strpos($url, $this->getHttpsUrl()->getHost()) !== false;
 				$has_path = ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false;
@@ -284,8 +292,12 @@ class WordPressHTTPS extends Mvied_Plugin {
 			return false;
 		}
 
-		$url = WordPressHTTPS_Url::fromString( $string );
-		if ( $url ) {
+		// If relative
+		if ( strpos($string, '/') === 0 ) {
+			if ( $this->getSetting('ssl_host_diff') && strpos($string, $this->getHttpsUrl()->getPath()) !== false ) {
+				$string = str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $string);
+			}
+		} else if ( $url = WordPressHTTPS_Url::fromString( $string ) ) {
 			if ( $this->isUrlLocal($url) ) {
 				if ( $url->getScheme() == 'https' ) {
 					$updated = clone $url;
