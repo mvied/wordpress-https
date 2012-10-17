@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.4
-Stable tag: 3.2
+Stable tag: 3.2.1
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
@@ -83,6 +83,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 = 3.2.1 =
 * Added Network settings for multisite installations.
 * Bug Fix - Elements should now be properly secured by the file extension check in the Parser.
+* Bug Fix - Pages being redirected should no longer always redirect to index.php for some server configurations.
 * Bug Fix - FORCE_SSL_ADMIN option should no longer cause redirect loops if the ssl_admin setting is set to false.
 = 3.2 =
 * Added domain mapping. Domain mapping allows you to map external domains that host their HTTPS content on a different domain.
