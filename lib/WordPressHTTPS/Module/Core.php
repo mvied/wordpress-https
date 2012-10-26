@@ -218,7 +218,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			if ( $this->getPlugin()->getSetting('exclusive_https') && !( ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = false;
 			//TODO When logged in to HTTP and visiting an HTTPS page, admin links will always be forced to HTTPS, even if the user is not logged in via HTTPS. I need to find a way to detect this.
-			} else if ( ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
+			} else if ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || ( ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = true;
 			}
 			if ( !$this->getPlugin()->isSsl() && strpos($url, 'admin-ajax.php') !== false ) {
