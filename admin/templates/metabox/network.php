@@ -24,21 +24,21 @@
 		$ssl_host = rtrim(str_replace(parse_url(get_site_url($blog_id, ''), PHP_URL_PATH), '', $ssl_host), '/');
 ?>
 	<tr>
-		<td class="blog-blog"><strong><?=preg_replace('/http[s]?:\/\//', '', get_site_url($blog_id))?></strong></td>
-		<td class="blog-host"><input name="blog[<?=$blog_id?>][ssl_host]" type="text" class="regular-text code" value="<?=$ssl_host?>" /></td>
-		<td class="blog-ssl_admin"><input type="hidden" name="blog[<?=$blog_id?>][ssl_admin]" value="0" /><input name="blog[<?=$blog_id?>][ssl_admin]" type="checkbox" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getPlugin()->getSetting('ssl_admin', $blog_id)) ? ' checked="checked"' : '') ); ?> /></td>
-		<td class="blog-exclusive_https"><input type="hidden" name="blog[<?=$blog_id?>][exclusive_https]" value="0" /><input name="blog[<?=$blog_id?>][exclusive_https]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('exclusive_https', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
-		<td class="blog-remove_unsecure"><input type="hidden" name="blog[<?=$blog_id?>][remove_unsecure]" value="0" /><input name="blog[<?=$blog_id?>][remove_unsecure]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('remove_unsecure', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
-		<td class="blog-debug"><input type="hidden" name="blog[<?=$blog_id?>][debug]" value="0" /><input name="blog[<?=$blog_id?>][debug]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('debug', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
+		<td class="blog-blog"><strong><?php echo preg_replace('/http[s]?:\/\//', '', get_site_url($blog_id)); ?></strong></td>
+		<td class="blog-host"><input name="blog[<?php echo $blog_id; ?>][ssl_host]" type="text" class="regular-text code" value="<?php echo $ssl_host; ?>" /></td>
+		<td class="blog-ssl_admin"><input type="hidden" name="blog[<?php echo $blog_id; ?>][ssl_admin]" value="0" /><input name="blog[<?php echo $blog_id; ?>][ssl_admin]" type="checkbox" value="1"<?php echo ((force_ssl_admin()) ? ' disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getPlugin()->getSetting('ssl_admin', $blog_id)) ? ' checked="checked"' : '') ); ?> /></td>
+		<td class="blog-exclusive_https"><input type="hidden" name="blog[<?php echo $blog_id; ?>][exclusive_https]" value="0" /><input name="blog[<?php echo $blog_id; ?>][exclusive_https]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('exclusive_https', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
+		<td class="blog-remove_unsecure"><input type="hidden" name="blog[<?php echo $blog_id; ?>][remove_unsecure]" value="0" /><input name="blog[<?php echo $blog_id; ?>][remove_unsecure]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('remove_unsecure', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
+		<td class="blog-debug"><input type="hidden" name="blog[<?php echo $blog_id; ?>][debug]" value="0" /><input name="blog[<?php echo $blog_id; ?>][debug]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('debug', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
-			<select name="blog[<?=$blog_id?>][ssl_proxy]">
+			<select name="blog[<?php echo $blog_id; ?>][ssl_proxy]">
 				<option value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy', $blog_id)) ? ' selected="selected"' : ''); ?>>No</option>
 				<option value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) === 'auto') ? ' selected="selected"' : ''); ?>>Auto</option>
 				<option value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) == 1) ? ' selected="selected"' : ''); ?>>Yes</option>
 			</select>
 		</td>
 		<td class="blog-admin_menu">
-			<select name="blog[<?=$blog_id?>][admin_menu]">
+			<select name="blog[<?php echo $blog_id; ?>][admin_menu]">
 				<option value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'side') ? ' selected="selected"' : ''); ?>>Sidebar</option>
 				<option value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'settings') ? ' selected="selected"' : ''); ?>>Settings</option>
 			</select>
@@ -57,7 +57,7 @@
 
 	<tr>
 		<td class="blog-blog"><strong>New Site Defaults</strong></td>
-		<td class="blog-host"><input name="blog_default[ssl_host]" type="text" class="regular-text code" value="<?=$defaults['ssl_host']?>" /></td>
+		<td class="blog-host"><input name="blog_default[ssl_host]" type="text" class="regular-text code" value="<?php echo $defaults['ssl_host']; ?>" /></td>
 		<td class="blog-ssl_admin"><input type="hidden" name="blog_default[ssl_admin]" value="0" /><input name="blog_default[ssl_admin]" type="checkbox" value="1"<?php echo ($defaults['ssl_admin'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-exclusive_https"><input type="hidden" name="blog_default[exclusive_https]" value="0" /><input name="blog_default[exclusive_https]" type="checkbox" value="1"<?php echo ($defaults['exclusive_https'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-remove_unsecure"><input type="hidden" name="blog_default[remove_unsecure]" value="0" /><input name="blog_default[remove_unsecure]" type="checkbox" value="1"<?php echo ($defaults['remove_unsecure'] ? ' checked="checked"' : ''); ?> /></td>

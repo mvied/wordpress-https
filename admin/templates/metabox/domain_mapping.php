@@ -15,7 +15,7 @@
 			<span class="label">http://</span>
 		</td>
 		<td class="http_domain">
-			<input type="text" name="http_domain[]" value="<?=$http_domain?>" />
+			<input type="text" name="http_domain[]" value="<?php echo $http_domain; ?>" />
 		</td>
 		<td class="arrow">
 			<span class="label">&gt;</span>
@@ -24,7 +24,7 @@
 			<span class="label">https://</span>
 		</td>
 		<td class="https_domain">
-			<input type="text" name="https_domain[]" value="<?=$https_domain?>" />
+			<input type="text" name="https_domain[]" value="<?php echo $https_domain; ?>" />
 		</td>
 		<td class="controls">
 			<a class="remove" href="#" title="Remove URL Filter">Remove</a>
