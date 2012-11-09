@@ -123,7 +123,6 @@ class WordPressHTTPS extends Mvied_Plugin {
 		$this->getLogger()->log('Unsecure External URLs: [ ' . implode(', ', (array)$this->getSetting('unsecure_external_urls')) . ' ]');
 
 		parent::init();
-		do_action($this->getSlug() . '_init');
 	}
 
 	/**
