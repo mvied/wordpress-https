@@ -81,7 +81,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 
 == Changelog ==
 = 3.2.2 =
-* Performance Increase
+* Performance Increase.
 * Bug Fix - Sites prevented from logging into the admin panel after the previous release should now be working again.
 = 3.2.1 =
 * Added Network settings for multisite installations.
