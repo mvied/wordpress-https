@@ -226,6 +226,10 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 				$force_ssl = false;
 			}
 		}
+		// Catches base URL's used by low-level WordPress code
+		if ( is_admin() && $this->getPlugin()->isSsl() && ($url_parts = parse_url($url)) && ( !isset($url_parts['path']) || trim($url_parts['path'], '/') == '' ) ) {
+			$force_ssl = true;
+		}
 		return $force_ssl;
 	}
 
