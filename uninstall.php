@@ -26,6 +26,7 @@ $options = array(
 	'wordpress-https_ssl_host_mapping'
 );
 
+global $wpdb;
 if ( is_multisite() && is_network_admin() ) {
 	$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs));
 } else {
