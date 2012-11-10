@@ -49,6 +49,13 @@ class WordPressHTTPS extends Mvied_Plugin {
 	);
 
 	/**
+	 * File extensions to be loaded securely.
+	 * 
+	 * @var array
+	 */
+	protected $_file_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js');
+
+	/**
 	 * Default External SSL Host Mapping
 	 * @var array
 	 */
@@ -56,6 +63,16 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'w.sharethis.com' => 'ws.sharethis.com',
 		'\d.gravatar.com' => 'secure.gravatar.com',
 	);
+
+	/**
+	 * Get File Extensions to Secure
+	 * 
+	 * @param none
+	 * @return array
+	 */
+	public function getFileExtensions() {
+		return $this->_file_extensions;
+	}
 
 	/**
 	 * Get HTTP Url

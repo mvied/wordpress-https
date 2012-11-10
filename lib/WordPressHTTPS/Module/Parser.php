@@ -17,15 +17,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	protected $_html;
 
 	/**
-	 * Extensions
-	 * 
-	 * Array of file extensions to be loaded securely.
-	 *
-	 * @var array
-	 */
-	protected $_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js');
-
-	/**
 	 * Initialize
 	 *
 	 * @param none
@@ -267,7 +258,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$filename = basename($url);
 			$scheme = $matches[2][$i];
 
-			foreach( $this->_extensions as $extension ) {
+			foreach( $this->getPlugin()->getFileExtensions() as $extension ) {
 				if ( $extension == 'js' ) {
 					$type = 'script';
 				} else if ( $extension == 'css' ) {

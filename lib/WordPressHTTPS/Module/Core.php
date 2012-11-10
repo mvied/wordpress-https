@@ -50,7 +50,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('force_ssl', array(&$this, 'secure_child_post'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_admin'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_login'), 30, 3);
-		add_filter('force_ssl', array(&$this, 'secure_template_uri'), 30, 3);
+		add_filter('force_ssl', array(&$this, 'secure_element'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
@@ -248,7 +248,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	}
 
 	/**
-	 * Secure Template URI
+	 * Secure Element by Extension
 	 * WordPress HTTPS Filter - force_ssl
 	 *
 	 * @param boolean $force_ssl
@@ -256,10 +256,17 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @param string $url
 	 * @return boolean $force_ssl
 	 */
-	public function secure_template_uri( $force_ssl, $post_id = 0, $url = '' ) {
+	public function secure_element( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
-			if ( $this->getPlugin()->isSsl() && strpos(parse_url(get_stylesheet_directory_uri(), PHP_URL_PATH), $url) !== false ) {
-				$force_ssl = true;
+			$filename = basename($url);
+			foreach( $this->getPlugin()->getFileExtensions() as $extension ) {
+				if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
+					if ( $this->getPlugin()->isSsl() ) {
+						$force_ssl = true;
+					} else {
+						$force_ssl = false;
+					}
+				}
 			}
 		}
 		return $force_ssl;
