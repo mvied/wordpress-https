@@ -222,8 +222,12 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			} else if ( ( $this->getPlugin()->isSsl() && !$this->getPlugin()->getSetting('exclusive_https') ) || ( ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) ) {
 				$force_ssl = true;
 			}
-			if ( !$this->getPlugin()->isSsl() && strpos($url, 'admin-ajax.php') !== false ) {
-				$force_ssl = false;
+			if ( strpos($url, 'admin-ajax.php') !== false ) {
+				if ( $this->getPlugin()->isSsl() ) {
+					$force_ssl = true;
+				} else {
+					$force_ssl = false;
+				}
 			}
 		}
 		// Catches base URL's used by low-level WordPress code
