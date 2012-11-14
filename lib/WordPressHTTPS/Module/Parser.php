@@ -297,6 +297,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$url = $matches[2][$i];
 			$scheme = $matches[3][$i];
 			$updated = false;
+			$post_id = null;
 
 			if ( !$this->getPlugin()->isUrlLocal($url) ) {
 				continue;
