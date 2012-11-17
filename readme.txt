@@ -82,6 +82,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.2.3 =
 * Bug Fix - Sites prevented from logging into the admin panel after the previous release should now be working again.
+* Bug Fix - Fixed bug in Parser where links and forms could be written incorrectly.
 = 3.2.2 =
 * Performance Increase.
 * Bug Fix - Sites prevented from logging into the admin panel after the previous release should now be working again.
