@@ -246,28 +246,30 @@ class WordPressHTTPS extends Mvied_Plugin {
 			}
 		} else if ( $url = WordPressHTTPS_Url::fromString( $string ) ) {
 			if ( $this->isUrlLocal($url) ) {
-				$has_host = ( $this->getHttpUrl()->getHost() == $this->getHttpsUrl()->getHost() ) || strpos($url, $this->getHttpsUrl()->getHost()) !== false;
-				$has_path = ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false;
-				$has_port = ( (int)$this->getHttpsUrl()->getPort() > 0 ? strpos($url, ':' . $this->getHttpsUrl()->getPort()) !== false : true );
-				if ( $url->getScheme() == 'http' || !$has_host || !$has_path || !$has_port ) {
-					$updated = clone $url;
-					$updated->setScheme('https');
-					$updated->setHost($this->getHttpsUrl()->getHost());
-					$updated->setPort($this->getHttpsUrl()->getPort());
-					if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
-						if ( $this->getHttpUrl()->getPath() == '/' ) {
-							$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
-						} else if ( strpos($updated->getPath(), $this->getHttpUrl()->getPath()) !== false ) {
-							$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
-						} else if ( strpos($updated->getPath(), rtrim($this->getHttpUrl()->getPath(), '/')) !== false ) {
-							$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+				if ( $url->getScheme() == 'http' || ( $url->getScheme() == 'https' && $this->getSetting('ssl_host_diff') ) ) {
+					$has_host = ( $this->getHttpUrl()->getHost() == $this->getHttpsUrl()->getHost() ) || strpos($url, $this->getHttpsUrl()->getHost()) !== false;
+					$has_path = ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false;
+					$has_port = ( (int)$this->getHttpsUrl()->getPort() > 0 ? strpos($url, ':' . $this->getHttpsUrl()->getPort()) !== false : true );
+					if ( !$has_host || !$has_path || !$has_port ) {
+						$updated = clone $url;
+						$updated->setScheme('https');
+						$updated->setHost($this->getHttpsUrl()->getHost());
+						$updated->setPort($this->getHttpsUrl()->getPort());
+						if ( $this->getSetting('ssl_host_diff') && strpos($updated->getPath(), $this->getHttpsUrl()->getPath()) === false ) {
+							if ( $this->getHttpUrl()->getPath() == '/' ) {
+								$updated->setPath(rtrim($this->getHttpsUrl()->getPath(), '/') . $updated->getPath());
+							} else if ( strpos($updated->getPath(), $this->getHttpUrl()->getPath()) !== false ) {
+								$updated->setPath(str_replace($this->getHttpUrl()->getPath(), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+							} else if ( strpos($updated->getPath(), rtrim($this->getHttpUrl()->getPath(), '/')) !== false ) {
+								$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
+							}
 						}
+						if ( ( ( $this->isSsl() && !$this->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getSetting('ssl_admin') ) && strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
+							$redirect_url = $redirect[1];
+							$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
+						}
+						$string = str_replace($url, $updated, $string);
 					}
-					if ( ( ( $this->isSsl() && !$this->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getSetting('ssl_admin') ) && strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
-						$redirect_url = $redirect[1];
-						$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
-					}
-					$string = str_replace($url, $updated, $string);
 				}
 			} else {
 				$updated = clone $url;
