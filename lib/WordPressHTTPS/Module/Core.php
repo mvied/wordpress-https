@@ -41,8 +41,10 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('plugins_url', array(&$this, 'element_url'), 10);
 		add_filter('includes_url', array(&$this, 'element_url'), 10);
 
-		// Filter site_url
-		add_filter('site_url', array(&$this, 'site_url'), 10, 4);
+		// Filter site_url, excluding admin panel. Admin_url filter should catch everything.
+		if ( !is_admin() ) {
+			add_filter('site_url', array(&$this, 'site_url'), 10, 4);
+		}
 
 		// Filter force_ssl
 		add_filter('force_ssl', array(&$this, 'secure_wordpress_forms'), 20, 3);
@@ -61,6 +63,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 		// Run install when new blog is created
 		add_action('wpmu_new_blog', array($this->getPlugin(), 'install'), 10, 0);
+
+		// Set response headers
+		add_action($this->getPlugin()->getSlug() . '_init', array(&$this, 'set_headers'), 9, 1);
 
 		if ( $this->getPlugin()->getSetting('ssl_host_diff') ) {
 			// Remove SSL Host authentication cookies on logout
@@ -474,6 +479,18 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 		if ( isset($scheme) ) {
 			$this->getPlugin()->redirect($scheme);
+		}
+	}
+
+	/**
+	 * Add Access-Control-Allow-Origin header to AJAX calls
+	 * 
+	 * @param none
+	 * @return void
+	 */
+	public function set_headers() {
+		if ( !headers_sent() && isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' ) {
+			header("Access-Control-Allow-Origin: " . $this->getPlugin()->getHttpsUrl());
 		}
 	}
 
