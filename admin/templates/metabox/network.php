@@ -17,7 +17,7 @@
 	<tbody>
 <?php
 	global $wpdb;
-	$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs));
+	$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs, NULL));
 	foreach($blogs as $blog_id) {
 		$ssl_host = ($this->getPlugin()->getSetting('ssl_host', $blog_id) != '' ?  $this->getPlugin()->getSetting('ssl_host', $blog_id) : get_site_url($blog_id, '', 'https'));
 		$ssl_host = preg_replace('/http[s]?:\/\//', '', $ssl_host);
