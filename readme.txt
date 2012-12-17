@@ -44,6 +44,9 @@ Once you have identified the insecure elements, you need to figure out what them
 Go to /wp-content/plugins/wordpress-https/wordpress-https.php and uncomment (remove the two forward slashes before) the line below, or go to your wp-config.php file and add this line. Hit any page on your site, and then remove it or comment it out again.
 `define('WPHTTPS_RESET', true);`
 
+= The settings won't save! =
+Did you reset the plugin following the steps above and forget to comment the line back out or remove it from wp-config.php? I bet you did.
+
 = How do I make my whole website secure? =
 To make your entire website secure, you simply need to change your site url to use HTTPS instead of HTTP. Please read <a href="http://codex.wordpress.org/Changing_The_Site_URL" target="_blank">how to change the site url</a>.
 Alternatively, you can use URL Filters in the WordPress HTTPS Settings to secure your entire site by putting just '/' as a filter. This will cause any URL with a forward slash to be secure (all of them).
