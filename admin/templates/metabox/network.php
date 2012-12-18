@@ -4,14 +4,14 @@
 <table id="blog-table">
 	<thead>
 	<tr>
-		<th class="blog-blog">Blog</th>
-		<th class="blog-host">SSL Host</th>
-		<th class="blog-ssl_admin">Force SSL Admin</th>
-		<th class="blog-exclusive_https">Force SSL Exclusively</th>
-		<th class="blog-remove_unsecure">Remove Unsecure Elements</th>
-		<th class="blog-debug">Debug Mode</th>
-		<th class="blog-proxy">Proxy</th>
-		<th class="blog-admin_menu">Admin Menu Location</th>
+		<th class="blog-blog"><?php _e('Blog','wordpress-https'); ?></th>
+		<th class="blog-host"><?php _e('SSL Host','wordpress-https'); ?></th>
+		<th class="blog-ssl_admin"><?php _e('Force SSL Admin','wordpress-https'); ?></th>
+		<th class="blog-exclusive_https"><?php _e('Force SSL Exclusively','wordpress-https'); ?></th>
+		<th class="blog-remove_unsecure"><?php _e('Remove Unsecure Elements','wordpress-https'); ?></th>
+		<th class="blog-debug"><?php _e('Debug Mode','wordpress-https'); ?></th>
+		<th class="blog-proxy"><?php _e('Proxy','wordpress-https'); ?></th>
+		<th class="blog-admin_menu"><?php _e('Admin Menu Location','wordpress-https'); ?></th>
 	</tr>
 	</thead>
 	<tbody>
@@ -32,15 +32,15 @@
 		<td class="blog-debug"><input type="hidden" name="blog[<?php echo $blog_id; ?>][debug]" value="0" /><input name="blog[<?php echo $blog_id; ?>][debug]" type="checkbox" value="1"<?php echo (($this->getPlugin()->getSetting('debug', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
 			<select name="blog[<?php echo $blog_id; ?>][ssl_proxy]">
-				<option value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy', $blog_id)) ? ' selected="selected"' : ''); ?>>No</option>
-				<option value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) === 'auto') ? ' selected="selected"' : ''); ?>>Auto</option>
-				<option value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) == 1) ? ' selected="selected"' : ''); ?>>Yes</option>
+				<option value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy', $blog_id)) ? ' selected="selected"' : ''); ?>><?php _e('No','wordpress-https'); ?></option>
+				<option value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) === 'auto') ? ' selected="selected"' : ''); ?>><?php _e('Auto','wordpress-https'); ?></option>
+				<option value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy', $blog_id) == 1) ? ' selected="selected"' : ''); ?>><?php _e('Yes','wordpress-https'); ?></option>
 			</select>
 		</td>
 		<td class="blog-admin_menu">
 			<select name="blog[<?php echo $blog_id; ?>][admin_menu]">
-				<option value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'side') ? ' selected="selected"' : ''); ?>>Sidebar</option>
-				<option value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'settings') ? ' selected="selected"' : ''); ?>>Settings</option>
+				<option value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'side') ? ' selected="selected"' : ''); ?>><?php _e('Sidebar','wordpress-https'); ?></option>
+				<option value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu', $blog_id) === 'settings') ? ' selected="selected"' : ''); ?>><?php _e('Settings','wordpress-https'); ?></option>
 			</select>
 		</td>
 	</tr>
@@ -64,15 +64,15 @@
 		<td class="blog-debug"><input type="hidden" name="blog_default[debug]" value="0" /><input name="blog_default[debug]" type="checkbox" value="1"<?php echo ($defaults['debug'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
 			<select name="blog_default[ssl_proxy]">
-				<option value="0"<?php echo (! $defaults['ssl_proxy'] ? ' selected="selected"' : ''); ?>>No</option>
-				<option value="auto"<?php echo ($defaults['ssl_proxy'] === 'auto' ? ' selected="selected"' : ''); ?>>Auto</option>
-				<option value="1"<?php echo ($defaults['ssl_proxy'] === 1 ? ' selected="selected"' : ''); ?>>Yes</option>
+				<option value="0"<?php echo (! $defaults['ssl_proxy'] ? ' selected="selected"' : ''); ?>><?php _e('No','wordpress-https'); ?></option>
+				<option value="auto"<?php echo ($defaults['ssl_proxy'] === 'auto' ? ' selected="selected"' : ''); ?>><?php _e('Auto','wordpress-https'); ?></option>
+				<option value="1"<?php echo ($defaults['ssl_proxy'] === 1 ? ' selected="selected"' : ''); ?>><?php _e('Yes','wordpress-https'); ?></option>
 			</select>
 		</td>
 		<td class="blog-admin_menu">
 			<select name="blog_default[admin_menu]">
-				<option value="side"<?php echo ($defaults['admin_menu'] === 'side' ? ' selected="selected"' : ''); ?>>Sidebar</option>
-				<option value="settings"<?php echo ($defaults['admin_menu'] === 'settings' ? ' selected="selected"' : ''); ?>>Settings</option>
+				<option value="side"<?php echo ($defaults['admin_menu'] === 'side' ? ' selected="selected"' : ''); ?>><?php _e('Sidebar','wordpress-https'); ?></option>
+				<option value="settings"<?php echo ($defaults['admin_menu'] === 'settings' ? ' selected="selected"' : ''); ?>><?php _e('Settings','wordpress-https'); ?></option>
 			</select>
 		</td>
 	</tr>
@@ -83,8 +83,8 @@
 <input type="hidden" name="action" value="wphttps-network" />
 
 <p class="button-controls">
-	<input type="submit" name="network-settings-save" value="Save Changes" class="button-primary" id="network-settings-save" />
-	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
+	<input type="submit" name="network-settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="network-settings-save" />
+	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 <script type="text/javascript">

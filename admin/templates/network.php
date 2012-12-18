@@ -6,7 +6,7 @@ require_once('../includes/template.php'); // WordPress Dashboard Functions
 
 <div class="wrap" id="wphttps-main">
 	<div id="icon-options-https" class="icon32"><br /></div>
-	<h2>HTTPS</h2>
+	<h2><?php _e('HTTPS','wordpress-https'); ?></h2>
 
 <?php
 	wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false );
