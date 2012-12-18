@@ -1,11 +1,14 @@
 <?php
 /**
- Plugin Name: WordPress HTTPS
- Plugin URI: http://mvied.com/projects/wordpress-https/
- Description: WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
- Author: Mike Ems
- Version: 3.2.4
- Author URI: http://mvied.com/
+ Plugin Name:   WordPress HTTPS
+ Plugin URI:    http://mvied.com/projects/wordpress-https/
+ Description:   WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
+ Version:       3.3.0
+ Author:        Mike Ems
+ Author URI:    http://mvied.com/
+ 
+Text Domain:   wordpress-https
+Domain Path:   /languages/
  */
 
 /*
@@ -24,6 +27,8 @@
     You should have received a copy of the GNU General Public License
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
+
+load_plugin_textdomain( 'wordpress-https', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 function wphttps_autoloader($class) {
 	$filename = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';

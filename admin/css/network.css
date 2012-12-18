@@ -20,9 +20,17 @@
 #blog-table .blog-host input {
 	width: 100%;
 }
-table#blog-table tr td,
-table#blog-table tr th {
+#blog-table th.blog-blog,
+#blog-table th.blog-host {
+    text-align: left;
+}
+#blog-table tr td,
+#blog-table tr th {
 	padding: 0 5px;
-	word-wrap: break-word;
 	overflow: hidden;
+        white-space: nowrap;
+        word-wrap: break-word;
+}
+#blog-table tbody tr:hover td {
+        background-color: #DDD;
 }

@@ -3,8 +3,8 @@
 <table class="form-table">
 	<tr valign="top" id="secure_filter_row">
 		<th scope="row">
-			Secure Filters
-			<p class="description">Example: If you have an E-commerce shop and all of the URL's begin with /store/, you could secure all store links by entering '/store/' on one line. You may use <a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="Regular Expressions Help">regular expressions</a>.</p>
+			<?php _e('Secure Filters','wordpress-https'); ?>
+                        <p class="description"><?php printf( __('Example: If you have an E-commerce shop and all of the URL\'s begin with /store/, you could secure all store links by entering \'/store/\' on one line. You may use %s regular expressions %s','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">','</a>'); ?>.</p>
 		</th>
 		<td>
 			<textarea name="secure_filter" id="secure_filter"><?php echo implode("\n", $this->getPlugin()->getSetting('secure_filter')); ?></textarea>
@@ -13,9 +13,9 @@
 </table>
 <input type="hidden" name="action" value="wphttps-filters" />
 <p class="button-controls">
-	<input type="submit" name="filters-save" value="Save Changes" class="button-primary" id="filters-save" />
-	<input type="submit" name="filters-reset" value="Reset" class="button-secondary" id="filters-reset" />
-	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
+	<input type="submit" name="filters-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="filters-save" />
+	<input type="submit" name="filters-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="filters-reset" />
+	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 
@@ -32,7 +32,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#filters-reset').click(function(e, el) {
-	   if ( ! confirm('Are you sure you want to reset all WordPress HTTPS filters?') ) {
+	   if ( ! confirm('<?php _e('Are you sure you want to reset all WordPress HTTPS filters?','wordpress-https'); ?>') ) {
 			e.preventDefault();
 			return false;
 	   }
