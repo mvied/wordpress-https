@@ -30,4 +30,4 @@ If you are still unable to resolve your issue, <a href="http://wordpress.org/sup
 ### Developers
 * Mike Ems (Mvied): [Github](https://github.com/Mvied) | [WordPress.org](https://profiles.wordpress.org/Mvied) | [Web](http://mvied.com/)
 
-### Contributations are always welcome
+### Contributions are always welcome
