@@ -6,7 +6,7 @@ require_once('includes/template.php'); // WordPress Dashboard Functions
 
 <div class="wrap" id="wphttps-main">
 	<div id="icon-options-https" class="icon32"><br /></div>
-	<h2>HTTPS</h2>
+	<h2><?php _e('HTTPS','wordpress-https'); ?></h2>
 
 <?php
 	wp_nonce_field('closedpostboxes', 'closedpostboxesnonce', false );
@@ -22,99 +22,98 @@ require_once('includes/template.php'); // WordPress Dashboard Functions
 	</div>
 	
 	<div id="regex-help">
-		<h3>Expressions</h3>
+		<h3><?php _e('Expressions','wordpress-https'); ?></h3>
 		<table class="regex-help">
 			<tr>
 				<td>[abc]</td>
-				<td>A single character: a, b, or c</td>
+				<td><?php _e('A single character: a, b, or c','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>[^abc]</td>
-				<td>Any single character <em>but</em> a, b, or c</td>
+				<td><?php _e('Any single character <em>but</em> a, b, or c','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>[a-z]</td>
-				<td>Any character in the range a-z</td>
+				<td><?php _e('Any character in the range a-z','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>[a-zA-Z]</td>
-				<td>Any character in the range a-z or A-Z (any alphabetical character)</td>
+				<td><?php _e('Any character in the range a-z or A-Z (any alphabetical character)','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\s</td>
-				<td>Any whitespace character [ \t\n\r\f\v]</td>
+				<td><?php _e('Any whitespace character [ \t\n\r\f\v]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\S</td>
-				<td>Any non-whitespace character [^ \t\n\r\f\v]</td>
+				<td><?php _e('Any non-whitespace character [^ \t\n\r\f\v]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\d</td>
-				<td>Any digit [0-9]</td>
+				<td><?php _e('Any digit [0-9]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\D</td>
-				<td>Any non-digit [^0-9]</td>
+				<td><?php _e('Any non-digit [^0-9]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\w</td>
-				<td>Any word character [a-zA-Z0-9_]</td>
+				<td><?php _e('Any word character [a-zA-Z0-9_]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\W</td>
-				<td>Any non-word character [^a-zA-Z0-9_]</td>
+				<td><?php _e('Any non-word character [^a-zA-Z0-9_]','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\b</td>
-				<td>A word boundary between \w and \W</td>
+				<td><?php _e('A word boundary between \w and \W','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>\B</td>
-				<td>A position that is not a word boundary</td>
+				<td><?php _e('A position that is not a word boundary','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>|</td>
-				<td>Alternation: matches either the subexpression to the left or to the right</td>
+				<td><?php _e('Alternation: matches either the subexpression to the left or to the right','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>()</td>
-				<td>Grouping: group all together for repetition operators</td>
+				<td><?php _e('Grouping: group all together for repetition operators','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>^</td>
-				<td>Beginning of the string</td>
+				<td><?php _e('Beginning of the string','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>$</td>
-				<td>End of the string</td>
+				<td><?php _e('End of the string','wordpress-https'); ?></td>
 			</tr>
 		</table>
-		<h3>Repetition&#160;Operators</h3>
+		<h3><?php _e('Repetition&#160;Operators','wordpress-https'); ?></h3>
 		<table class="regex-help">
 			<tr>
 				<td>{n,m}</td>
-				<td>Match the previous item at least <em>n</em> times but no more than <em>m</em>
-					times</td>
+				<td><?php _e('Match the previous item at least <em>n</em> times but no more than <em>m</em> times','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>{n,}</td>
-				<td>Match the previous item <em>n</em> or more times</td>
+				<td><?php _e('Match the previous item <em>n</em> or more times','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>{n}</td>
-				<td>Match exactly <em>n</em> occurrences of the previous item</td>
+				<td><?php _e('Match exactly <em>n</em> occurrences of the previous item','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>?</td>
-				<td>Match 0 or 1 occurrences of the previous item {0,1}</td>
+				<td><?php _e('Match 0 or 1 occurrences of the previous item {0,1}','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>+</td>
-				<td>Match 1 or more occurrences of the previous item {1,}</td>
+				<td><?php _e('Match 1 or more occurrences of the previous item {1,}','wordpress-https'); ?></td>
 			</tr>
 			<tr>
 				<td>*</td>
-				<td>Match 0 or more occurrences of the previous item {0,}</td>
+				<td><?php _e('Match 0 or more occurrences of the previous item {0,}','wordpress-https'); ?></td>
 			</tr>
 		</table>
 	</div>
