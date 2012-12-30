@@ -18,8 +18,8 @@ If after setting up the plugin you are experiencing issues, please check the <a 
 If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and I or someone from the community will be able to assist you.
 
 ### Languages
-* English (development language -> active)
-* [German (on the way)](https://translate.foe-services.de/projects/wordpress-https/de/de)
+* English
+* German
 
 * Help to translate at [https://translate.foe-services.de/projects/wordpress-https](https://translate.foe-services.de/projects/wordpress-https)
 
