@@ -92,7 +92,6 @@ jQuery(document).ready(function($) {
 	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function() {
 		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').show();
 	}).ajaxForm({
-		data: { ajax: '1'},
 		success: function(responseText, textStatus, XMLHttpRequest) {
 			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
 			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
