@@ -12,88 +12,88 @@
 
 <table class="form-table">
 	<tr valign="top" id="ssl_host_row">
-		<th scope="row">SSL Host</th>
+		<th scope="row"><?php _e('SSL Host','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="ssl_host" id="ssl_host_label">
 					<input name="ssl_host" type="text" id="ssl_host" class="regular-text code" value="<?php echo $ssl_host; ?>" />
 				</label>
-				<label for="ssl_port" id="ssl_port_label">Port
+				<label for="ssl_port" id="ssl_port_label"><?php _e('Port','wordpress-https'); ?>
 					<input name="ssl_port" type="text" id="ssl_port" class="small-text" value="<?php echo $this->getPlugin()->getSetting('ssl_port'); ?>" />
 				</label>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="ssl_admin_row">
-		<th scope="row">Force SSL Administration</th>
+		<th scope="row"><?php _e('Force SSL Administration','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="ssl_admin">
 					<input type="hidden" name="ssl_admin" value="0" />
 					<input name="ssl_admin" type="checkbox" id="ssl_admin" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getPlugin()->getSetting('ssl_admin')) ? ' checked="checked"' : '') ); ?> />
-					<p class="description">Always use HTTPS while in the admin panel. This setting is identical to <a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">FORCE_SSL_ADMIN</a>.</p>
+					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %s FORCE_SSL_ADMIN','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">'); ?></a>.</p>
 				</label>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="exclusive_https_row">
-		<th scope="row">Force SSL Exclusively</th>
+		<th scope="row"><?php _e('Force SSL Exclusively','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="exclusive_https">
 					<input type="hidden" name="exclusive_https" value="0" />
 					<input name="exclusive_https" type="checkbox" id="exclusive_https" value="1"<?php echo (($this->getPlugin()->getSetting('exclusive_https')) ? ' checked="checked"' : ''); ?> />
-					<p class="description">Any page that is not secured via <a href="<?php echo parse_url($this->getPlugin()->getPluginUrl(), PHP_URL_PATH); ?>/screenshot-2.png" class="thickbox">Force SSL</a> or URL Filters will be redirected to HTTP.</p>
+                                        <p class="description"><?php printf( __('Any page that is not secured via %s Force SSL %s or URL Filters will be redirected to HTTP.','wordpress-https'),'<a href="' . parse_url($this->getPlugin()->getPluginUrl(), PHP_URL_PATH) . '/screenshot-2.png" class="thickbox">', '</a> '); ?></a>.</p>
 				</label>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="remove_unsecure_row">
-		<th scope="row">Remove Unsecure Elements</th>
+		<th scope="row"><?php _e('Remove Unsecure Elements','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="remove_unsecure">
 					<input type="hidden" name="remove_unsecure" value="0" />
 					<input name="remove_unsecure" type="checkbox" id="remove_unsecure" value="1"<?php echo (($this->getPlugin()->getSetting('remove_unsecure')) ? ' checked="checked"' : ''); ?> />
-					<p class="description">Remove elements inaccessible over HTTPS. May break other plugins' functionality.</p>
+					<p class="description"><?php _e('Remove elements inaccessible over HTTPS. May break other plugins\' functionality.','wordpress-https'); ?></p>
 				</label>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="debug_row">
-		<th scope="row">Debug Mode</th>
+		<th scope="row"><?php _e('Debug Mode','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="debug">
 					<input type="hidden" name="debug" value="0" />
 					<input name="debug" type="checkbox" id="debug" value="1"<?php echo (($this->getPlugin()->getSetting('debug')) ? ' checked="checked"' : ''); ?> />
-					<p class="description">Outputs debug information to the browser's console.</p>
+					<p class="description"><?php _e('Outputs debug information to the browser\'s console.','wordpress-https'); ?></p>
 				</label>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="ssl_proxy_row">
-		<th scope="row">Proxy</th>
+		<th scope="row"><?php _e('Proxy','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="ssl_proxy" class="label-radio">
-					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> <span>No</span>
-					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> <span>Auto</span>
-					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span>Yes</span>
+					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getPlugin()->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> <span><?php _e('No','wordpress-https'); ?></span>
+					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> <span><?php _e('Auto','wordpress-https'); ?></span>
+					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getPlugin()->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span><?php _e('Yes','wordpress-https'); ?></span>
 				</label>
-				<p class="description">If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No.</p>
+				<p class="description"><?php _e('If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No.','wordpress-https'); ?></p>
 			</fieldset>
 		</td>
 	</tr>
 	<tr valign="top" id="admin_menu_row">
-		<th scope="row">Admin Menu Location</th>
+		<th scope="row"><?php _e('Admin Menu Location','wordpress-https'); ?></th>
 		<td>
 			<fieldset>
 				<label for="admin_menu_side" class="label-radio">
-					<input type="radio" name="admin_menu" id="admin_menu_side" value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'side') ? ' checked="checked"' : ''); ?>> <span>Sidebar</span>
+					<input type="radio" name="admin_menu" id="admin_menu_side" value="side"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'side') ? ' checked="checked"' : ''); ?>> <span><?php _e('Sidebar','wordpress-https'); ?></span>
 				</label>
 				<label for="admin_menu_settings" class="label-radio">
-					<input type="radio" name="admin_menu" id="admin_menu_settings" value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'settings') ? ' checked="checked"' : ''); ?>> <span>Settings</span>
+					<input type="radio" name="admin_menu" id="admin_menu_settings" value="settings"<?php echo (($this->getPlugin()->getSetting('admin_menu') === 'settings') ? ' checked="checked"' : ''); ?>> <span><?php _e('Settings','wordpress-https'); ?></span>
 				</label>
 			</fieldset>
 		</td>
@@ -105,9 +105,9 @@
 <input type="hidden" name="ssl_host_diff" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_diff') != 1) ? 0 : 1); ?>" />
 
 <p class="button-controls">
-	<input type="submit" name="settings-save" value="Save Changes" class="button-primary" id="settings-save" />
-	<input type="submit" name="settings-reset" value="Reset" class="button-secondary" id="settings-reset" />
-	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
+	<input type="submit" name="settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="settings-save" />
+	<input type="submit" name="settings-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="settings-reset" />
+	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 <script type="text/javascript">
@@ -123,7 +123,7 @@ jQuery(document).ready(function($) {
 	});
 
 	$('#settings-reset').click(function(e, el) {
-	   if ( ! confirm('Are you sure you want to reset all WordPress HTTPS settings?') ) {
+	   if ( ! confirm('<?php _e('Are you sure you want to reset all WordPress HTTPS settings?','wordpress-https'); ?>') ) {
 			e.preventDefault();
 			return false;
 	   }
