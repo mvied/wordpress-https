@@ -27,13 +27,8 @@
 			<input type="text" name="https_domain[]" value="<?php echo $https_domain; ?>" />
 		</td>
 		<td class="controls">
-<<<<<<< HEAD
-			<a class="remove" href="#" title="Remove URL Filter">Remove</a>
-			<a class="add" href="#" title="Add URL Filter">Add</a>
-=======
 			<a class="remove" href="#" title="<?php _e('Remove URL Filter','wordpress-https'); ?>"><?php _e('Remove','wordpress-https'); ?></a>
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
->>>>>>> gettext support + German translation
 		</td>
 	</tr>
 
@@ -55,13 +50,8 @@
 			<input type="text" name="https_domain[]" value="" />
 		</td>
 		<td class="controls">
-<<<<<<< HEAD
-			<a class="remove" href="#" title="Remove URL Filter">Remove</a>
-			<a class="add" href="#" title="Add URL Filter">Add</a>
-=======
 			<a class="remove" href="#" title="<?php _e('Remove URL Filter','wordpress-https'); ?>"><?php _e('Remove','wordpress-https'); ?></a>
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
->>>>>>> gettext support + German translation
 		</td>
 	</tr>
 </table>
@@ -69,14 +59,9 @@
 <input type="hidden" name="action" value="wphttps-domain-mapping" />
 
 <p class="button-controls">
-<<<<<<< HEAD
-	<input type="submit" name="domain_mapping-save" value="Save Changes" class="button-primary" id="domain_mapping-save" />
-	<input type="submit" name="domain_mapping-reset" value="Reset" class="button-secondary" id="domain_mapping-reset" />
-=======
 	<input type="submit" name="domain_mapping-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="domain_mapping-save" />
 	<input type="submit" name="domain_mapping-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="domain_mapping-reset" />
->>>>>>> gettext support + German translation
-	<img alt="Waiting..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
+	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 <script type="text/javascript">
