@@ -145,7 +145,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		header('Pragma: no-cache');
 		header("Vary: Accept-Encoding");
 
-		if ( ! wp_verify_nonce($_POST['_nonce'], 'wordpress-https') ) {
+		if ( ! wp_verify_nonce($_POST['_nonce'], $this->getPlugin()->getSlug()) ) {
 			exit;
 		}
 
