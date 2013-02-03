@@ -18,20 +18,20 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
-			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'wphttps-settings' ) {
-				add_action('plugins_loaded', array(&$this, 'save'), 1);
+		if ( is_admin() ) {
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_ajax_metabox', array(&$this, 'ajax_metabox'));
+			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
+				// Add meta boxes
+				add_action('admin_init', array(&$this, 'add_meta_boxes'));
+
+				// Add scripts
+				add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 			}
 
-			// Add meta boxes
-			add_action('admin_init', array(&$this, 'add_meta_boxes'));
-
-			// Add scripts
-			add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
+			// Add admin menus
+			add_action('admin_menu', array(&$this, 'admin_menu'));
 		}
-
-		// Add admin menus
-		add_action('admin_menu', array(&$this, 'admin_menu'));
 	}
 
 	/**
@@ -124,6 +124,36 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		}
 
 		self::render();
+	}
+
+	/**
+	 * Dispatch request for ajax metabox
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function ajax_metabox() {
+		// Disable errors
+		error_reporting(0);
+
+		// Set headers
+		header("Status: 200");
+		header("HTTP/1.1 200 OK");
+		header('Content-Type: text/html');
+		header('Cache-Control: no-store, no-cache, must-revalidate');
+		header('Cache-Control: post-check=0, pre-check=0', FALSE);
+		header('Pragma: no-cache');
+		header("Vary: Accept-Encoding");
+
+		if ( ! wp_verify_nonce($_POST['_nonce'], 'wordpress-https') ) {
+			exit;
+		}
+
+		$content = WordPressHTTPS_Url::fromString( $_POST['url'] )->getContent();
+		if ( $content ) {
+			echo $content;
+		}
+		exit;
 	}
 
 	/**

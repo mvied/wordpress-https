@@ -6,18 +6,15 @@ jQuery(document).ready(function($) {
 
 	$('#<?php echo $metabox['id']; ?> .handlediv').append( loading );
 	$('#<?php echo $metabox['id']; ?> .handlediv .loading').fadeIn('fast');
-	$.ajax({
-		type: 'post',
-		url: '<?php echo parse_url((( $this->getPlugin()->isSsl() ) ? $this->getPlugin()->makeUrlHttps($this->getPlugin()->getPluginUrl()) : $this->getPlugin()->getPluginUrl()), PHP_URL_PATH); ?>/admin/js/metabox.php',
-		data: {
-			id : '<?php echo $metabox['id']; ?>',
-			url : '<?php echo $metabox['args']['url']; ?>',
-			_nonce : '<?php echo $nonce; ?>'
-		},
-		success: function(response) {
-			$('#<?php echo $metabox['id']; ?> .inside').html(response);
-			$('#<?php echo $metabox['id']; ?> .handlediv .loading').fadeIn(0).fadeOut('fast');
-		}
+
+	$.post(ajaxurl, {
+		action : '<?php echo $this->getPlugin()->getSlug(); ?>_ajax_metabox',
+		id : '<?php echo $metabox['id']; ?>',
+		url : '<?php echo $metabox['args']['url']; ?>',
+		_nonce : '<?php echo $nonce; ?>'
+	}, function(response) {
+		$('#<?php echo $metabox['id']; ?> .inside').html(response);
+		$('#<?php echo $metabox['id']; ?> .handlediv .loading').fadeIn(0).fadeOut('fast');
 	});
 });
 </script>

@@ -100,7 +100,6 @@
 	</tr>
 </table>
 
-<input type="hidden" name="action" value="wphttps-settings" />
 <input type="hidden" name="ssl_host_subdomain" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_subdomain') != 1) ? 0 : 1); ?>" />
 <input type="hidden" name="ssl_host_diff" value="<?php echo (($this->getPlugin()->getSetting('ssl_host_diff') != 1) ? 0 : 1); ?>" />
 
@@ -112,14 +111,22 @@
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function() {
+	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function(e) {
+		e.preventDefault();
+		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_settings');
 		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').show();
-	}).ajaxForm({
+		$.post(ajaxurl, $('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').serialize(), function(response) {
+			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
+			$('#message-body').html(response).fadeOut(0).fadeIn().delay(5000).fadeOut();
+		});
+	});
+
+	/*.ajaxForm({
 		success: function(responseText, textStatus, XMLHttpRequest) {
 			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
 			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
 		}
-	});
+	});*/
 
 	$('#settings-reset').click(function(e, el) {
 	   if ( ! confirm('<?php _e('Are you sure you want to reset all WordPress HTTPS settings?','wordpress-https'); ?>') ) {
