@@ -113,10 +113,11 @@
 jQuery(document).ready(function($) {
 	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function(e) {
 		e.preventDefault();
-		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_settings');
-		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').show();
-		$.post(ajaxurl, $('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').serialize(), function(response) {
-			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
+		var form = this;
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_settings');
+		$(form).find('.submit-waiting').show();
+		$.post(ajaxurl, $(form).serialize(), function(response) {
+			$(form).find('.submit-waiting').hide();
 			$('#message-body').html(response).fadeOut(0).fadeIn().delay(5000).fadeOut();
 		});
 	});

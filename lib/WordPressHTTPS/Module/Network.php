@@ -18,13 +18,9 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
-			// Network admin
-			if ( strpos($_SERVER['REQUEST_URI'], 'wp-admin/network') !== false ) {
-				if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'wphttps-network' ) {
-					add_action('plugins_loaded', array(&$this, 'save'), 1);
-				}
-
+		if ( is_admin() ) {
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_network_settings', array(&$this, 'save'));
+			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false && strpos($_SERVER['REQUEST_URI'], 'wp-admin/network') !== false ) {
 				// Add meta boxes
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
 

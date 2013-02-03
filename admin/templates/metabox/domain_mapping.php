@@ -56,8 +56,6 @@
 	</tr>
 </table>
 
-<input type="hidden" name="action" value="wphttps-domain-mapping" />
-
 <p class="button-controls">
 	<input type="submit" name="domain_mapping-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="domain_mapping-save" />
 	<input type="submit" name="domain_mapping-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="domain_mapping-reset" />
@@ -66,14 +64,15 @@
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form').submit(function() {
-		$('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form .submit-waiting').show();
-	}).ajaxForm({
-		data: { ajax: '1'},
-		success: function(responseText, textStatus, XMLHttpRequest) {
-			$('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form .submit-waiting').hide();
-			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
-		}
+	$('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form').submit(function(e) {
+		e.preventDefault();
+		var form = this;
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping');
+		$(form).find('.submit-waiting').show();
+		$.post(ajaxurl, $(form).serialize(), function(response) {
+			$(form).find('.submit-waiting').hide();
+			$('#message-body').html(response).fadeOut(0).fadeIn().delay(5000).fadeOut();
+		});
 	});
 
 	if ( $('#domain_mapping tr').length <= 1 ) {

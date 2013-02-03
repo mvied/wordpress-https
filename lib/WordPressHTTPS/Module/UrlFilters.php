@@ -18,13 +18,12 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		if ( is_admin() && isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
-			if ( $_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['action']) && $_POST['action'] == 'wphttps-filters' ) {
-				add_action('plugins_loaded', array(&$this, 'save'), 1);
+		if ( is_admin() ) {
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_url_filters', array(&$this, 'save'));
+			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
+				// Add meta boxes
+				add_action('admin_init', array(&$this, 'add_meta_boxes'));
 			}
-
-			// Add meta boxes
-			add_action('admin_init', array(&$this, 'add_meta_boxes'));
 		}
 		
 		add_filter('force_ssl', array(&$this, 'secure_filter_url'), 10, 3);

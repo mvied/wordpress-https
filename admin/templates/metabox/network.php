@@ -1,4 +1,4 @@
-<form name="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<form name="<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php settings_fields($this->getPlugin()->getSlug()); ?>
 
 <table id="blog-table">
@@ -80,8 +80,6 @@
 
 </table>
 
-<input type="hidden" name="action" value="wphttps-network" />
-
 <p class="button-controls">
 	<input type="submit" name="network-settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="network-settings-save" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
@@ -89,13 +87,15 @@
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form').submit(function() {
-		$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').show();
-	}).ajaxForm({
-		success: function(responseText, textStatus, XMLHttpRequest) {
-			$('#<?php echo $this->getPlugin()->getSlug(); ?>_settings_form .submit-waiting').hide();
-			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
-		}
+	$('#<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form').submit(function(e) {
+		e.preventDefault();
+		var form = this;
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_network_settings');
+		$(form).find('.submit-waiting').show();
+		$.post(ajaxurl, $(form).serialize(), function(response) {
+			$(form).find('.submit-waiting').hide();
+			$('#message-body').html(response).fadeOut(0).fadeIn().delay(5000).fadeOut();
+		});
 	});
 });
 </script>
