@@ -57,17 +57,22 @@
 </table>
 
 <p class="button-controls">
-	<input type="submit" name="domain_mapping-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="domain_mapping-save" />
-	<input type="submit" name="domain_mapping-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="domain_mapping-reset" />
+	<input type="submit" name="domain-mapping-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="domain-mapping-save" />
+	<input type="submit" name="domain-mapping-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="domain-mapping-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form').submit(function(e) {
+	var form = $('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form').first();
+	$('#domain-mapping-save').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_save');
+	});
+	$('#domain-mapping-reset').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_reset');
+	});
+	$(form).submit(function(e) {
 		e.preventDefault();
-		var form = this;
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping');
 		$(form).find('.submit-waiting').show();
 		$.post(ajaxurl, $(form).serialize(), function(response) {
 			$(form).find('.submit-waiting').hide();

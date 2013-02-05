@@ -198,7 +198,6 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		$message = "Settings reset.";
 		$errors = array();
 		$reload = true;
-		$logout = false;
 
 		foreach ($this->getPlugin()->getSettings() as $key => $default) {
 			$this->getPlugin()->setSetting($key, $default);

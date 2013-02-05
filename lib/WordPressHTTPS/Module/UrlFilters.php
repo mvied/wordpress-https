@@ -19,7 +19,8 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	 */
 	public function init() {
 		if ( is_admin() ) {
-			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_url_filters', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_filters_save', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_filters_reset', array(&$this, 'reset'));
 			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 				// Add meta boxes
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
@@ -69,6 +70,26 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	}
 
 	/**
+	 * Reset Url Filters
+	 *
+	 * @param array $settings
+	 * @return void
+	 */
+	public function reset() {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug() . '-options') ) {
+			return false;
+		}
+
+		$message = "URL Filters reset.";
+		$errors = array();
+		$reload = true;
+
+		$this->getPlugin()->setSetting('secure_filter', array());
+
+		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+	}
+
+	/**
 	 * Save Url Filters
 	 *
 	 * @param array $settings
@@ -82,19 +103,10 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 		$message = "URL Filters saved.";
 		$errors = array();
 		$reload = false;
-		$logout = false;
-		if ( isset($_POST['filters-save']) ) {
-			$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
-			$filters = array_filter($filters); // Removes blank array items
-			$this->getPlugin()->setSetting('secure_filter', $filters);
-		} else if ( isset($_POST['filters-reset']) ) {
-			$this->getPlugin()->setSetting('secure_filter', array());
-			$reload = true;
-		}
 
-		if ( $logout ) {
-			wp_logout();
-		}
+		$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
+		$filters = array_filter($filters); // Removes blank array items
+		$this->getPlugin()->setSetting('secure_filter', $filters);
 
 		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
 	}

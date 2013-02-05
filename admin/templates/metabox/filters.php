@@ -21,10 +21,15 @@
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_filters_form').submit(function(e) {
+	var form = $('#<?php echo $this->getPlugin()->getSlug(); ?>_filters_form').first();
+	$('#filters-save').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_filters_save');
+	});
+	$('#filters-reset').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_filters_reset');
+	});
+	$(form).submit(function(e) {
 		e.preventDefault();
-		var form = this;
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_url_filters');
 		$(form).find('.submit-waiting').show();
 		$.post(ajaxurl, $(form).serialize(), function(response) {
 			$(form).find('.submit-waiting').hide();
