@@ -4,7 +4,7 @@
 [WordPress.org](https://wordpress.org/extend/plugins/wordpress-https/) | 
 [GitHub-Repository](https://github.com/Mvied/wordpress-https) | 
 [WordPress.org-SVN](http://plugins.trac.wordpress.org/browser/wordpress-https/) | 
-[Issue-Tracker](https://github.com/Mvied/wordpress-https/issues) | 
+[Issue-Tracker](https://github.com/Mvied/wordpress-https/issues)
 
 ### WordPress
 * Requires at least: 3.0

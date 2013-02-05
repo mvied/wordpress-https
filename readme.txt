@@ -4,18 +4,18 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 3.3.0
+Stable tag: 3.3.1
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
 == Description ==
-Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>.
-If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>. If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and I will do my best to assist you.
+<p>Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>. If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>.</p>
+<p>If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and I or someone from the community will be able to assist you.</p>
 
 = Development =
-Contribute Code at [https://github.com/Mvied/wordpress-https](https://github.com/Mvied/wordpress-https)
-Contribute Translations at [https://translate.foe-services.de/projects/wordpress-https](https://translate.foe-services.de/projects/wordpress-https)
+<p>Contribute Code at [https://github.com/Mvied/wordpress-https](https://github.com/Mvied/wordpress-https)</p>
+<p>Contribute Translations at [https://translate.foe-services.de/projects/wordpress-https](https://translate.foe-services.de/projects/wordpress-https)</p>
 
 == Installation ==
 1. Upload the `wordpress-https` folder to the `/wp-content/plugins/` directory.
@@ -97,6 +97,9 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.3.1 =
+* Slightly adjusted settings page column widths.
+* Bug Fix - Installations with a non-default wp-content folder location should no longer experience issues with the WordPress HTTPS settings page.
 = 3.3.0 =
 * Tested with WordPress v3.5.
 * Added German translation and gettext support. Thanks <a href="https://github.com/cfoellmann">Christian Foellmann</a>.
