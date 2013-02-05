@@ -19,7 +19,8 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 */
 	public function init() {
 		if ( is_admin() ) {
-			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_save', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_reset', array(&$this, 'reset'));
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_ajax_metabox', array(&$this, 'ajax_metabox'));
 			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 				// Add meta boxes
@@ -182,11 +183,35 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	public function render() {
 		require_once($this->getPlugin()->getDirectory() . '/admin/templates/settings.php');
 	}
+
+	/**
+	 * Reset Settings
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function reset() {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug() . '-options') ) {
+			return false;
+		}
+
+		$message = "Settings reset.";
+		$errors = array();
+		$reload = true;
+		$logout = false;
+
+		foreach ($this->getPlugin()->getSettings() as $key => $default) {
+			$this->getPlugin()->setSetting($key, $default);
+		}
+		$this->getPlugin()->install();
+
+		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+	}
 	
 	/**
 	 * Save Settings
 	 *
-	 * @param array $settings
+	 * @param none
 	 * @return void
 	 */
 	public function save() {
@@ -198,85 +223,78 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		$errors = array();
 		$reload = false;
 		$logout = false;
-		if ( isset($_POST['settings-save']) ) {
-			foreach ($this->getPlugin()->getSettings() as $key => $default) {
-				if ( !array_key_exists($key, $_POST) && $default == 0 ) {
-					$_POST[$key] = 0;
-					$this->getPlugin()->setSetting($key, $_POST[$key]);
-				} else if ( array_key_exists($key, $_POST) ) {
-					if ( $key == 'ssl_host' ) {
-						if ( $_POST[$key] != '' ) {
-							$_POST[$key] = strtolower($_POST[$key]);
-							// Add Scheme
-							if ( strpos($_POST[$key], 'http://') === false && strpos($_POST[$key], 'https://') === false ) {
-								$_POST[$key] = 'https://' . $_POST[$key];
-							}
 
-							$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
+		foreach ($this->getPlugin()->getSettings() as $key => $default) {
+			if ( !array_key_exists($key, $_POST) && $default == 0 ) {
+				$_POST[$key] = 0;
+				$this->getPlugin()->setSetting($key, $_POST[$key]);
+			} else if ( array_key_exists($key, $_POST) ) {
+				if ( $key == 'ssl_host' ) {
+					if ( $_POST[$key] != '' ) {
+						$_POST[$key] = strtolower($_POST[$key]);
+						// Add Scheme
+						if ( strpos($_POST[$key], 'http://') === false && strpos($_POST[$key], 'https://') === false ) {
+							$_POST[$key] = 'https://' . $_POST[$key];
+						}
 
-							// Add Port
-							$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->getPort());
-							$port = (($port != 80 && $port != 443) ? $port : null);
-							$ssl_host->setPort($port);
+						$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
-							// Add Path
-							if ( strpos($ssl_host->getPath(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
-								$path = '/'. ltrim(str_replace(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/'), '', $ssl_host->getPath()), '/');
-								$ssl_host->setPath(rtrim($path, '/') . $this->getPlugin()->getHttpUrl()->getPath());
-							}
-							$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . '/');
+						// Add Port
+						$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->getPort());
+						$port = ($port != 443 ? $port : null);
+						$ssl_host->setPort($port);
 
-							if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
-								// Ensure that the WordPress installation is accessible at this host
-								//if ( $ssl_host->isValid() ) {
-									// If secure domain has changed and currently on SSL, logout user
-									if ( $this->getPlugin()->isSsl() ) {
-										$logout = true;
-									}
-									$_POST[$key] = $ssl_host->setPort('')->toString();
-								/*} else {
-									$errors[] = '<strong>SSL Host</strong> - Invalid WordPress installation at ' . $ssl_host;
-									$_POST[$key] = get_option($key);
-								}*/
-							} else {
-								$_POST[$key] = $this->getPlugin()->getHttpsUrl()->toString();
-							}
+						// Add Path
+						if ( strpos($ssl_host->getPath(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
+							$path = '/'. ltrim(str_replace(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/'), '', $ssl_host->getPath()), '/');
+							$ssl_host->setPath(rtrim($path, '/') . $this->getPlugin()->getHttpUrl()->getPath());
+						}
+						$ssl_host->setPath(rtrim($ssl_host->getPath(), '/') . '/');
+
+						if ( $ssl_host->toString() != $this->getPlugin()->getHttpsUrl()->toString() ) {
+							// Ensure that the WordPress installation is accessible at this host
+							//if ( $ssl_host->isValid() ) {
+								// If secure domain has changed and currently on SSL, logout user
+								if ( $this->getPlugin()->isSsl() ) {
+									$logout = true;
+								}
+								$_POST[$key] = $ssl_host->setPort('')->toString();
+							/*} else {
+								$errors[] = '<strong>SSL Host</strong> - Invalid WordPress installation at ' . $ssl_host;
+								$_POST[$key] = get_option($key);
+							}*/
 						} else {
-							$_POST[$key] = get_option($key);
+							$_POST[$key] = $this->getPlugin()->getHttpsUrl()->toString();
 						}
-					} else if ( $key == 'ssl_proxy' ) {
-						// Reload if we're auto detecting the proxy and we're not in SSL
-						if ( $_POST[$key] == 'auto' && ! $this->getPlugin()->isSsl() ) {
-							$reload = true;
-						}
-					} else if ( $key == 'ssl_admin' ) {
-						if ( force_ssl_admin() && $this->getPlugin()->getSetting('ssl_host_diff') ) {
-							$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN should not be set to true in your wp-config.php while using a non-default SSL Host.';
-						// If forcing SSL Admin and currently not SSL, logout user
-						} else if ( $_POST[$key] == 1 && !$this->getPlugin()->isSsl() ) {
-							$logout = true;
-						}
-					} else if ( $key == 'ssl_host_subdomain' ) {
-						// Checks to see if the SSL Host is a subdomain
-						$http_domain = $this->getPlugin()->getHttpUrl()->getBaseHost();
-						$https_domain = $this->getPlugin()->getHttpsUrl()->getBaseHost();
-
-						if ( $ssl_host->setScheme('http') != $this->getPlugin()->getHttpUrl() && $http_domain == $https_domain ) {
-							$_POST[$key] = 1;
-						} else {
-							$_POST[$key] = 0;
-						}
+					} else {
+						$_POST[$key] = get_option($key);
 					}
+				} else if ( $key == 'ssl_proxy' ) {
+					// Reload if we're auto detecting the proxy and we're not in SSL
+					if ( $_POST[$key] == 'auto' && ! $this->getPlugin()->isSsl() ) {
+						$reload = true;
+					}
+				} else if ( $key == 'ssl_admin' ) {
+					if ( force_ssl_admin() && $this->getPlugin()->getSetting('ssl_host_diff') ) {
+						$errors[] = '<strong>SSL Admin</strong> - FORCE_SSL_ADMIN should not be set to true in your wp-config.php while using a non-default SSL Host.';
+					// If forcing SSL Admin and currently not SSL, logout user
+					} else if ( $_POST[$key] == 1 && !$this->getPlugin()->isSsl() ) {
+						$logout = true;
+					}
+				} else if ( $key == 'ssl_host_subdomain' ) {
+					// Checks to see if the SSL Host is a subdomain
+					$http_domain = $this->getPlugin()->getHttpUrl()->getBaseHost();
+					$https_domain = $this->getPlugin()->getHttpsUrl()->getBaseHost();
 
-					$this->getPlugin()->setSetting($key, $_POST[$key]);
+					if ( $ssl_host->setScheme('http') != $this->getPlugin()->getHttpUrl() && $http_domain == $https_domain ) {
+						$_POST[$key] = 1;
+					} else {
+						$_POST[$key] = 0;
+					}
 				}
+
+				$this->getPlugin()->setSetting($key, $_POST[$key]);
 			}
-		} else if ( isset($_POST['settings-reset']) ) {
-			foreach ($this->getPlugin()->getSettings() as $key => $default) {
-				$this->getPlugin()->setSetting($key, $default);
-			}
-			$this->getPlugin()->install();
-			$reload = true;
 		}
 
 		if ( $logout ) {

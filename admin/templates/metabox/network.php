@@ -87,10 +87,12 @@
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	$('#<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form').submit(function(e) {
+	var form = $('#<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form').first();
+	$('#network-settings-save').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_save');
+	});
+	$(form).submit(function(e) {
 		e.preventDefault();
-		var form = this;
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_network_settings');
 		$(form).find('.submit-waiting').show();
 		$.post(ajaxurl, $(form).serialize(), function(response) {
 			$(form).find('.submit-waiting').hide();
