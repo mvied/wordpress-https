@@ -191,7 +191,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function reset() {
-		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug() . '-options') ) {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug()) ) {
 			return false;
 		}
 
@@ -214,7 +214,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function save() {
-		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug() . '-options') ) {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug()) ) {
 			return false;
 		}
 

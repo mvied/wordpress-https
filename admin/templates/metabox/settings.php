@@ -8,7 +8,8 @@
 	$ssl_host = rtrim($ssl_host, '/');
 ?>
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<?php settings_fields($this->getPlugin()->getSlug()); ?>
+<?php wp_nonce_field($this->getPlugin()->getSlug()); ?>
+<input type="hidden" name="action" id="action" value="" />
 
 <table class="form-table">
 	<tr valign="top" id="ssl_host_row">

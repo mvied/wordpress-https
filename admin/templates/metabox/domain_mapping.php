@@ -1,5 +1,6 @@
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<?php settings_fields($this->getPlugin()->getSlug()); ?>
+<?php wp_nonce_field($this->getPlugin()->getSlug()); ?>
+<input type="hidden" name="action" id="action" value="" />
 
 <p><?php printf( __('Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use %s regular expressions %s','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help&" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">', '</a>') ; ?>.</p>
 
