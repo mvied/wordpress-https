@@ -195,17 +195,9 @@ class WordPressHTTPS extends Mvied_Plugin {
 			}
 		}
 
-		// Checks to see if the SSL Host is a subdomain
-		$http_domain = $this->getHttpUrl()->getBaseHost();
-		$https_domain = $this->getHttpsUrl()->getBaseHost();
-
-		if ( $this->getHttpsUrl()->setScheme('http')->toString() != $this->getHttpUrl()->toString() && $http_domain == $https_domain ) {
-			$subdomain = true;
-		} else {
-			$subdomain = false;
-		}
+		$is_subdomain = $this->getHttpsUrl()->isSubdomain($this->getHttpUrl());
 		foreach ( $blogs as $blog_id ) {
-			$this->setSetting('ssl_host_subdomain', $subdomain, $blog_id);
+			$this->setSetting('ssl_host_subdomain', $is_subdomain, $blog_id);
 		}
 	}
 

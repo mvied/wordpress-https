@@ -441,6 +441,21 @@ class WordPressHTTPS_Url {
 	}
 
 	/**
+	 * Compares URL objects to determine if either of them are a subdomain of the other.
+	 * 
+	 * @param WordPressHTTPS_Url $url
+	 * @return boolean
+	 */
+	public function isSubdomain( WordPressHTTPS_Url $url ) {
+		$this_host = $this->getBaseHost();
+		$other_host = $url->getBaseHost();
+		if ( $this_host == $other_host ) {
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Factory object from an array provided by the parse_url function
 	 * 
 	 * Example of usage:

@@ -283,10 +283,8 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 					}
 				} else if ( $key == 'ssl_host_subdomain' ) {
 					// Checks to see if the SSL Host is a subdomain
-					$http_domain = $this->getPlugin()->getHttpUrl()->getBaseHost();
-					$https_domain = $this->getPlugin()->getHttpsUrl()->getBaseHost();
-
-					if ( $ssl_host->setScheme('http') != $this->getPlugin()->getHttpUrl() && $http_domain == $https_domain ) {
+					$is_subdomain = $this->getPlugin()->getHttpsUrl()->isSubdomain($this->getPlugin()->getHttpUrl());
+					if ( $ssl_host->setScheme('http') != $this->getPlugin()->getHttpUrl() && $is_subdomain ) {
 						$_POST[$key] = 1;
 					} else {
 						$_POST[$key] = 0;
