@@ -239,8 +239,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 						$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
 						// Add Port
-						$port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) ) ? $_POST['ssl_port'] : $ssl_host->getPort());
-						$port = ($port != 443 ? $port : null);
+						$_POST['ssl_port'] = $port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port']) && $_POST['ssl_port'] != 443) ? $_POST['ssl_port'] : $ssl_host->getPort());
 						$ssl_host->setPort($port);
 
 						// Add Path
