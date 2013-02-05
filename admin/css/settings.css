@@ -20,13 +20,16 @@
 }
 
 #wphttps-main #poststuff .column-primary {
-	width: 60%;
+	width: 72%;
 	padding: 0;
 }
 #wphttps-main #poststuff .column-secondary {
-	width: 40%;
+	width: 28%;
 	float: right;
 	padding: 0;
+}
+#wphttps-main #poststuff .postbox {
+	min-width: auto;
 }
 
 #wphttps-main #message {
