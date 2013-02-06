@@ -31,7 +31,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('logout_url', array(&$this, 'secure_url'), 10);
 		add_filter('login_url', array(&$this, 'secure_url'), 10);
 		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
-		add_filter('admin_url', array(&$this, 'secure_url'), 10);
 
 		// Filter Element URL's
 		add_filter('get_avatar', array(&$this, 'element_url'), 10);
@@ -41,8 +40,11 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('plugins_url', array(&$this, 'element_url'), 10);
 		add_filter('includes_url', array(&$this, 'element_url'), 10);
 
-		// Filter site_url, excluding admin panel. Admin_url filter should catch everything.
-		if ( !is_admin() ) {
+		// Filter admin_url in admin
+		if ( is_admin() ) {
+			add_filter('admin_url', array(&$this, 'admin_url'), 10, 2);
+		// Filter site_url publicly
+		} else {
 			add_filter('site_url', array(&$this, 'site_url'), 10, 4);
 		}
 
@@ -175,6 +177,30 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	}
 
 	/**
+	 * Admin URL
+	 * WordPress Filter - admin_url
+	 *
+	 * @param string $url
+	 * @param string $scheme
+	 * @return string $url
+	 */
+	public function admin_url( $url, $scheme ) {
+		$force_ssl = apply_filters('force_ssl', null, 0, $url);
+
+		// Catches base URL's used by low-level WordPress code
+		if ( is_null($force_ssl) && is_admin() && $this->getPlugin()->isSsl() && ($url_parts = parse_url($url)) && ( !isset($url_parts['path']) || trim($url_parts['path'], '/') == '' ) ) {
+			$force_ssl = true;
+		}
+
+		if ( $scheme != 'http' && $force_ssl ) {
+			$url = $this->getPlugin()->makeUrlHttps($url);
+		} else if ( !is_null($force_ssl) && !$force_ssl ) {
+			$url = $this->getPlugin()->makeUrlHttp($url);
+		}
+		return $url;
+	}
+
+	/**
 	 * Site URL
 	 * WordPress Filter - site_url
 	 *
@@ -186,6 +212,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function site_url( $url, $path, $scheme, $blog_id ) {
 		$force_ssl = apply_filters('force_ssl', null, 0, $url);
+
 		if ( $scheme != 'http' && $force_ssl ) {
 			$url = $this->getPlugin()->makeUrlHttps($url);
 		} else if ( !is_null($force_ssl) && !$force_ssl ) {
@@ -235,10 +262,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 				}
 			}
 		}
-		// Catches base URL's used by low-level WordPress code
-		if ( is_admin() && $this->getPlugin()->isSsl() && ($url_parts = parse_url($url)) && ( !isset($url_parts['path']) || trim($url_parts['path'], '/') == '' ) ) {
-			$force_ssl = true;
-		}
+
 		return $force_ssl;
 	}
 
