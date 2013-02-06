@@ -99,6 +99,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.3.1 =
 * Slightly adjusted settings page column widths.
+* Bug Fix - Links to the home page should now properly be set to HTTP when using Force SSL Exclusively.
 * Bug Fix - Installations with a non-default wp-content folder location should no longer experience issues with the WordPress HTTPS settings page.
 = 3.3.0 =
 * Tested with WordPress v3.5.
