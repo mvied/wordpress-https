@@ -30,7 +30,7 @@
 		<td>
 			<fieldset>
 				<label for="ssl_admin">
-					<input type="hidden" name="ssl_admin" value="0" />
+					<input type="hidden" name="ssl_admin" value="<?php echo ((force_ssl_admin() && $this->getPlugin()->getSetting('ssl_admin') == 1) ? 1 : 0); ?>" />
 					<input name="ssl_admin" type="checkbox" id="ssl_admin" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getPlugin()->getSetting('ssl_admin')) ? ' checked="checked"' : '') ); ?> />
 					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %s FORCE_SSL_ADMIN','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">'); ?></a>.</p>
 				</label>
