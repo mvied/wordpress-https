@@ -97,17 +97,19 @@ class WordPressHTTPS extends Mvied_Plugin {
 		if ( !isset($this->_https_url) ) {
 			$this->_https_url = WordPressHTTPS_Url::fromString('https://' . parse_url(get_bloginfo('template_url'), PHP_URL_HOST) . parse_url(home_url('/'), PHP_URL_PATH));
 
-			// If using a different host for SSL
-			if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' && $this->getSetting('ssl_host') != $this->_https_url->toString() ) {
-				// Assign HTTPS URL to SSL Host
-				$this->setSetting('ssl_host_diff', 1);
+			if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' ) {
 				$ssl_host = rtrim($this->getSetting('ssl_host'), '/') . '/';
-				if ( strpos($ssl_host, 'http://') === false && strpos($ssl_host, 'https://') === false ) {
-					$ssl_host = 'https://' . $ssl_host;
+				// If using a different host for SSL
+				if ( $ssl_host != $this->_https_url->toString() ) {
+					// Assign HTTPS URL to SSL Host
+					$this->setSetting('ssl_host_diff', 1);
+					if ( strpos($ssl_host, 'http://') === false && strpos($ssl_host, 'https://') === false ) {
+						$ssl_host = 'https://' . $ssl_host;
+					}
+					$this->_https_url = WordPressHTTPS_Url::fromString( $ssl_host );
+				} else {
+					$this->setSetting('ssl_host_diff', 0);
 				}
-				$this->_https_url = WordPressHTTPS_Url::fromString( $ssl_host );
-			} else {
-				$this->setSetting('ssl_host_diff', 0);
 			}
 
 			// Prepend SSL Host path
