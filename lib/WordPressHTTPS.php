@@ -121,7 +121,26 @@ class WordPressHTTPS extends Mvied_Plugin {
 
 		return $this->_https_url;
 	}
-	
+
+	/**
+	 * Get domains local to the WordPress installation.
+	 * 
+	 * @param none
+	 * @return array $hosts Array of domains local to the WordPress installation.
+	 */
+	public function getLocalDomains() {
+		global $wpdb;
+		$hosts = array(
+			$this->getHttpUrl()->getHost(),
+			$this->getHttpsUrl()->getHost()
+		);
+
+		if ( is_multisite() && is_subdomain_install() ) {
+			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM " . $wpdb->blogs, NULL));
+			$hosts = array_merge($hosts, $multisite_hosts);
+		}
+		return $hosts;
+	}
 	/**
 	 * Initialize
 	 *
@@ -210,7 +229,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * @return boolean
 	 */
 	public function isUrlLocal($url) {
-		if ( ($url_parts = parse_url($url)) && isset($url_parts['host']) && $this->getHttpUrl()->getHost() != $url_parts['host'] && $this->getHttpsUrl()->getHost() != $url_parts['host'] ) {
+		$hosts = $this->getLocalDomains();
+		if ( ($url_parts = parse_url($url)) && isset($url_parts['host']) && !in_array($url_parts['host'], $hosts) ) {
 			return false;
 		}
 		return true;
