@@ -371,7 +371,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return boolean $force_ssl
 	 */
 	public function secure_wordpress_forms( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( $this->getPlugin()->isSsl() && $this->getPlugin()->isUrlLocal($url) && ( strpos($url, 'wp-pass.php') !== false || strpos($url, 'wp-comments-post.php') !== false ) ) {
+		if ( $this->getPlugin()->isSsl() && $this->getPlugin()->isUrlLocal($url) && ( strpos($url, 'wp-pass.php') !== false || strpos($url, 'wp-login.php?action=') !== false || strpos($url, 'wp-comments-post.php') !== false ) ) {
 			$force_ssl = true;
 		}
 		return $force_ssl;
