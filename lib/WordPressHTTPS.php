@@ -141,6 +141,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		}
 		return $hosts;
 	}
+
 	/**
 	 * Initialize
 	 *
