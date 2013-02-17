@@ -68,7 +68,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	 *
 	 * @param string $url
 	 * @param string $type
-	 * @return void
+	 * @return boolean
 	 */
 	public function secureElement( $url, $type = '' ) {
 		$updated = false;
@@ -108,7 +108,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	 *
 	 * @param string $url
 	 * @param string $type
-	 * @return void
+	 * @return boolean
 	 */
 	public function unsecureElement( $url, $type = '' ) {
 		$updated = false;
