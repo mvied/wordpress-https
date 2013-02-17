@@ -105,7 +105,7 @@ class WordPressHTTPS_Module_DomainMapping extends Mvied_Plugin_Module {
 		$ssl_host_mapping = array();
 		for( $i=0; $i<sizeof($_POST['http_domain']); $i++ ) {
 			if ( isset($_POST['http_domain'][$i]) && $_POST['http_domain'][$i] != '' && isset($_POST['https_domain'][$i]) && $_POST['https_domain'][$i] != '' ) {
-				$ssl_host_mapping[stripslashes($_POST['http_domain'][$i])] = stripslashes($_POST['https_domain'][$i]);
+				$ssl_host_mapping[str_replace('\\\\', '\\', $_POST['http_domain'][$i])] = str_replace('\\\\', '\\', $_POST['https_domain'][$i]);
 			}
 		}
 		$this->getPlugin()->setSetting('ssl_host_mapping', $ssl_host_mapping);
