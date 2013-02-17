@@ -298,6 +298,8 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$scheme = $matches[3][$i];
 			$updated = false;
 			$post_id = null;
+			$blog_id = null;
+			$force_ssl = null;
 
 			if ( !$this->getPlugin()->isUrlLocal($url) ) {
 				continue;
@@ -334,33 +336,37 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 				}
 
 				if ( is_multisite() && isset($url_parts['host']) ) {
-					$blog_id = false;
-					$url_path = '/';
-					$url_path_segments = explode('/', $url_parts['path']);
-					if ( sizeof($url_path_segments) > 1 ) {
-						foreach( $url_path_segments as $url_path_segment ) {
-							if ( !$blog_id && $url_path_segment != '' ) {
-								$url_path .= '/' . $url_path_segment . '/';
-								if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
-									break;
+					if ( is_subdomain_install() ) {
+						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
+					} else {
+						$url_path = '';
+						$url_path_segments = explode('/', $url_parts['path']);
+						if ( sizeof($url_path_segments) > 1 ) {
+							foreach( $url_path_segments as $url_path_segment ) {
+								if ( is_null($blog_id) && $url_path_segment != '' ) {
+									$url_path .= '/' . $url_path_segment . '/';
+									if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
+										break;
+									}
 								}
 							}
 						}
 					}
-					if ( !$blog_id ) {
-						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
-					}
-					if ( $blog_id && $blog_id != $wpdb->blogid ) {
-						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
+
+					if ( !is_null($blog_id) && $blog_id != $wpdb->blogid ) {
+						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && strpos($url_parts['path'], 'wp-admin') !== false && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
 							$force_ssl = true;
-						} else {
+						} else if ( $this->getPlugin()->getSetting('exclusive_https', $blog_id) ) {
 							$force_ssl = false;
 						}
 					}
 				}
 			}
 
-			$force_ssl = apply_filters('force_ssl', null, ( isset($post_id) ? $post_id : 0 ), $url );
+			// Only apply force_ssl filters for current blog
+			if ( is_null($blog_id) ) {
+				$force_ssl = apply_filters('force_ssl', null, ( isset($post_id) ? $post_id : 0 ), $url );
+			}
 
 			if ( $force_ssl == true ) {
 				$updated = $this->getPlugin()->makeUrlHttps($url);
