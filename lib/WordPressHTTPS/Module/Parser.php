@@ -112,6 +112,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	 */
 	public function unsecureElement( $url, $type = '' ) {
 		$updated = false;
+		$result = false;
+		$upload_dir = wp_upload_dir();
+		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
 
 		if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
 			$updated = $this->getPlugin()->makeUrlHttp($url);
@@ -121,10 +124,13 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 		// Add log entry if this change hasn't been logged
 		if ( $updated && $url != $updated ) {
 			$log = '[FIXED] Element: ' . ( $type != '' ? '<' . $type . '> ' : '' ) . $url . ' => ' . $updated;
+			$result = true;
 		}
 		if ( isset($log) && ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
 			$this->getPlugin()->getLogger()->log($log);
 		}
+
+		return $result;
 	}
 
 	/**
