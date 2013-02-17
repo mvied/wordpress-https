@@ -180,6 +180,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			if	( $type == 'img' || $type == 'script' || $type == 'embed' || $type == 'iframe' ||
 				( $type == 'link' && ( strpos($html, 'stylesheet') !== false || strpos($html, 'pingback') !== false ) ) ||
 				( $type == 'form' && strpos($html, 'wp-pass.php') !== false ) ||
+				( $type == 'form' && strpos($html, 'wp-login.php?action=postpass') !== false ) ||
 				( $type == 'form' && strpos($html, 'commentform') !== false ) ||
 				( $type == 'input' && strpos($html, 'image') !== false ) ||
 				( $type == 'param' && strpos($html, 'movie') !== false )
