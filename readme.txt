@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.5
-Stable tag: 3.3.1
+Stable tag: 3.3.5
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
@@ -97,8 +97,12 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
-= 3.3.1 =
+= 3.3.5 =
+* Enhanced multisite support and testing.
 * Slightly adjusted settings page column widths.
+* Now using admin-ajax.php for settings page.
+* Bug Fix - Password protected pages in WordPress 3.5+ should now be properly secured.
+* Bug Fix - The SSL Admin setting should now be properly retained when using FORCE_SSL_ADMIN.
 * Bug Fix - Links to the home page should now properly be set to HTTP when using Force SSL Exclusively.
 * Bug Fix - Installations with a non-default wp-content folder location should no longer experience issues with the WordPress HTTPS settings page.
 = 3.3.0 =
