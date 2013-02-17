@@ -185,7 +185,11 @@ class WordPressHTTPS extends Mvied_Plugin {
 			foreach ( $this->getSettings() as $option => $value ) {
 				if ( is_multisite() ) {
 					if ( add_blog_option($blog_id, $option, $value) && isset($defaults[$option]) ) {
-						$value = $defaults[$option];
+						if ( $option == 'ssl_host' ) {
+							$value = 'https://' . $value;
+						} else {
+							$value = $defaults[$option];
+						}
 						$this->setSetting($option, $value, $blog_id);
 					}
 				} else {
