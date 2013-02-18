@@ -101,6 +101,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Enhanced multisite support and testing.
 * Slightly adjusted settings page column widths.
 * Now using admin-ajax.php for settings page.
+* Added detection and conflict fixes for a few popular E-commerce plugins: WooCommerce, WP E-commerce and Jigoshop
 * Bug Fix - Password protected pages in WordPress 3.5+ should now be properly secured.
 * Bug Fix - The SSL Admin setting should now be properly retained when using FORCE_SSL_ADMIN.
 * Bug Fix - Links to the home page should now properly be set to HTTP when using Force SSL Exclusively.
