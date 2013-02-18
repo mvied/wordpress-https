@@ -95,7 +95,8 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 */
 	public function getHttpsUrl() {
 		if ( !isset($this->_https_url) ) {
-			$this->_https_url = clone $this->getHttpUrl()->setScheme('https');
+			$this->_https_url = clone $this->getHttpUrl();
+			$this->_https_url->setScheme('https');
 
 			if ( is_string($this->getSetting('ssl_host')) && $this->getSetting('ssl_host') != '' ) {
 				$ssl_host = rtrim($this->getSetting('ssl_host'), '/') . '/';
