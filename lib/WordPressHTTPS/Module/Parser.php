@@ -369,7 +369,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 								}
 							}
 						}
-						if ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) && strpos($url_parts['path'], 'wp-admin') !== false && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
+						if ( ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) || defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) && strpos($url_parts['path'], 'wp-admin') !== false && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
 							$force_ssl = true;
 						} else if ( is_null($force_ssl) && $this->getPlugin()->getSetting('exclusive_https', $blog_id) ) {
 							$force_ssl = false;
