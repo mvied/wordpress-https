@@ -390,7 +390,12 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
 				} else {
 					if ( $ssl_host = $this->getPlugin()->getSetting('ssl_host', $blog_id) ) {
-						$updated = str_replace($url_parts['scheme'] . '://' . $url_parts['host'] . '/', $ssl_host, $url);
+						if ( is_subdomain_install() ) {
+							$host = $url_parts['host'] . '/';
+						} else {
+							$host = $url_parts['host'] . $url_path;
+						}
+						$updated = str_replace($url_parts['scheme'] . '://' . $host, $ssl_host, $url);
 					}
 				}
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
@@ -398,7 +403,12 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 				if ( is_null($blog_id) ) {
 					$updated = $this->getPlugin()->makeUrlHttp($url);
 				} else {
-					$updated = str_replace($url_parts['scheme'] . '://' . $url_parts['host'] . '/', get_home_url($blog_id, '/'), $url);
+					if ( is_subdomain_install() ) {
+						$host = $url_parts['host'] . '/';
+					} else {
+						$host = $url_parts['host'] . $url_path;
+					}
+					$updated = str_replace($url_parts['scheme'] . '://' . $host, get_home_url($blog_id, '/'), $url);
 				}
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			}
