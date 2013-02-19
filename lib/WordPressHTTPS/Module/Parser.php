@@ -307,6 +307,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$post_id = null;
 			$blog_id = null;
 			$force_ssl = null;
+			$url_path = '';
 
 			if ( !$this->getPlugin()->isUrlLocal($url) ) {
 				continue;
@@ -346,7 +347,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( is_subdomain_install() ) {
 						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
 					} else {
-						$url_path = '';
 						$url_path_segments = explode('/', $url_parts['path']);
 						if ( sizeof($url_path_segments) > 1 ) {
 							foreach( $url_path_segments as $url_path_segment ) {
