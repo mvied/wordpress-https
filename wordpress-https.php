@@ -33,8 +33,14 @@ if ( !defined('ABSPATH') ) exit;
 load_plugin_textdomain( 'wordpress-https', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
 function wphttps_autoloader($class) {
-	$filename = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
-	@include dirname(__FILE__) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . $filename;
+	$namespaces = array(
+		'Mvied',
+		'WordPressHTTPS'
+	);
+	if ( preg_match('/([A-Za-z]+)_?/', $class, $match) && in_array($match[1], $namespaces) ) {
+		$filename = str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
+		require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'lib' . DIRECTORY_SEPARATOR . $filename;
+	}
 }
 spl_autoload_register('wphttps_autoloader');
 
