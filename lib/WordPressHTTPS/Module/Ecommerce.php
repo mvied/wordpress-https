@@ -71,7 +71,7 @@ class WordPressHTTPS_Module_Ecommerce extends Mvied_Plugin_Module {
 	 */
 	public function secure_jigoshop( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( !is_admin() && $post_id > 0 ) {
-			if ( get_option('jigoshop_force_ssl_checkout') === 'yes' && $post_id == get_option('jigoshop_checkout_page_id') ) {
+			if ( get_option('jigoshop_force_ssl_checkout') === 'yes' && ( $post_id == get_option('jigoshop_checkout_page_id') || strpos($url, 'admin-ajax.php?action=jigoshop-checkout') !== false ) ) {
 				$force_ssl = true;
 			}
 		}
