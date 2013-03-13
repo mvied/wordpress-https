@@ -352,8 +352,10 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 							foreach( $url_path_segments as $url_path_segment ) {
 								if ( is_null($blog_id) && $url_path_segment != '' ) {
 									$url_path .= $url_path_segment . '/';
-									if ( $blog_id = get_blog_id_from_url( $url_parts['host'], $url_path) ) {
+									if ( ($blog_id = get_blog_id_from_url( $url_parts['host'], $url_path)) > 0 ) {
 										break;
+									} else {
+										$blog_id = null;
 									}
 								}
 							}
@@ -389,14 +391,17 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 				if ( is_null($blog_id) ) {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
 				} else {
-					if ( $ssl_host = $this->getPlugin()->getSetting('ssl_host', $blog_id) ) {
-						if ( is_subdomain_install() ) {
-							$host = $url_parts['host'] . '/';
-						} else {
-							$host = $url_parts['host'] . $url_path;
-						}
-						$updated = str_replace($url_parts['scheme'] . '://' . $host, $ssl_host, $url);
+					if ( $this->getPlugin()->getSetting('ssl_host', $blog_id) ) {
+						$ssl_host = $this->getPlugin()->getSetting('ssl_host', $blog_id);
+					} else {
+						$ssl_host = parse_url(get_home_url($blog_id, '/'), PHP_URL_HOST);
 					}
+					if ( is_subdomain_install() ) {
+						$host = $url_parts['host'] . '/';
+					} else {
+						$host = $url_parts['host'] . '/' . $url_path;
+					}
+					$updated = str_replace($url_parts['scheme'] . '://' . $host, $ssl_host, $url);
 				}
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			} else if ( !is_null($force_ssl) && !$force_ssl ) {
@@ -406,7 +411,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( is_subdomain_install() ) {
 						$host = $url_parts['host'] . '/';
 					} else {
-						$host = $url_parts['host'] . $url_path;
+						$host = $url_parts['host'] . '/' . $url_path;
 					}
 					$updated = str_replace($url_parts['scheme'] . '://' . $host, get_home_url($blog_id, '/'), $url);
 				}
