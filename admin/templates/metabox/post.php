@@ -1,4 +1,6 @@
 <?php
+if ( !defined('ABSPATH') ) exit;
+
 global $post;
 
 if ( $post->ID ) {

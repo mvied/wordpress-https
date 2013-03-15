@@ -1,11 +1,14 @@
 <?php
-	$count = 1; // Used to restrict str_replace count
-	$ssl_host = clone $this->getPlugin()->getHttpsUrl();
-	$ssl_host = $ssl_host->setPort('')->setScheme('')->toString();
-	if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
-		$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
-	}
-	$ssl_host = rtrim($ssl_host, '/');
+
+if ( !defined('ABSPATH') ) exit;
+
+$count = 1; // Used to restrict str_replace count
+$ssl_host = clone $this->getPlugin()->getHttpsUrl();
+$ssl_host = $ssl_host->setPort('')->setScheme('')->toString();
+if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
+	$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
+}
+$ssl_host = rtrim($ssl_host, '/');
 ?>
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php wp_nonce_field($this->getPlugin()->getSlug()); ?>

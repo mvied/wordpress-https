@@ -1,3 +1,6 @@
+<?php
+if ( !defined('ABSPATH') ) exit;
+?>
 <form name="<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_network_settings_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
 <?php wp_nonce_field($this->getPlugin()->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />

@@ -1,5 +1,5 @@
 <?php
-
+if ( !defined('ABSPATH') ) exit;
 if ( isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest' ) {
 	error_reporting(0);
 	while(@ob_end_clean());
