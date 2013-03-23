@@ -142,6 +142,13 @@ class WordPressHTTPS extends Mvied_Plugin {
 			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM " . $wpdb->blogs, NULL));
 			$hosts = array_merge($hosts, $multisite_hosts);
 		}
+
+		if ( function_exists('domain_mapping_siteurl') ) {
+			if ( $mapped_host = parse_url(domain_mapping_siteurl(false), PHP_URL_HOST) ) {
+				$hosts[] = $mapped_host;
+			}
+		}
+
 		return $hosts;
 	}
 
@@ -288,7 +295,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 							$redirect_url = $redirect[1];
 							$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
 						}
-						$string = str_replace($url, $updated, $string);
+						foreach( $this->getLocalDomains() as $domain ) {
+							$updated->setHost($domain);
+							$string = str_replace($url, $updated, $string);
+						}
 					}
 				}
 			} else {

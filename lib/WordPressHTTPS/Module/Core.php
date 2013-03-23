@@ -495,6 +495,18 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 		$force_ssl = apply_filters('force_ssl', null, ( $post ? $post->ID : null ), ( $this->getPlugin()->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $_SERVER['REQUEST_URI'] );
 
+		// Domain mapping check
+		if ( function_exists('domain_mapping_siteurl') && $force_ssl ) {
+			$mapped_domain = domain_mapping_siteurl(false);
+			if ( strpos($this->getPlugin()->getHttpsUrl(), $mapped_domain) === false ) {
+				if ( remove_action('template_redirect', 'redirect_to_mapped_domain') ) {
+					$this->getPlugin()->getLogger()->log('[FIXED] Domain mapping redirect removed.');
+				} else {
+					$this->getPlugin()->getLogger()->log('[WARNING] Unable to remove domain mapping redirect.');
+				}
+			}
+		}
+
 		if ( ! $this->getPlugin()->isSsl() && isset($force_ssl) && $force_ssl ) {
 			$scheme = 'https';
 		} else if ( $this->getPlugin()->isSsl() && isset($force_ssl) && ! $force_ssl ) {
