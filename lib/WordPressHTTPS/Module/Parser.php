@@ -195,7 +195,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( !$this->secureElement($url, $type) && $this->getPlugin()->getSetting('remove_unsecure') ) {
 						$this->_html = str_replace($html, '', $this->_html);
 					}
-				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
+				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
 					$this->unsecureElement($url, $type);
 				}
 			}
@@ -215,7 +215,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$url = $matches[2][$i];
 			if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 				$this->secureElement($url, 'style');
-			} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
+			} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
 				$this->unsecureElement($url, 'style');
 			}
 		}
@@ -279,7 +279,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 				if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
 					if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 						$this->secureElement($url, $type);
-					} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
+					} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
 						$this->unsecureElement($url, $type);
 					}
 				}
