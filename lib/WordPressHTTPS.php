@@ -304,10 +304,10 @@ class WordPressHTTPS extends Mvied_Plugin {
 			} else {
 				$updated = clone $url;
 				$updated = WordPressHTTPS_Url::fromString( apply_filters('https_external_url', $updated->toString()) );
+				$updated->setPort(null);
 				if ( @in_array($updated->toString(), $this->getSetting('secure_external_urls')) == false && @in_array($updated->toString(), $this->getSetting('unsecure_external_urls')) == false ) {
 					$test = clone $updated;
 					$test->setScheme('https');
-					$test->setPort(null);
 					if ( $test->isValid() ) {
 						// Cache this URL as available over HTTPS for future reference
 						$this->addSecureExternalUrl($updated->toString());
