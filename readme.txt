@@ -95,6 +95,10 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.3.7 =
+* Added checks for domain mapping plugin.
+* Fixed bug when external resources contained a port number, the port was not removed when testing for HTTPS.
+* External HTTPS elements on HTTP pages will stay HTTPS.
 = 3.3.6 =
 * Fixed bug where admin links in multisite networks were being broken.
 * Added check for Jigoshop admin-ajax.php calls.
