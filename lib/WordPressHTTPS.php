@@ -291,13 +291,13 @@ class WordPressHTTPS extends Mvied_Plugin {
 								$updated->setPath(str_replace(rtrim($this->getHttpUrl()->getPath(), '/'), $this->getHttpsUrl()->getPath(), $updated->getPath()));
 							}
 						}
-						if ( ( ( $this->isSsl() && !$this->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getSetting('ssl_admin') ) && strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
-							$redirect_url = $redirect[1];
-							$updated = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
-						}
 						foreach( $this->getLocalDomains() as $domain ) {
 							$updated->setHost($domain);
 							$string = str_replace($url, $updated, $string);
+						}
+						if ( ( ( $this->isSsl() && !$this->getSetting('exclusive_https') ) || ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getSetting('ssl_admin') ) && strpos($url, 'wp-admin') !== false && preg_match('/redirect_to=([^&]+)/i', $updated->toString(), $redirect) && isset($redirect[1]) ) {
+							$redirect_url = $redirect[1];
+							$string = str_replace($redirect_url, urlencode($this->makeUrlHttps(urldecode($redirect_url))), $updated->toString());
 						}
 					}
 				}
