@@ -424,7 +424,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 			return false;
 		} else if ( isset($_SERVER['HTTP_CF_VISITOR']) && strpos($_SERVER['HTTP_CF_VISITOR'], 'https') ) {
 			return true;
-		} else if ( isset($_SERVER['HTTP_X_FORWARDED_SSL']) && strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) == 'on' ) {
+		} else if ( isset($_SERVER['HTTP_X_FORWARDED_SSL']) && ( strtolower($_SERVER['HTTP_X_FORWARDED_SSL']) == 'on' || $_SERVER['HTTP_X_FORWARDED_SSL'] == 1 ) ) {
 			return true;
 		} else if ( isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https' ) {
 			return true;
