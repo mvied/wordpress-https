@@ -534,7 +534,7 @@ class WordPressHTTPS_Url {
 		$string = ( $this->getScheme() ? $this->getScheme() . '://' : '' ) . 
 		( $this->getUser() ? $this->getUser() . ( $this->getPass() ? ':' . $this->getPass() : '' ) . '@' : '' ) . 
 		$this->getHost() .
-		( $this->getPort() && ( ( $this->getPort() != 80 && $this->getScheme() == 'http' ) || ( $this->getPort() != 443 && $this->getScheme() == 'https' ) )  ? ':' . $this->getPort() : '' ) . 
+		( $this->getPort() ? ':' . $this->getPort() : '' ) . 
 		$this->getPath() . 
 		( $this->getQuery() ? '?' . $this->getQuery() : '' ) . 
 		( $this->getFragment() ? '#' . $this->getFragment() : '' );

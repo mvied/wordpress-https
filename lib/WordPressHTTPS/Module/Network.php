@@ -137,7 +137,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 						$ssl_host = WordPressHTTPS_Url::fromString($value);
 
 						// Add Port
-						$port = (($blog_url->getPort() && $blog_url->getPort() != 80 && $blog_url->getPort() != 443) ? $port : null);
+						$port = $blog_url->getPort() ? $port : null;
 						$ssl_host->setPort($port);
 
 						// Add Path

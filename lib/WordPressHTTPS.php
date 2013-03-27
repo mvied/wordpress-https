@@ -119,7 +119,11 @@ class WordPressHTTPS extends Mvied_Plugin {
 			}
 
 			// Add SSL Port to HTTPS URL
-			$this->_https_url->setPort($this->getSetting('ssl_port'));
+			if ( is_int($this->getSetting('ssl_port')) && $this->getSetting('ssl_port') != 443 ) {
+				$this->_https_url->setPort($this->getSetting('ssl_port'));
+			} else {
+				$this->_https_url->setPort(null);
+			}
 		}
 
 		return $this->_https_url;
