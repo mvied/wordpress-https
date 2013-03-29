@@ -53,7 +53,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 * 
 	 * @var array
 	 */
-	protected $_file_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js');
+	protected $_file_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js', 'ttf', 'otf');
 
 	/**
 	 * Default External SSL Host Mapping
