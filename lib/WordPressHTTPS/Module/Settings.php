@@ -195,7 +195,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = "Settings reset.";
+		$message = _e('Settings reset.','wordpress-https');
 		$errors = array();
 		$reload = true;
 
@@ -218,7 +218,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = "Settings saved.";
+		$message = _e('Settings saved.','wordpress-https');
 		$errors = array();
 		$reload = false;
 		$logout = false;

@@ -118,7 +118,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = "Network settings saved.";
+		$message = _e('Network settings saved.','wordpress-https');
 		$errors = array();
 		$reload = false;
 		$logout = false;
