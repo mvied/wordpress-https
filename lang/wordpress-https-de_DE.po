@@ -2,333 +2,395 @@
 # This file is distributed under the same license as the WordPress HTTPS package.
 msgid ""
 msgstr ""
-"PO-Revision-Date: 2012-12-18 11:26:32+0000\n"
+"Project-Id-Version: WordPress HTTPS\n"
+"POT-Creation-Date: 2013-03-29 17:08-0600\n"
+"PO-Revision-Date: 2013-03-29 17:32-0600\n"
+"Last-Translator: Mike Ems <mike@mvied.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: GlotPress/0.1\n"
-"Project-Id-Version: WordPress HTTPS\n"
-
-#: admin/templates/metabox/network.php:9
-msgid "Force SSL Admin"
-msgstr "Force SSL Admin"
-
-#: admin/templates/metabox/post.php:24
-msgid "This post's parent page ' %s ' has 'Secure child posts' enabled."
-msgstr "Die übergeordnete Seite dieses Artikels ' %s ' hat 'Sichere Unter-Artikel' aktiviert."
+"X-Generator: Poedit 1.5.5\n"
 
 #: wordpress-https.php:5
-msgid "WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites."
-msgstr "WordPress HTTPS ist eine All-in-One Lösung für SSL auf WordPress Seiten"
+msgid ""
+"WordPress HTTPS is intended to be an all-in-one solution to using SSL on "
+"WordPress sites."
+msgstr ""
+"WordPress HTTPS ist eine All-in-One Lösung für SSL auf WordPress Seiten"
 
-#: admin/templates/metabox/network.php:7
-msgid "Blog"
-msgstr "Seite"
-
-#: admin/templates/network.php:9 admin/templates/settings.php:9
+#: view/network.php:10 view/settings.php:10
 #: lib/WordPressHTTPS/Module/Post.php:42
 msgid "HTTPS"
 msgstr "HTTPS"
 
-#: lib/WordPressHTTPS/Module/Settings.php:61
-msgid "General Settings"
-msgstr "Allgemeine Einstellungen"
+#: view/settings.php:26
+msgid "Expressions"
+msgstr "Ausdrücke"
 
-#: lib/WordPressHTTPS/Module/Settings.php:70
-msgid "Developer Updates"
-msgstr "Entwickler-Updates"
+#: view/settings.php:30
+msgid "A single character: a, b, or c"
+msgstr "Jedes einzelne Zeichen: a, b, oder c "
 
-#: lib/WordPressHTTPS/Module/Settings.php:88
-msgid "Feedback"
-msgstr "Feedback"
+#: view/settings.php:34
+msgid "Any single character <em>but</em> a, b, or c"
+msgstr "Jedes einzelne Zeichen <em>außer</em> a, b, oder c"
 
-#: lib/WordPressHTTPS/Module/UrlFilters.php:63
-msgid "URL Filters"
-msgstr "URL Filter"
+#: view/settings.php:38
+msgid "Any character in the range a-z"
+msgstr "Jedes Zeichen im Bereich a-z"
 
-#: admin/templates/settings.php:96
-msgid "Match the previous item at least <em>n</em> times but no more than <em>m</em> times"
-msgstr "Entspricht einer Häufigkeit von mindestens <em>n</em> aber nicht mehr als <em>m</em>"
+#: view/settings.php:42
+msgid "Any character in the range a-z or A-Z (any alphabetical character)"
+msgstr "Jedes Zeichen im Bereich a-z oder A-Z (alle alphabetischen Zeichen)"
 
-#: admin/templates/settings.php:100
+#: view/settings.php:46
+msgid "Any whitespace character [ \\t\\n\\r\\f\\v]"
+msgstr "Jedes Leerzeichen [ \\t\\n\\r\\f\\v]"
+
+#: view/settings.php:50
+msgid "Any non-whitespace character [^ \\t\\n\\r\\f\\v]"
+msgstr "Jedes Nicht-Leerzeichen [^ \\t\\n\\r\\f\\v]"
+
+#: view/settings.php:54
+msgid "Any digit [0-9]"
+msgstr "Jede Ziffer [0-9]"
+
+#: view/settings.php:58
+msgid "Any non-digit [^0-9]"
+msgstr "Jede Nicht-Ziffer [^0-9]"
+
+#: view/settings.php:62
+msgid "Any word character [a-zA-Z0-9_]"
+msgstr "Jedes Wort-Zeichen [a-zA-Z0-9_]"
+
+#: view/settings.php:66
+msgid "Any non-word character [^a-zA-Z0-9_]"
+msgstr "Jedes Nicht-Wort-Zeichen [^a-zA-Z0-9_]"
+
+#: view/settings.php:70
+msgid "A word boundary between \\w and \\W"
+msgstr "Eine Wortgrenze zwischen \\w und \\W"
+
+#: view/settings.php:74
+msgid "A position that is not a word boundary"
+msgstr "Eine Position, die keine Wortgrenze ist"
+
+#: view/settings.php:78
+msgid ""
+"Alternation: matches either the subexpression to the left or to the right"
+msgstr ""
+"Wechsel: Entspricht entweder des Unter-Ausdrucks zur Linken oder zur Rechten"
+
+#: view/settings.php:82
+msgid "Grouping: group all together for repetition operators"
+msgstr "Bündelung: Gruppiere alle für Wiederholungsoperatoren"
+
+#: view/settings.php:86
+msgid "Beginning of the string"
+msgstr "Anfang des Strings"
+
+#: view/settings.php:90
+msgid "End of the string"
+msgstr "Ende des Strings"
+
+#: view/settings.php:93
+msgid "Repetition&#160;Operators"
+msgstr "Wiederholungs&#160;Operatoren"
+
+#: view/settings.php:97
+msgid ""
+"Match the previous item at least <em>n</em> times but no more than <em>m</"
+"em> times"
+msgstr ""
+"Entspricht einer Häufigkeit von mindestens <em>n</em> aber nicht mehr als "
+"<em>m</em>"
+
+#: view/settings.php:101
 msgid "Match the previous item <em>n</em> or more times"
 msgstr "Entspricht einer Häufigkeit von <em>n</em> oder mehr"
 
-#: admin/templates/settings.php:104
+#: view/settings.php:105
 msgid "Match exactly <em>n</em> occurrences of the previous item"
-msgstr "Entspricht einer Häufigkeit von genau <em>n</em> des vorherigen Elements"
+msgstr ""
+"Entspricht einer Häufigkeit von genau <em>n</em> des vorherigen Elements"
 
-#: admin/templates/settings.php:108
+#: view/settings.php:109
 msgid "Match 0 or 1 occurrences of the previous item {0,1}"
-msgstr "Entspricht einer Häufigkeit von 0 oder 1 des vorherigen Elements {0,1} "
+msgstr ""
+"Entspricht einer Häufigkeit von 0 oder 1 des vorherigen Elements {0,1} "
 
-#: admin/templates/settings.php:112
+#: view/settings.php:113
 msgid "Match 1 or more occurrences of the previous item {1,}"
-msgstr "Entspricht einer Häufigkeit von 1 oder mehr des vorherigen Elements {1,}"
+msgstr ""
+"Entspricht einer Häufigkeit von 1 oder mehr des vorherigen Elements {1,}"
 
-#: admin/templates/settings.php:116
+#: view/settings.php:117
 msgid "Match 0 or more occurrences of the previous item {0,}"
-msgstr "Entspricht einer Häufigkeit von 0 oder mehr des vorherigen Elements {0,} "
+msgstr ""
+"Entspricht einer Häufigkeit von 0 oder mehr des vorherigen Elements {0,} "
 
-#: lib/WordPressHTTPS/Module/Settings.php:79
-msgid "Support"
-msgstr "Support"
+#: view/metabox/domain_mapping.php:8
+#, php-format
+msgid ""
+"Domain mapping allows you to map external domains that host their HTTPS "
+"content on a different domain. You may use %s regular expressions %s"
+msgstr ""
+"Domain Mapping erlaubt es externe Domains auf deren HTTPS Domains "
+"umzuleiten. Sie können auch %s Reguläre Ausdrücke %s nutzen"
 
-#: lib/WordPressHTTPS/Module/Settings.php:97
-msgid "Donate"
-msgstr "Spende"
+#: view/metabox/domain_mapping.php:8 view/metabox/filters.php:12
+msgid "Regular Expressions Help"
+msgstr "Hilfe zu Regulären Ausdrücken"
+
+#: view/metabox/domain_mapping.php:34 view/metabox/domain_mapping.php:57
+msgid "Remove URL Filter"
+msgstr "URL Filter entfernen"
+
+#: view/metabox/domain_mapping.php:34 view/metabox/domain_mapping.php:57
+msgid "Remove"
+msgstr "Entfernen"
+
+#: view/metabox/domain_mapping.php:35 view/metabox/domain_mapping.php:58
+msgid "Add URL Filter"
+msgstr "URL Filter hinzufügen"
+
+#: view/metabox/domain_mapping.php:35 view/metabox/domain_mapping.php:58
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: view/metabox/domain_mapping.php:64 view/metabox/filters.php:21
+#: view/metabox/network.php:88 view/metabox/settings.php:108
+msgid "Save Changes"
+msgstr "Änderungen speichern"
+
+#: view/metabox/domain_mapping.php:65 view/metabox/filters.php:22
+#: view/metabox/settings.php:109
+msgid "Reset"
+msgstr "Reset"
+
+#: view/metabox/domain_mapping.php:66 view/metabox/filters.php:23
+#: view/metabox/network.php:89 view/metabox/settings.php:110
+msgid "Waiting..."
+msgstr "Warte..."
+
+#: view/metabox/domain_mapping.php:119
+msgid "Are you sure you want to reset all WordPress HTTPS domain mappings?"
+msgstr ""
+"Sind Sie sicher, dass du alle WordPress HTTPS domain mappings zurücksetzen "
+"willst?"
+
+#: view/metabox/filters.php:11
+msgid "Secure Filters"
+msgstr "Sicherheits-Filter"
+
+#: view/metabox/filters.php:12
+#, php-format
+msgid ""
+"Example: If you have an E-commerce shop and all of the URL's begin with /"
+"store/, you could secure all store links by entering '/store/' on one line. "
+"You may use %s regular expressions %s"
+msgstr ""
+"Beispiel: Sollten Sie einen E-Commerce Shop betreiben und alle URLs  "
+"beginnen mit /store/, können Sie alle Links zum Shop durch die Eingabe von '/"
+"store/' in einer Zeile sichern. Sie können auch %s Reguläre Ausdrücke %s "
+"nutzen"
+
+#: view/metabox/filters.php:46
+msgid "Are you sure you want to reset all WordPress HTTPS filters?"
+msgstr ""
+"Sind Sie sicher, dass Sie alle WordPress HTTPS Filter zurücksetzen wollen?"
+
+#: view/metabox/network.php:11
+msgid "Blog"
+msgstr "Seite"
+
+#: view/metabox/network.php:12 view/metabox/settings.php:19
+msgid "SSL Host"
+msgstr "SSL Host"
+
+#: view/metabox/network.php:13
+msgid "Force SSL Admin"
+msgstr "Force SSL Admin"
+
+#: view/metabox/network.php:14 view/metabox/settings.php:41
+msgid "Force SSL Exclusively"
+msgstr "Force SSL Exklusiv"
+
+#: view/metabox/network.php:15 view/metabox/settings.php:53
+msgid "Remove Unsecure Elements"
+msgstr "Unsichere Elemente entfernen"
+
+#: view/metabox/network.php:16 view/metabox/settings.php:65
+msgid "Debug Mode"
+msgstr "Debug Mode"
+
+#: view/metabox/network.php:17 view/metabox/settings.php:77
+msgid "Proxy"
+msgstr "Proxy"
+
+#: view/metabox/network.php:18 view/metabox/settings.php:90
+msgid "Admin Menu Location"
+msgstr "Position des Admin-Menüs"
+
+#: view/metabox/network.php:39 view/metabox/network.php:71
+#: view/metabox/settings.php:81
+msgid "No"
+msgstr "Nein"
+
+#: view/metabox/network.php:40 view/metabox/network.php:72
+#: view/metabox/settings.php:82
+msgid "Auto"
+msgstr "Auto"
+
+#: view/metabox/network.php:41 view/metabox/network.php:73
+#: view/metabox/settings.php:83
+msgid "Yes"
+msgstr "Ja"
+
+#: view/metabox/network.php:46 view/metabox/network.php:78
+#: view/metabox/settings.php:94
+msgid "Sidebar"
+msgstr "Seitenleiste"
+
+#: view/metabox/network.php:47 view/metabox/network.php:79
+#: view/metabox/settings.php:97
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: view/metabox/post.php:26
+#, fuzzy, php-format
+msgid "This post's parent page '%s' has 'Secure child posts' enabled."
+msgstr ""
+"Die übergeordnete Seite dieses Artikels ' %s ' hat 'Sichere Unter-Artikel' "
+"aktiviert."
+
+#: view/metabox/post.php:26
+msgid "Secure post"
+msgstr "Sicherer Artikel"
+
+#: view/metabox/post.php:29
+msgid "Secure child posts"
+msgstr "Sichere Unter-Artikel"
+
+#: view/metabox/settings.php:29
+msgid "Force SSL Administration"
+msgstr "Force SSL Administration"
+
+#: view/metabox/settings.php:35
+#, php-format
+msgid ""
+"Always use HTTPS while in the admin panel. This setting is identical to %s "
+"FORCE_SSL_ADMIN"
+msgstr ""
+"Nutze immer HTTPS für den Admin-Bereich. Diese Einstellung ist identisch mit "
+"%s FORCE_SSL_ADMIN"
+
+#: view/metabox/settings.php:47
+#, php-format
+msgid ""
+"Any page that is not secured via %s Force SSL %s or URL Filters will be "
+"redirected to HTTP."
+msgstr ""
+"Alle Seiten, die nicht durch %s Force SSL %s oder URL Filter gesichert "
+"werden, werde auf HTTP umgeleitet."
+
+#: view/metabox/settings.php:59
+msgid ""
+"Remove elements inaccessible over HTTPS. May break other plugins' "
+"functionality."
+msgstr ""
+"Entferne alle Elemente unerreichbar über HTTPS. Könnte Funktionen anderer "
+"Plugins beeinträchtigen."
+
+#: view/metabox/settings.php:71
+msgid "Outputs debug information to the browser's console."
+msgstr "Gibt Debug-Informationen in der Konsole des Browsers aus."
+
+#: view/metabox/settings.php:85
+msgid ""
+"If you think you may behind a proxy, set to Auto. Otherwise, leave the "
+"setting on No."
+msgstr ""
+"Wenn Sie denken, dass Sie sich hinter einem Proxy befinden, wählen Sie Auto. "
+"Ansonsten lassen Sie es auf Nein."
+
+#: view/metabox/settings.php:139
+msgid "Are you sure you want to reset all WordPress HTTPS settings?"
+msgstr ""
+"Sind Sie sicher, dass Sie alle WordPress HTTPS Einstellungen zurücksetzen "
+"wollen?"
 
 #: lib/WordPressHTTPS/Module/DomainMapping.php:61
 msgid "Domain Mapping"
 msgstr "Domain Mapping"
 
-#: lib/WordPressHTTPS/Module/Network.php:61
+#: lib/WordPressHTTPS/Module/DomainMapping.php:81
+msgid "Domain Mapping reset."
+msgstr "Domain Mapping zurücksetzen."
+
+#: lib/WordPressHTTPS/Module/DomainMapping.php:101
+msgid "Domain Mapping saved."
+msgstr "Domain Mapping gespeichert."
+
+#: lib/WordPressHTTPS/Module/Network.php:57
 msgid "Network Settings"
 msgstr "Netzwerk-Einstellungen"
 
-#: lib/WordPressHTTPS/Module/Network.php:70
-#: lib/WordPressHTTPS/Module/Settings.php:106
+#: lib/WordPressHTTPS/Module/Network.php:66
+#: lib/WordPressHTTPS/Module/Settings.php:107
 msgid "Loading..."
 msgstr "Lade..."
 
-#: lib/WordPressHTTPS/Module/Network.php:87
-#: lib/WordPressHTTPS/Module/Settings.php:123
+#: lib/WordPressHTTPS/Module/Network.php:83
+#: lib/WordPressHTTPS/Module/Settings.php:124
 msgid "You do not have sufficient permissions to access this page."
 msgstr "Sie haben keine Berechtigung diese Seite anzuzeigen."
 
-#: admin/templates/settings.php:25
-msgid "Expressions"
-msgstr "Ausdrücke"
+#: lib/WordPressHTTPS/Module/Network.php:121
+msgid "Network settings saved."
+msgstr "Netzwerk-Einstellungen gespeichert."
 
-#: admin/templates/settings.php:29
-msgid "A single character: a, b, or c"
-msgstr "Jedes einzelne Zeichen: a, b, oder c "
+#: lib/WordPressHTTPS/Module/Settings.php:62
+msgid "General Settings"
+msgstr "Allgemeine Einstellungen"
 
-#: admin/templates/settings.php:33
-msgid "Any single character <em>but</em> a, b, or c"
-msgstr "Jedes einzelne Zeichen <em>außer</em> a, b, oder c"
+#: lib/WordPressHTTPS/Module/Settings.php:71
+msgid "Developer Updates"
+msgstr "Entwickler-Updates"
 
-#: admin/templates/settings.php:37
-msgid "Any character in the range a-z"
-msgstr "Jedes Zeichen im Bereich a-z"
+#: lib/WordPressHTTPS/Module/Settings.php:80
+msgid "Support"
+msgstr "Support"
 
-#: admin/templates/settings.php:41
-msgid "Any character in the range a-z or A-Z (any alphabetical character)"
-msgstr "Jedes Zeichen im Bereich a-z oder A-Z (alle alphabetischen Zeichen)"
+#: lib/WordPressHTTPS/Module/Settings.php:89
+msgid "Feedback"
+msgstr "Feedback"
 
-#: admin/templates/settings.php:45
-msgid "Any whitespace character [ \\t\\n\\r\\f\\v]"
-msgstr "Jedes Leerzeichen [ \\t\\n\\r\\f\\v]"
+#: lib/WordPressHTTPS/Module/Settings.php:98
+msgid "Donate"
+msgstr "Spende"
 
-#: admin/templates/settings.php:49
-msgid "Any non-whitespace character [^ \\t\\n\\r\\f\\v]"
-msgstr "Jedes Nicht-Leerzeichen [^ \\t\\n\\r\\f\\v]"
+#: lib/WordPressHTTPS/Module/Settings.php:198
+msgid "Settings reset."
+msgstr "Einstellungen zurücksetzen."
 
-#: admin/templates/settings.php:53
-msgid "Any digit [0-9]"
-msgstr "Jede Ziffer [0-9]"
+#: lib/WordPressHTTPS/Module/Settings.php:221
+msgid "Settings saved."
+msgstr "Einstellungen gespeichert."
 
-#: admin/templates/settings.php:57
-msgid "Any non-digit [^0-9]"
-msgstr "Jede Nicht-Ziffer [^0-9]"
+#: lib/WordPressHTTPS/Module/UrlFilters.php:63
+msgid "URL Filters"
+msgstr "URL Filters"
 
-#: admin/templates/settings.php:61
-msgid "Any word character [a-zA-Z0-9_]"
-msgstr "Jedes Wort-Zeichen [a-zA-Z0-9_]"
+#: lib/WordPressHTTPS/Module/UrlFilters.php:83
+msgid "URL Filters reset."
+msgstr "URL Filters zurücksetzen."
 
-#: admin/templates/settings.php:65
-msgid "Any non-word character [^a-zA-Z0-9_]"
-msgstr "Jedes Nicht-Wort-Zeichen [^a-zA-Z0-9_]"
+#: lib/WordPressHTTPS/Module/UrlFilters.php:103
+msgid "URL Filters saved."
+msgstr "URL Filters gespeichert."
 
-#: admin/templates/settings.php:69
-msgid "A word boundary between \\w and \\W"
-msgstr "Eine Wortgrenze zwischen \\w und \\W"
-
-#: admin/templates/settings.php:73
-msgid "A position that is not a word boundary"
-msgstr "Eine Position, die keine Wortgrenze ist"
-
-#: admin/templates/settings.php:77
-msgid "Alternation: matches either the subexpression to the left or to the right"
-msgstr "Wechsel: Entspricht entweder des Unter-Ausdrucks zur Linken oder zur Rechten"
-
-#: admin/templates/settings.php:81
-msgid "Grouping: group all together for repetition operators"
-msgstr "Bündelung: Gruppiere alle für Wiederholungsoperatoren"
-
-#: admin/templates/settings.php:85
-msgid "Beginning of the string"
-msgstr "Anfang des Strings"
-
-#: admin/templates/settings.php:89
-msgid "End of the string"
-msgstr "Ende des Strings"
-
-#: admin/templates/settings.php:92
-msgid "Repetition&#160;Operators"
-msgstr "Wiederholungs&#160;Operatoren"
-
-#: admin/templates/metabox/settings.php:21
-msgid "Port"
-msgstr "Port"
-
-#: admin/templates/metabox/settings.php:28
-msgid "Force SSL Administration"
-msgstr "Force SSL Administration"
-
-#: admin/templates/metabox/settings.php:34
-msgid "Always use HTTPS while in the admin panel. This setting is identical to %s FORCE_SSL_ADMIN"
-msgstr "Nutze immer HTTPS für den Admin-Bereich. Diese Einstellung ist identisch mit %s FORCE_SSL_ADMIN"
-
-#: admin/templates/metabox/network.php:10
-#: admin/templates/metabox/settings.php:40
-msgid "Force SSL Exclusively"
-msgstr "Force SSL Exklusiv"
-
-#: admin/templates/metabox/settings.php:46
-msgid "Any page that is not secured via %s Force SSL %s or URL Filters will be redirected to HTTP."
-msgstr "Alle Seiten, die nicht durch %s Force SSL %s oder URL Filter gesichert werden, werde auf HTTP umgeleitet."
-
-#: admin/templates/metabox/network.php:11
-#: admin/templates/metabox/settings.php:52
-msgid "Remove Unsecure Elements"
-msgstr "Unsichere Elemente entfernen"
-
-#: admin/templates/metabox/settings.php:58
-msgid "Remove elements inaccessible over HTTPS. May break other plugins' functionality."
-msgstr "Entferne alle Elemente unerreichbar über HTTPS. Könnte Funktionen anderer Plugins beeinträchtigen."
-
-#: admin/templates/metabox/network.php:12
-#: admin/templates/metabox/settings.php:64
-msgid "Debug Mode"
-msgstr "Debug Mode"
-
-#: admin/templates/metabox/settings.php:70
-msgid "Outputs debug information to the browser's console."
-msgstr "Gibt Debug-Informationen in der Konsole des Browsers aus."
-
-#: admin/templates/metabox/network.php:13
-#: admin/templates/metabox/settings.php:76
-msgid "Proxy"
-msgstr "Proxy"
-
-#: admin/templates/metabox/network.php:35
-#: admin/templates/metabox/network.php:67
-#: admin/templates/metabox/settings.php:80
-msgid "No"
-msgstr "Nein"
-
-#: admin/templates/metabox/network.php:36
-#: admin/templates/metabox/network.php:68
-#: admin/templates/metabox/settings.php:81
-msgid "Auto"
-msgstr "Auto"
-
-#: admin/templates/metabox/network.php:37
-#: admin/templates/metabox/network.php:69
-#: admin/templates/metabox/settings.php:82
-msgid "Yes"
-msgstr "Ja"
-
-#: admin/templates/metabox/settings.php:84
-msgid "If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No."
-msgstr "Wenn Sie denken, dass Sie sich hinter einem Proxy befinden, wählen Sie Auto. Ansonsten lassen Sie es auf Nein."
-
-#: admin/templates/metabox/network.php:14
-#: admin/templates/metabox/settings.php:89
-msgid "Admin Menu Location"
-msgstr "Position des Admin-Menüs"
-
-#: admin/templates/metabox/network.php:42
-#: admin/templates/metabox/network.php:74
-#: admin/templates/metabox/settings.php:93
-msgid "Sidebar"
-msgstr ""
-
-#: admin/templates/metabox/network.php:43
-#: admin/templates/metabox/network.php:75
-#: admin/templates/metabox/settings.php:96
-msgid "Settings"
-msgstr "Einstellungen"
-
-#: admin/templates/metabox/settings.php:126
-msgid "Are you sure you want to reset all WordPress HTTPS settings?"
-msgstr "Sind Sie sicher, dass Sie alle WordPress HTTPS Einstellungen zurücksetzen wollen?"
-
-#: admin/templates/metabox/domain_mapping.php:4
-#: admin/templates/metabox/filters.php:7
-msgid "Regular Expressions Help"
-msgstr "Hilfe zu Regulären Ausdrücken"
-
-#: admin/templates/metabox/domain_mapping.php:30
-#: admin/templates/metabox/domain_mapping.php:53
-msgid "Remove URL Filter"
-msgstr "URL Filter entfernen"
-
-#: admin/templates/metabox/domain_mapping.php:30
-#: admin/templates/metabox/domain_mapping.php:53
-msgid "Remove"
-msgstr "Entfernen"
-
-#: admin/templates/metabox/domain_mapping.php:31
-#: admin/templates/metabox/domain_mapping.php:54
-msgid "Add URL Filter"
-msgstr "URL Filter hinzufügen"
-
-#: admin/templates/metabox/domain_mapping.php:31
-#: admin/templates/metabox/domain_mapping.php:54
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: admin/templates/metabox/domain_mapping.php:111
-msgid "Are you sure you want to reset all WordPress HTTPS domain mappings?"
-msgstr "Sind Sie sicher, dass du alle WordPress HTTPS domain mappings zurücksetzen willst?"
-
-#: admin/templates/metabox/filters.php:6
-msgid "Secure Filters"
-msgstr "Sicherheits-Filter"
-
-#: admin/templates/metabox/filters.php:7
-msgid "Example: If you have an E-commerce shop and all of the URL's begin with /store/, you could secure all store links by entering '/store/' on one line. You may use %s regular expressions %s"
-msgstr "Beispiel: Sollten Sie einen E-Commerce Shop betreiben und alle URLs  beginnen mit /store/, können Sie alle Links zum Shop durch die Eingabe von '/store/' in einer Zeile sichern. Sie können auch %s Reguläre Ausdrücke %s nutzen"
-
-#: admin/templates/metabox/domain_mapping.php:62
-#: admin/templates/metabox/filters.php:16
-#: admin/templates/metabox/network.php:86
-#: admin/templates/metabox/settings.php:108
-msgid "Save Changes"
-msgstr "Änderungen speichern"
-
-#: admin/templates/metabox/domain_mapping.php:63
-#: admin/templates/metabox/filters.php:17
-#: admin/templates/metabox/settings.php:109
-msgid "Reset"
-msgstr "Reset"
-
-#: admin/templates/metabox/filters.php:18
-#: admin/templates/metabox/network.php:87
-#: admin/templates/metabox/settings.php:110
-msgid "Waiting..."
-msgstr "Warte..."
-
-#: admin/templates/metabox/filters.php:35
-msgid "Are you sure you want to reset all WordPress HTTPS filters?"
-msgstr "Sind Sie sicher, dass Sie alle WordPress HTTPS Filter zurücksetzen wollen?"
-
-#: admin/templates/metabox/post.php:24
-msgid "Secure post"
-msgstr "Sicherer Artikel"
-
-#: admin/templates/metabox/post.php:27
-msgid "Secure child posts"
-msgstr "Sichere Unter-Artikel"
-
-#: admin/templates/metabox/network.php:8
-#: admin/templates/metabox/settings.php:15
-msgid "SSL Host"
-msgstr "SSL Host"
-
-#: admin/templates/metabox/domain_mapping.php:4
-msgid "Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use %s regular expressions %s"
-msgstr "Domain Mapping erlaubt es externe Domains auf deren HTTPS Domains umzuleiten. Sie können auch %s Reguläre Ausdrücke %s nutzen"
+#~ msgid "Port"
+#~ msgstr "Port"
