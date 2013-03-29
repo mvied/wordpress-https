@@ -8,7 +8,7 @@
  Author URI:    http://mvied.com/
  
  Text Domain:   wordpress-https
- Domain Path:   /languages/
+ Domain Path:   /lang/
  */
 
 /*
