@@ -67,7 +67,7 @@ class WordPressHTTPS extends Mvied_Plugin {
 		'style'  => array(
 			'css'
 		),
-		'font'  => array(
+		'font'   => array(
 			'ttf',
 			'otf'
 		)
