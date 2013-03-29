@@ -296,12 +296,15 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	public function secure_element( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
 			$filename = basename($url);
-			foreach( $this->getPlugin()->getFileExtensions() as $extension ) {
-				if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
-					if ( $this->getPlugin()->isSsl() ) {
-						$force_ssl = true;
-					} else {
-						$force_ssl = false;
+			foreach( $this->getPlugin()->getFileExtensions() as $type => $extensions ) {
+				foreach( $extensions as $extension ) {
+					if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
+						if ( $this->getPlugin()->isSsl() ) {
+							$force_ssl = true;
+						} else {
+							$force_ssl = false;
+						}
+						break 2;
 					}
 				}
 			}

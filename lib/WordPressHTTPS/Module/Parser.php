@@ -265,22 +265,15 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$filename = basename($url);
 			$scheme = $matches[2][$i];
 
-			foreach( $this->getPlugin()->getFileExtensions() as $extension ) {
-				if ( $extension == 'js' ) {
-					$type = 'script';
-				} else if ( $extension == 'css' ) {
-					$type = 'style';
-				} else if ( in_array($extension, array('jpg', 'jpeg', 'png', 'gif')) ) {
-					$type = 'img';
-				} else {
-					continue;
-				}
-
-				if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
-					if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
-						$this->secureElement($url, $type);
-					} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
-						$this->unsecureElement($url, $type);
+			foreach( $this->getPlugin()->getFileExtensions() as $type => $extensions ) {
+				foreach( $extensions as $extension ) {
+					if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
+						if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
+							$this->secureElement($url, $type);
+						} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
+							$this->unsecureElement($url, $type);
+						}
+						break 2;
 					}
 				}
 			}

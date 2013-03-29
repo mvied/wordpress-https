@@ -50,10 +50,28 @@ class WordPressHTTPS extends Mvied_Plugin {
 
 	/**
 	 * File extensions to be loaded securely.
+	 * File type => Array of extensions
 	 * 
 	 * @var array
 	 */
-	protected $_file_extensions = array('jpg', 'jpeg', 'png', 'gif', 'css', 'js', 'ttf', 'otf');
+	protected $_file_extensions = array(
+		'script' => array(
+			'js'
+		),
+		'img'    => array(
+			'jpg',
+			'jpeg',
+			'png',
+			'gif'
+		),
+		'style'  => array(
+			'css'
+		),
+		'font'  => array(
+			'ttf',
+			'otf'
+		)
+	);
 
 	/**
 	 * Default External SSL Host Mapping
