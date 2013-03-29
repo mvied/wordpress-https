@@ -204,7 +204,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		}
 		$this->getPlugin()->install();
 
-		$this->getPlugin()->renderView('ajax_message');
+		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
 	}
 	
 	/**
@@ -293,7 +293,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			wp_logout();
 		}
 
-		$this->getPlugin()->renderView('ajax_message');
+		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload, 'logout' => $logout));
 	}
 	
 }
