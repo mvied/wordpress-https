@@ -127,14 +127,14 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 			foreach( $_POST['blog'] as $blog_id => $setting ) {
 				foreach( $setting as $key => $value ) {
 					if ( $key == 'ssl_host' && $value != '' ) {
-						$blog_url = WordPressHTTPS_Url::fromString(get_site_url($blog_id, '', 'https'));
+						$blog_url = Mvied_Url::fromString(get_site_url($blog_id, '', 'https'));
 						$value = strtolower($value);
 						// Add Scheme
 						if ( strpos($value, 'http://') === false && strpos($value, 'https://') === false ) {
 							$value = 'https://' . $value;
 						}
 
-						$ssl_host = WordPressHTTPS_Url::fromString($value);
+						$ssl_host = Mvied_Url::fromString($value);
 
 						// Add Path
 						if ( strpos($ssl_host->getPath(), $blog_url->getPath()) !== true ) {

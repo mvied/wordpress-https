@@ -55,7 +55,7 @@ if ( ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https = new WordPressHTTPS;
 	$wordpress_https->setSlug('wordpress-https');
 	$wordpress_https->setVersion('3.3.7b');
-	$wordpress_https->setLogger(WordPressHTTPS_Logger::getInstance());
+	$wordpress_https->setLogger(Mvied_Logger::getInstance());
 	$wordpress_https->setDirectory(dirname(__FILE__));
 	$wordpress_https->setModuleDirectory(dirname(__FILE__) . '/lib/WordPressHTTPS/Module/');
 	$wordpress_https->setViewDirectory(dirname(__FILE__) . '/view/');

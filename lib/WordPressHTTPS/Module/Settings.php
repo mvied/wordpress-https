@@ -150,7 +150,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			exit;
 		}
 
-		$content = WordPressHTTPS_Url::fromString( $_POST['url'] )->getContent();
+		$content = Mvied_Url::fromString( $_POST['url'] )->getContent();
 		if ( $content ) {
 			echo $content;
 		}
@@ -236,7 +236,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 							$_POST[$key] = 'https://' . $_POST[$key];
 						}
 
-						$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
+						$ssl_host = Mvied_Url::fromString($_POST[$key]);
 
 						// Add Path
 						if ( strpos($ssl_host->getPath(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
