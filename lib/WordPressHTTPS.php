@@ -32,7 +32,6 @@ class WordPressHTTPS extends Mvied_Plugin {
 	 */
 	protected $_settings = array(
 		'ssl_host' =>               '',      // Hostname for SSL Host
-		'ssl_port' =>               '',      // Port number for SSL Host
 		'secure_external_urls' =>   array(), // Secure external URL's
 		'unsecure_external_urls' => array(), // Unsecure external URL's
 		'ssl_host_diff' =>          0,       // Is SSL Host different than WordPress host
@@ -135,13 +134,6 @@ class WordPressHTTPS extends Mvied_Plugin {
 			if ( strpos($this->_https_url->getPath(), $this->getHttpUrl()->getPath()) === false ) {
 				$this->_https_url->setPath( $this->_https_url->getPath() . $this->getHttpUrl()->getPath() );
 			}
-
-			// Add SSL Port to HTTPS URL
-			if ( (int)$this->getSetting('ssl_port') > 0 && $this->getSetting('ssl_port') != 443 ) {
-				$this->_https_url->setPort($this->getSetting('ssl_port'));
-			} else {
-				$this->_https_url->setPort(null);
-			}
 		}
 
 		return $this->_https_url;
@@ -230,9 +222,18 @@ class WordPressHTTPS extends Mvied_Plugin {
 			// Fix a bug that saved the ssl_host as an object
 			if ( ! is_string($this->getSetting('ssl_host', $blog_id)) ) {
 				$this->setSetting('ssl_host', $this->_settings['ssl_host'], $blog_id);
-				$this->setSetting('ssl_port', $this->_settings['ssl_port'], $blog_id);
 				$this->setSetting('ssl_host_diff', $this->_settings['ssl_host_diff'], $blog_id);
 				$this->setSetting('ssl_host_subdomain', $this->_settings['ssl_host_subdomain'], $blog_id);
+			}
+
+			// Remove old ssl_port setting and append to HTTPS URL
+			if ( (int)$this->getSetting('ssl_port', $blog_id) > 0 ) {
+				if ( $this->getSetting('ssl_port', $blog_id) != 443 ) {
+					$ssl_host = WordPressHTTPS_Url::fromString( $this->getSetting('ssl_host', $blog_id) );
+					$ssl_host->setPort($this->getSetting('ssl_port', $blog_id));
+					$this->setSetting('ssl_host', $ssl_host->toString(), $blog_id);
+				}
+				$this->setSetting('ssl_port', null, $blog_id);
 			}
 
 			// If secure front page option exists, create front page filter

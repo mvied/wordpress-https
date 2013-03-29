@@ -94,10 +94,6 @@
 	float: left;
 	margin-right: 10px;
 }
-#wphttps-main #ssl_port_label {
-	display: inline-block;
-	padding-top: 10px;	
-}
 #wphttps-main #ssl_host {
 	width: 70%;
 }

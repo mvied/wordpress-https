@@ -238,10 +238,6 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 
 						$ssl_host = WordPressHTTPS_Url::fromString($_POST[$key]);
 
-						// Add Port
-						$_POST['ssl_port'] = $port = ((isset($_POST['ssl_port']) && is_int($_POST['ssl_port'])) ? $_POST['ssl_port'] : $ssl_host->getPort());
-						$ssl_host->setPort($port);
-
 						// Add Path
 						if ( strpos($ssl_host->getPath(), $this->getPlugin()->getHttpUrl()->getPath()) !== true ) {
 							$path = '/'. ltrim(str_replace(rtrim($this->getPlugin()->getHttpUrl()->getPath(), '/'), '', $ssl_host->getPath()), '/');
@@ -256,7 +252,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 								if ( $this->getPlugin()->isSsl() ) {
 									$logout = true;
 								}
-								$_POST[$key] = $ssl_host->setPort('')->toString();
+								$_POST[$key] = $ssl_host->toString();
 							/*} else {
 								$errors[] = '<strong>SSL Host</strong> - Invalid WordPress installation at ' . $ssl_host;
 								$_POST[$key] = get_option($key);

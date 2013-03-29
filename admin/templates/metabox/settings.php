@@ -4,7 +4,7 @@ if ( !defined('ABSPATH') ) exit;
 
 $count = 1; // Used to restrict str_replace count
 $ssl_host = clone $this->getPlugin()->getHttpsUrl();
-$ssl_host = $ssl_host->setPort('')->setScheme('')->toString();
+$ssl_host = $ssl_host->setScheme('')->toString();
 if ( $this->getPlugin()->getHttpUrl()->getPath() != '/' ) {
 	$ssl_host = str_replace($this->getPlugin()->getHttpUrl()->getPath(), '', $ssl_host, $count);
 }
@@ -21,9 +21,6 @@ $ssl_host = rtrim($ssl_host, '/');
 			<fieldset>
 				<label for="ssl_host" id="ssl_host_label">
 					<input name="ssl_host" type="text" id="ssl_host" class="regular-text code" value="<?php echo $ssl_host; ?>" />
-				</label>
-				<label for="ssl_port" id="ssl_port_label"><?php _e('Port','wordpress-https'); ?>
-					<input name="ssl_port" type="text" id="ssl_port" class="small-text" value="<?php echo $this->getPlugin()->getSetting('ssl_port'); ?>" />
 				</label>
 			</fieldset>
 		</td>
