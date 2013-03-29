@@ -7,7 +7,7 @@
  *
  */
 
-class WordPressHTTPS extends Mvied_Plugin {
+class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * HTTP URL
