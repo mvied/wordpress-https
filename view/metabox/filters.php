@@ -1,8 +1,8 @@
 <?php
 if ( !defined('ABSPATH') ) exit;
 ?>
-<form name="<?php echo $this->getPlugin()->getSlug(); ?>_filters_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_filters_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<?php wp_nonce_field($this->getPlugin()->getSlug()); ?>
+<form name="<?php echo $this->getSlug(); ?>_filters_form" id="<?php echo $this->getSlug(); ?>_filters_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<?php wp_nonce_field($this->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />
 
 <table class="form-table">
@@ -12,7 +12,7 @@ if ( !defined('ABSPATH') ) exit;
 			<p class="description"><?php printf( __("Example: If you have an E-commerce shop and all of the URL's begin with /store/, you could secure all store links by entering '/store/' on one line. You may use %s regular expressions %s",'wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">','</a>'); ?>.</p>
 		</th>
 		<td>
-			<textarea name="secure_filter" id="secure_filter"><?php echo implode("\n", $this->getPlugin()->getSetting('secure_filter')); ?></textarea>
+			<textarea name="secure_filter" id="secure_filter"><?php echo implode("\n", $this->getSetting('secure_filter')); ?></textarea>
 		</td>
 	</tr>
 </table>
@@ -26,12 +26,12 @@ if ( !defined('ABSPATH') ) exit;
 
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	var form = $('#<?php echo $this->getPlugin()->getSlug(); ?>_filters_form').first();
+	var form = $('#<?php echo $this->getSlug(); ?>_filters_form').first();
 	$('#filters-save').click(function() {
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_filters_save');
+		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_filters_save');
 	});
 	$('#filters-reset').click(function() {
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_filters_reset');
+		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_filters_reset');
 	});
 	$(form).submit(function(e) {
 		e.preventDefault();

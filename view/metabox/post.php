@@ -16,7 +16,7 @@ if ( $post->ID ) {
 	}
 }
 
-wp_nonce_field($this->getPlugin()->getSlug(), $this->getPlugin()->getSlug());
+wp_nonce_field($this->getSlug(), $this->getSlug());
 ?>
 
 <div class="misc-pub-section">

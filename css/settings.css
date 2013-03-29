@@ -12,7 +12,7 @@
 }
 
 #wphttps-main #icon-options-https {
-	background: url(images/admin-icon32.png) no-repeat;
+	background: url(../img/admin-icon32.png) no-repeat;
 }
 
 #wphttps-main .meta-box-sortables {
@@ -95,7 +95,8 @@
 	margin-right: 10px;
 }
 #wphttps-main #ssl_host {
-	width: 70%;
+	width: 80%;
+	margin-top: 3px;
 }
 #wphttps-main #exclusive_https_row label {
 	padding-top: 5px;	

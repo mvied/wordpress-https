@@ -94,7 +94,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style($this->getPlugin()->getSlug() . '-network-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/network.css', array($this->getPlugin()->getSlug() . '-admin-page'), $this->getPlugin()->getVersion());
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-network-admin-page', $this->getPlugin()->getPluginUrl() . '/css/network.css', array($this->getPlugin()->getSlug() . '-admin-page'), $this->getPlugin()->getVersion());
 	}
 
 	/**
@@ -104,7 +104,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function render() {
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/network.php');
+		$this->getPlugin()->renderView('network');
 	}
 	
 	/**
@@ -156,7 +156,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 			wp_logout();
 		}
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 	
 }

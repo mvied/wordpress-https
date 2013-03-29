@@ -1,8 +1,8 @@
 <?php
 if ( !defined('ABSPATH') ) exit;
 ?>
-<form name="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" id="<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
-<?php wp_nonce_field($this->getPlugin()->getSlug()); ?>
+<form name="<?php echo $this->getSlug(); ?>_domain_mapping_form" id="<?php echo $this->getSlug(); ?>_domain_mapping_form" action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post">
+<?php wp_nonce_field($this->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />
 
 <p><?php printf( __('Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use %s regular expressions %s','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help&" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">', '</a>') ; ?>.</p>
@@ -11,7 +11,7 @@ if ( !defined('ABSPATH') ) exit;
 	<thead>
 	</thead>
 <?php
-	$ssl_host_mapping = ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) ? $this->getPlugin()->getSetting('ssl_host_mapping') : array() );
+	$ssl_host_mapping = ( is_array($this->getSetting('ssl_host_mapping')) ? $this->getSetting('ssl_host_mapping') : array() );
 	foreach( $ssl_host_mapping as $http_domain => $https_domain ) {
 ?>
 	<tr valign="top" class="domain_mapping_row">
@@ -68,12 +68,12 @@ if ( !defined('ABSPATH') ) exit;
 </form>
 <script type="text/javascript">
 jQuery(document).ready(function($) {
-	var form = $('#<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_form').first();
+	var form = $('#<?php echo $this->getSlug(); ?>_domain_mapping_form').first();
 	$('#domain-mapping-save').click(function() {
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_save');
+		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_domain_mapping_save');
 	});
 	$('#domain-mapping-reset').click(function() {
-		$(form).find('input[name="action"]').val('<?php echo $this->getPlugin()->getSlug(); ?>_domain_mapping_reset');
+		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_domain_mapping_reset');
 	});
 	$(form).submit(function(e) {
 		e.preventDefault();

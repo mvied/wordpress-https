@@ -15,7 +15,7 @@ require_once('../includes/template.php'); // WordPress Dashboard Functions
 ?>
 	<div id="poststuff" class="columns metabox-holder">
 		<div class="postbox-container">
-<?php do_meta_boxes('toplevel_page_' . $this->getPlugin()->getSlug() . '_network', 'main', $this); ?>
+<?php do_meta_boxes('toplevel_page_' . $this->getSlug() . '_network', 'main', $this); ?>
 		</div>
 	</div>
 </div>

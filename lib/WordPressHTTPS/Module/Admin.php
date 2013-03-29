@@ -35,7 +35,7 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-global', $this->getPlugin()->getPluginUrl() . '/admin/css/admin.css', array(), $this->getPlugin()->getVersion());
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-global', $this->getPlugin()->getPluginUrl() . '/css/admin.css', array(), $this->getPlugin()->getVersion());
 	}
 
 	/**
@@ -47,7 +47,7 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module {
 	 */
 	public function meta_box_render( $module, $metabox = array() ) {
 		if ( isset($metabox['args']['metabox']) ) {
-			include($this->getPlugin()->getDirectory() . '/admin/templates/metabox/' . $metabox['args']['metabox'] . '.php');
+			$this->getPlugin()->renderView('metabox/' . $metabox['args']['metabox'], array('metabox' => $metabox));
 		}
 	}
 

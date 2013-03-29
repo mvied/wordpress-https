@@ -30,7 +30,7 @@
 
 if ( !defined('ABSPATH') ) exit;
 
-load_plugin_textdomain( 'wordpress-https', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+load_plugin_textdomain( 'wordpress-https', false, dirname( plugin_basename( __FILE__ ) ) . '/lang/' );
 
 function wphttps_autoloader($class) {
 	$namespaces = array(
@@ -58,6 +58,7 @@ if ( ! defined('WP_UNINSTALL_PLUGIN') ) {
 	$wordpress_https->setLogger(WordPressHTTPS_Logger::getInstance());
 	$wordpress_https->setDirectory(dirname(__FILE__));
 	$wordpress_https->setModuleDirectory(dirname(__FILE__) . '/lib/WordPressHTTPS/Module/');
+	$wordpress_https->setViewDirectory(dirname(__FILE__) . '/view/');
 
 	// Load Modules
 	$wordpress_https->loadModules();

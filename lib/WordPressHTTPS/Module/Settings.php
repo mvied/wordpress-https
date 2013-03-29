@@ -165,7 +165,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function admin_enqueue_scripts() {
-		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/admin/css/settings.css', array(), $this->getPlugin()->getVersion());
+		wp_enqueue_style($this->getPlugin()->getSlug() . '-admin-page', $this->getPlugin()->getPluginUrl() . '/css/settings.css', array(), $this->getPlugin()->getVersion());
 		wp_enqueue_script('jquery-form');
 		wp_enqueue_script('post');
 		
@@ -181,7 +181,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function render() {
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/settings.php');
+		$this->getPlugin()->renderView('settings');
 	}
 
 	/**
@@ -204,7 +204,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		}
 		$this->getPlugin()->install();
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 	
 	/**
@@ -293,7 +293,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			wp_logout();
 		}
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 	
 }

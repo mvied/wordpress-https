@@ -84,7 +84,7 @@ class WordPressHTTPS_Module_DomainMapping extends Mvied_Plugin_Module {
 
 		$this->getPlugin()->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping);
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 
 	/**
@@ -110,7 +110,7 @@ class WordPressHTTPS_Module_DomainMapping extends Mvied_Plugin_Module {
 		}
 		$this->getPlugin()->setSetting('ssl_host_mapping', $ssl_host_mapping);
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 	
 }

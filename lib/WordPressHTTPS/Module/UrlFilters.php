@@ -86,7 +86,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 
 		$this->getPlugin()->setSetting('secure_filter', array());
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 
 	/**
@@ -108,7 +108,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 		$filters = array_filter($filters); // Removes blank array items
 		$this->getPlugin()->setSetting('secure_filter', $filters);
 
-		require_once($this->getPlugin()->getDirectory() . '/admin/templates/ajax_message.php');
+		$this->getPlugin()->renderView('ajax_message');
 	}
 	
 }

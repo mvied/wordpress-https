@@ -1,6 +1,6 @@
 <?php
 if ( !defined('ABSPATH') ) exit;
-$nonce = wp_create_nonce($this->getPlugin()->getSlug());
+$nonce = wp_create_nonce($this->getSlug());
 ?><script type="text/javascript">
 jQuery(document).ready(function($) {
 	var loading = $('<img alt="Loading..." src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="loading" />');
@@ -9,7 +9,7 @@ jQuery(document).ready(function($) {
 	$('#<?php echo $metabox['id']; ?> .handlediv .loading').fadeIn('fast');
 
 	$.post(ajaxurl, {
-		action : '<?php echo $this->getPlugin()->getSlug(); ?>_ajax_metabox',
+		action : '<?php echo $this->getSlug(); ?>_ajax_metabox',
 		id : '<?php echo $metabox['id']; ?>',
 		url : '<?php echo $metabox['args']['url']; ?>',
 		_nonce : '<?php echo $nonce; ?>'
