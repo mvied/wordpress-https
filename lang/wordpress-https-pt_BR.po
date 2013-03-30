@@ -1,0 +1,464 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: WordPress HTTPS v3.3.6\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2013-03-30 00:19:47+0000\n"
+"Last-Translator: admin <davysmarchiori@hotmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: CSL v1.x\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: admin/templates/metabox/domain_mapping.php:5
+#, php-format
+#@ wordpress-https
+msgid "Domain mapping allows you to map external domains that host their HTTPS content on a different domain. You may use %s regular expressions %s"
+msgstr "Mapeamento de domínios permite que você mapeie um domínio externo que hospede seu próprio conteúdo em HTTPS em um domínio diferente. Pode-se usar expressões regulares"
+
+#: admin/templates/metabox/domain_mapping.php:5
+#: admin/templates/metabox/filters.php:9
+#@ wordpress-https
+msgid "Regular Expressions Help"
+msgstr "Ajuda com Expressões Regulares"
+
+#: admin/templates/metabox/domain_mapping.php:31
+#: admin/templates/metabox/domain_mapping.php:54
+#@ wordpress-https
+msgid "Remove URL Filter"
+msgstr "Remover filtro de URL"
+
+#: admin/templates/metabox/domain_mapping.php:31
+#: admin/templates/metabox/domain_mapping.php:54
+#@ wordpress-https
+msgid "Remove"
+msgstr "Remover"
+
+#: admin/templates/metabox/domain_mapping.php:32
+#: admin/templates/metabox/domain_mapping.php:55
+#@ wordpress-https
+msgid "Add URL Filter"
+msgstr "Adicionar filtro de URL"
+
+#: admin/templates/metabox/domain_mapping.php:32
+#: admin/templates/metabox/domain_mapping.php:55
+#@ wordpress-https
+msgid "Add"
+msgstr "Adicionar"
+
+#: admin/templates/metabox/domain_mapping.php:61
+#: admin/templates/metabox/filters.php:18
+#: admin/templates/metabox/network.php:85
+#: admin/templates/metabox/settings.php:108
+#@ wordpress-https
+msgid "Save Changes"
+msgstr "Salvar Alterações"
+
+#: admin/templates/metabox/domain_mapping.php:62
+#: admin/templates/metabox/filters.php:19
+#: admin/templates/metabox/settings.php:109
+#@ wordpress-https
+msgid "Reset"
+msgstr "Resetar"
+
+#: admin/templates/metabox/domain_mapping.php:63
+#: admin/templates/metabox/filters.php:20
+#: admin/templates/metabox/network.php:86
+#: admin/templates/metabox/settings.php:110
+#@ wordpress-https
+msgid "Waiting..."
+msgstr "Aguardando..."
+
+#: admin/templates/metabox/domain_mapping.php:116
+#@ wordpress-https
+msgid "Are you sure you want to reset all WordPress HTTPS domain mappings?"
+msgstr "Tem certeza que deseja resetar todas os mapeamentos de domínio do WordPress HTTPS?"
+
+#: admin/templates/metabox/filters.php:8
+#@ wordpress-https
+msgid "Secure Filters"
+msgstr "Filtros Seguro"
+
+#: admin/templates/metabox/filters.php:9
+#, php-format
+#@ wordpress-https
+msgid "Example: If you have an E-commerce shop and all of the URL's begin with /store/, you could secure all store links by entering '/store/' on one line. You may use %s regular expressions %s"
+msgstr "Exemplo: Se você tem uma Loja Virtual ou Ecommerce e quer que todas as páginas que tenham o URL /Loja/, você pode usar modo de segurança SSL em todos os links da sua Loja em uma linha. Você também pode usar expressões regulares."
+
+#: admin/templates/metabox/filters.php:43
+#@ wordpress-https
+msgid "Are you sure you want to reset all WordPress HTTPS filters?"
+msgstr "Tem certeza que deseja resetar todos os filtros do WordPress HTTPS?"
+
+#: admin/templates/metabox/network.php:8
+#@ wordpress-https
+msgid "Blog"
+msgstr "Blog"
+
+#: admin/templates/metabox/network.php:9
+#: admin/templates/metabox/settings.php:16
+#@ wordpress-https
+msgid "SSL Host"
+msgstr "Hospeadgem do SSL"
+
+#: admin/templates/metabox/network.php:10
+#@ wordpress-https
+msgid "Force SSL Admin"
+msgstr "Forçar SSL Admin"
+
+#: admin/templates/metabox/network.php:11
+#: admin/templates/metabox/settings.php:41
+#@ wordpress-https
+msgid "Force SSL Exclusively"
+msgstr "Forçar SSL Exclusivamente"
+
+#: admin/templates/metabox/network.php:12
+#: admin/templates/metabox/settings.php:53
+#@ wordpress-https
+msgid "Remove Unsecure Elements"
+msgstr "Remover Elementos Inseguro"
+
+#: admin/templates/metabox/network.php:13
+#: admin/templates/metabox/settings.php:65
+#@ wordpress-https
+msgid "Debug Mode"
+msgstr "Modo Depuração"
+
+#: admin/templates/metabox/network.php:14
+#: admin/templates/metabox/settings.php:77
+#@ wordpress-https
+msgid "Proxy"
+msgstr "Proxy"
+
+#: admin/templates/metabox/network.php:15
+#: admin/templates/metabox/settings.php:90
+#@ wordpress-https
+msgid "Admin Menu Location"
+msgstr "Localidade no Menu"
+
+#: admin/templates/metabox/network.php:36
+#: admin/templates/metabox/network.php:68
+#: admin/templates/metabox/settings.php:81
+#@ wordpress-https
+msgid "No"
+msgstr "Não"
+
+#: admin/templates/metabox/network.php:37
+#: admin/templates/metabox/network.php:69
+#: admin/templates/metabox/settings.php:82
+#@ wordpress-https
+msgid "Auto"
+msgstr "Auto"
+
+#: admin/templates/metabox/network.php:38
+#: admin/templates/metabox/network.php:70
+#: admin/templates/metabox/settings.php:83
+#@ wordpress-https
+msgid "Yes"
+msgstr "Sim"
+
+#: admin/templates/metabox/network.php:43
+#: admin/templates/metabox/network.php:75
+#: admin/templates/metabox/settings.php:94
+#@ wordpress-https
+msgid "Sidebar"
+msgstr "Barra Lateral"
+
+#: admin/templates/metabox/network.php:44
+#: admin/templates/metabox/network.php:76
+#: admin/templates/metabox/settings.php:97
+#@ wordpress-https
+msgid "Settings"
+msgstr "Configurações"
+
+#: admin/templates/metabox/post.php:24
+#, php-format
+#@ wordpress-https
+msgid "This post's parent page '%s' has 'Secure child posts' enabled."
+msgstr "A página pai do post %s estão com a sub-página habilitadas."
+
+#: admin/templates/metabox/post.php:24
+#@ wordpress-https
+msgid "Secure post"
+msgstr "Post Seguro"
+
+#: admin/templates/metabox/post.php:27
+#@ wordpress-https
+msgid "Secure child posts"
+msgstr "Segurar sub-posts"
+
+#: admin/templates/metabox/settings.php:22
+#@ wordpress-https
+msgid "Port"
+msgstr "Porta"
+
+#: admin/templates/metabox/settings.php:29
+#@ wordpress-https
+msgid "Force SSL Administration"
+msgstr "Forçar SSL na Administração"
+
+#: admin/templates/metabox/settings.php:35
+#, php-format
+#@ wordpress-https
+msgid "Always use HTTPS while in the admin panel. This setting is identical to %s FORCE_SSL_ADMIN"
+msgstr "Sempre usar HTTPS enquanto estiver no painel admin. Está opção é identica a %s FORCE_SSL_ADMIN"
+
+#: admin/templates/metabox/settings.php:47
+#, php-format
+#@ wordpress-https
+msgid "Any page that is not secured via %s Force SSL %s or URL Filters will be redirected to HTTP."
+msgstr "Qualquer página que não estiver segura via %s Forçar SSL %s ou URL será redirecionada para HTTP."
+
+#: admin/templates/metabox/settings.php:59
+#@ wordpress-https
+msgid "Remove elements inaccessible over HTTPS. May break other plugins' functionality."
+msgstr "Remover elementos inacessíveis via HTTPS. Está opção pode quebrar funcionabilidade de outros plugins."
+
+#: admin/templates/metabox/settings.php:71
+#@ wordpress-https
+msgid "Outputs debug information to the browser's console."
+msgstr "Mostrar os dados de depuração no console do navegador."
+
+#: admin/templates/metabox/settings.php:85
+#@ wordpress-https
+msgid "If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No."
+msgstr "Se você achar que está usando proxy, marque a opção Auto. Ou, deixe em Não."
+
+#: admin/templates/metabox/settings.php:139
+#@ wordpress-https
+msgid "Are you sure you want to reset all WordPress HTTPS settings?"
+msgstr "Tem certeza que deseja resetar todas as configurações do WordPress HTTPS?"
+
+#: admin/templates/network.php:9
+#: admin/templates/settings.php:9
+#: lib/WordPressHTTPS/Module/Post.php:42
+#@ wordpress-https
+msgid "HTTPS"
+msgstr "HTTPS"
+
+#: admin/templates/settings.php:25
+#@ wordpress-https
+msgid "Expressions"
+msgstr "Expressões"
+
+#: admin/templates/settings.php:29
+#@ wordpress-https
+msgid "A single character: a, b, or c"
+msgstr "Um único caracter: a,b, ou c"
+
+#: admin/templates/settings.php:33
+#@ wordpress-https
+msgid "Any single character <em>but</em> a, b, or c"
+msgstr "Qualquer caracter único <em>mais</em> a, b, ou c"
+
+#: admin/templates/settings.php:37
+#@ wordpress-https
+msgid "Any character in the range a-z"
+msgstr "Qualquer caracter entre a-z"
+
+#: admin/templates/settings.php:41
+#@ wordpress-https
+msgid "Any character in the range a-z or A-Z (any alphabetical character)"
+msgstr "Qualquer caracter entre a-z ou A-Z (Em qualquer order alfabética)"
+
+#: admin/templates/settings.php:45
+#@ wordpress-https
+msgid ""
+"Any whitespace character [ \\t\n"
+"\\r\\f\\v]"
+msgstr ""
+"Qualquer caracter em branco [ \\t\n"
+"\\r\\f\\v]"
+
+#: admin/templates/settings.php:50
+#@ wordpress-https
+msgid ""
+"Any non-whitespace character [^ \\t\n"
+"\\r\\f\\v]"
+msgstr ""
+"Qualquer espaço em branco  [^ \\t\n"
+"\\r\\f\\v]"
+
+#: admin/templates/settings.php:55
+#@ wordpress-https
+msgid "Any digit [0-9]"
+msgstr "Qualquer digito  [0-9]"
+
+#: admin/templates/settings.php:59
+#@ wordpress-https
+msgid "Any non-digit [^0-9]"
+msgstr "Qualquer sem digito  [0-9]"
+
+#: admin/templates/settings.php:63
+#@ wordpress-https
+msgid "Any word character [a-zA-Z0-9_]"
+msgstr "Qualquer caracter de palavra [a-zA-Z0-9_]"
+
+#: admin/templates/settings.php:67
+#@ wordpress-https
+msgid "Any non-word character [^a-zA-Z0-9_]"
+msgstr "Qualquer caracter sem palavra [^a-zA-Z0-9_]"
+
+#: admin/templates/settings.php:71
+#@ wordpress-https
+msgid "A word boundary between \\w and \\W"
+msgstr "Uma fronteira entre  \\w and \\W"
+
+#: admin/templates/settings.php:75
+#@ wordpress-https
+msgid "A position that is not a word boundary"
+msgstr "Uma poisição que não seja uma fronteira na palavra"
+
+#: admin/templates/settings.php:79
+#@ wordpress-https
+msgid "Alternation: matches either the subexpression to the left or to the right"
+msgstr "Alternativas: busca pode ser da esquerda ou direita"
+
+#: admin/templates/settings.php:83
+#@ wordpress-https
+msgid "Grouping: group all together for repetition operators"
+msgstr "Agrupamento: Agrupe todos juntos para operações repitidas"
+
+#: admin/templates/settings.php:87
+#@ wordpress-https
+msgid "Beginning of the string"
+msgstr "Começo da linha"
+
+#: admin/templates/settings.php:91
+#@ wordpress-https
+msgid "End of the string"
+msgstr "Final da linha"
+
+#: admin/templates/settings.php:94
+#@ wordpress-https
+msgid "Repetition&#160;Operators"
+msgstr "Repetição&#160;Operações"
+
+#: admin/templates/settings.php:98
+#@ wordpress-https
+msgid "Match the previous item at least <em>n</em> times but no more than <em>m</em> times"
+msgstr "Igual ao item anterior pelo menos <em>n</em> vezes, porém não mais que <em>m</em> vezes"
+
+#: admin/templates/settings.php:102
+#@ wordpress-https
+msgid "Match the previous item <em>n</em> or more times"
+msgstr "Igual ao item a quantidade <em>n</em> anterior ou mais vezes"
+
+#: admin/templates/settings.php:106
+#@ wordpress-https
+msgid "Match exactly <em>n</em> occurrences of the previous item"
+msgstr "Exatamente igual <em>n</em> ocorrencias do item anterior"
+
+#: admin/templates/settings.php:110
+#@ wordpress-https
+msgid "Match 0 or 1 occurrences of the previous item {0,1}"
+msgstr "Encontre 0 ou 1 ocorrencias do item anterior {0,1}"
+
+#: admin/templates/settings.php:114
+#@ wordpress-https
+msgid "Match 1 or more occurrences of the previous item {1,}"
+msgstr "Encontrar 1 ou mais ocorrencias do item anterior {1,}"
+
+#: admin/templates/settings.php:118
+#@ wordpress-https
+msgid "Match 0 or more occurrences of the previous item {0,}"
+msgstr "Encontrar 0 ou mais ocorrencias do item anterior {0,}"
+
+#: lib/WordPressHTTPS/Module/DomainMapping.php:61
+#@ wordpress-https
+msgid "Domain Mapping"
+msgstr "Mapeamento de Domínio"
+
+#: lib/WordPressHTTPS/Module/Network.php:57
+#@ wordpress-https
+msgid "Network Settings"
+msgstr "Configurações de Rede"
+
+#: lib/WordPressHTTPS/Module/Network.php:66
+#: lib/WordPressHTTPS/Module/Settings.php:107
+#@ wordpress-https
+msgid "Loading..."
+msgstr "Carregando..."
+
+#: lib/WordPressHTTPS/Module/Network.php:83
+#: lib/WordPressHTTPS/Module/Settings.php:124
+#@ default
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: lib/WordPressHTTPS/Module/Settings.php:62
+#@ wordpress-https
+msgid "General Settings"
+msgstr "Configurações Gerais"
+
+#: lib/WordPressHTTPS/Module/Settings.php:71
+#@ wordpress-https
+msgid "Developer Updates"
+msgstr "Atualizações para Desenvolvedor"
+
+#: lib/WordPressHTTPS/Module/Settings.php:80
+#@ wordpress-https
+msgid "Support"
+msgstr "Suporte"
+
+#: lib/WordPressHTTPS/Module/Settings.php:89
+#@ wordpress-https
+msgid "Feedback"
+msgstr "Feedback"
+
+#: lib/WordPressHTTPS/Module/Settings.php:98
+#@ wordpress-https
+msgid "Donate"
+msgstr "Doar"
+
+#: lib/WordPressHTTPS/Module/UrlFilters.php:63
+#@ wordpress-https
+msgid "URL Filters"
+msgstr "Filtro URL"
+
+#. translators: plugin header field 'Name'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "WordPress HTTPS"
+msgstr "WordPress HTTPS"
+
+#. translators: plugin header field 'PluginURI'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "http://mvied.com/projects/wordpress-https/"
+msgstr ""
+
+#. translators: plugin header field 'Description'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites."
+msgstr "WordPress HTTPS foi criado para ser usado como uma única solução para SSL."
+
+#. translators: plugin header field 'Author'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "Mike Ems"
+msgstr ""
+
+#. translators: plugin header field 'AuthorURI'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "http://mvied.com/"
+msgstr ""
+
+#. translators: plugin header field 'Version'
+#: wordpress-https.php:0
+#@ wordpress-https
+msgid "3.3.6"
+msgstr "3.3.6"
+
