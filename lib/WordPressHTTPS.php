@@ -45,6 +45,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'secure_filter' =>          array(), // Expressions to secure URL's against
 		'ssl_host_mapping' =>       array(), // External SSL Hosts whose HTTPS content is on another domain
 		'network_defaults' =>       array(), // Default settings for new blogs on a multisite network
+		'path_cache' =>             array(), // Cache of URL paths to Post IDs
+		'blog_cache' =>             array(), // Cache of URL paths to Blog IDs
 		'version' =>                '',      // Version of the plugin this blog has installed
 	);
 

@@ -107,6 +107,7 @@ $ssl_host = rtrim($ssl_host, '/');
 <p class="button-controls">
 	<input type="submit" name="settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="settings-save" />
 	<input type="submit" name="settings-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="settings-reset" />
+	<input type="submit" name="settings-cache-reset" value="<?php _e('Cache Reset','wordpress-https'); ?>" class="button-secondary" id="settings-cache-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
@@ -115,6 +116,9 @@ jQuery(document).ready(function($) {
 	var form = $('#<?php echo $this->getSlug(); ?>_settings_form').first();
 	$('#settings-save').click(function() {
 		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_settings_save');
+	});
+	$('#settings-cache-reset').click(function() {
+		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_settings_cache_reset');
 	});
 	$('#settings-reset').click(function() {
 		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_settings_reset');

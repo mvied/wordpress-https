@@ -23,7 +23,9 @@ $options = array(
 	'wordpress-https_debug',
 	'wordpress-https_admin_menu',
 	'wordpress-https_secure_filter',
-	'wordpress-https_ssl_host_mapping'
+	'wordpress-https_ssl_host_mapping',
+	'wordpress-https_path_cache',
+	'wordpress-https_blog_cache',
 );
 
 global $wpdb;

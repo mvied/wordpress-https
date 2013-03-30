@@ -291,6 +291,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 		// Update anchor and form tags to appropriate URL's
 		preg_match_all('/\<(a|form)[^>]+[\'"]((http|https):\/\/[^\'"]+)[\'"][^>]*>/im', $this->_html, $matches);
 
+		$path_cache = $this->getPlugin()->getSetting('path_cache');
+		$blog_cache = $this->getPlugin()->getSetting('blog_cache');
+
 		for ($i = 0; $i < sizeof($matches[0]); $i++) {
 			$html = $matches[0][$i];
 			$type = $matches[1][$i];
@@ -300,7 +303,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$post_id = null;
 			$blog_id = null;
 			$force_ssl = null;
-			$url_path = '/';
+			$url_path = null;
+			$blog_path = null;
+			$blog_url_path = '/';
 
 			if ( !$this->getPlugin()->isUrlLocal($url) ) {
 				continue;
@@ -332,23 +337,40 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( get_option('show_on_front') == 'page' ) {
 						$post_id = get_option('page_on_front');
 					}
-				} else if ( isset($url_parts['path']) && ($post = get_page_by_path($url_parts['path'])) ) {
-					$post_id = $post->ID;
+				} else if ( isset($url_parts['path']) ) {
+					$url_path = $url_parts['path'];
+					if ( !array_key_exists($url_path, $path_cache) ) {
+						if ( $post = get_page_by_path($url_path) ) {
+							$post_id = $post->ID;
+							$path_cache[$url_path] = $post_id;
+						} else {
+							$path_cache[$url_path] = 0;
+						}
+					} else {
+						$post_id = $path_cache[$url_path];
+					}
 				}
 
 				if ( is_multisite() && isset($url_parts['host']) ) {
 					if ( is_subdomain_install() ) {
-						$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
+						$blog_path = $url_parts['host'] . '/';
+						if ( array_key_exists($blog_path, $blog_cache) ) {
+							$blog_id = $blog_cache[$blog_path];
+						} else {
+							$blog_id = get_blog_id_from_url( $url_parts['host'], '/');
+						}
 					} else {
 						$url_path_segments = explode('/', $url_parts['path']);
 						if ( sizeof($url_path_segments) > 1 ) {
 							foreach( $url_path_segments as $url_path_segment ) {
 								if ( is_null($blog_id) && $url_path_segment != '' ) {
-									$url_path .= $url_path_segment . '/';
-									if ( ($blog_id = get_blog_id_from_url( $url_parts['host'], $url_path)) > 0 ) {
-										break;
+									$blog_url_path .= $url_path_segment . '/';
+									$blog_path = $url_parts['host'] . $blog_url_path;
+									if ( array_key_exists($blog_path, $blog_cache) ) {
+										$blog_id = $blog_cache[$blog_path];
 									} else {
-										$blog_id = null;
+										$blog_id = $blog_cache[$blog_path] = get_blog_id_from_url( $url_parts['host'], $blog_url_path);
+										break;
 									}
 								}
 							}
@@ -383,30 +405,11 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			if ( $force_ssl == true ) {
 				if ( is_null($blog_id) ) {
 					$updated = $this->getPlugin()->makeUrlHttps($url);
-				} else {
-					if ( $this->getPlugin()->getSetting('ssl_host', $blog_id) ) {
-						$ssl_host = $this->getPlugin()->getSetting('ssl_host', $blog_id);
-					} else {
-						$ssl_host = parse_url(get_home_url($blog_id, '/'), PHP_URL_HOST);
-					}
-					if ( is_subdomain_install() ) {
-						$host = $url_parts['host'] . '/';
-					} else {
-						$host = $url_parts['host'] . '/' . $url_path;
-					}
-					$updated = str_replace($url_parts['scheme'] . '://' . $host, $ssl_host, $url);
 				}
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			} else if ( !is_null($force_ssl) && !$force_ssl ) {
 				if ( is_null($blog_id) ) {
 					$updated = $this->getPlugin()->makeUrlHttp($url);
-				} else {
-					if ( is_subdomain_install() ) {
-						$host = $url_parts['host'] . '/';
-					} else {
-						$host = $url_parts['host'] . '/' . $url_path;
-					}
-					$updated = str_replace($url_parts['scheme'] . '://' . $host, get_home_url($blog_id, '/'), $url);
 				}
 				$this->_html = str_replace($html, str_replace($url, $updated, $html), $this->_html);
 			}
@@ -419,6 +422,8 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 				}
 			}
 		}
+		$this->getPlugin()->setSetting('path_cache', $path_cache);
+		$this->getPlugin()->setSetting('blog_cache', $blog_cache);
 	}
 
 	/**

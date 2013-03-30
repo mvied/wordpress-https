@@ -21,6 +21,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		if ( is_admin() ) {
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_save', array(&$this, 'save'));
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_reset', array(&$this, 'reset'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_cache_reset', array(&$this, 'cache_reset'));
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_ajax_metabox', array(&$this, 'ajax_metabox'));
 			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 				// Add meta boxes
@@ -182,6 +183,29 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 */
 	public function render() {
 		$this->getPlugin()->renderView('settings');
+	}
+
+	/**
+	 * Reset Cache
+	 *
+	 * @param none
+	 * @return void
+	 */
+	public function cache_reset() {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug()) ) {
+			return false;
+		}
+
+		$message = _e('Cache reset.','wordpress-https');
+		$errors = array();
+		$reload = false;
+
+		$this->getPlugin()->setSetting('secure_external_urls', array());
+		$this->getPlugin()->setSetting('unsecure_external_urls', array());
+		$this->getPlugin()->setSetting('path_cache', array());
+		$this->getPlugin()->setSetting('blog_cache', array());
+
+		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
 	}
 
 	/**
