@@ -80,7 +80,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('URL Filters reset.','wordpress-https');
+		$message = __('URL Filters reset.','wordpress-https');
 		$errors = array();
 		$reload = true;
 
@@ -100,7 +100,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('URL Filters saved.','wordpress-https');
+		$message = __('URL Filters saved.','wordpress-https');
 		$errors = array();
 		$reload = false;
 

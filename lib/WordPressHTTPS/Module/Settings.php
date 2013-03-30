@@ -196,7 +196,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('Cache reset.','wordpress-https');
+		$message = __('Cache reset.','wordpress-https');
 		$errors = array();
 		$reload = false;
 
@@ -219,7 +219,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('Settings reset.','wordpress-https');
+		$message = __('Settings reset.','wordpress-https');
 		$errors = array();
 		$reload = true;
 
@@ -242,7 +242,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('Settings saved.','wordpress-https');
+		$message = __('Settings saved.','wordpress-https');
 		$errors = array();
 		$reload = false;
 		$logout = false;

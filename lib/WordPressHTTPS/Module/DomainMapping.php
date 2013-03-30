@@ -78,7 +78,7 @@ class WordPressHTTPS_Module_DomainMapping extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('Domain Mapping reset.','wordpress-https');
+		$message = __('Domain Mapping reset.','wordpress-https');
 		$errors = array();
 		$reload = true;
 
@@ -98,7 +98,7 @@ class WordPressHTTPS_Module_DomainMapping extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = _e('Domain Mapping saved.','wordpress-https');
+		$message = __('Domain Mapping saved.','wordpress-https');
 		$errors = array();
 		$reload = false;
 
