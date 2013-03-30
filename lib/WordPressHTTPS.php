@@ -44,7 +44,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'admin_menu' =>             'side',  // HTTPS Admin Menu location
 		'secure_filter' =>          array(), // Expressions to secure URL's against
 		'ssl_host_mapping' =>       array(), // External SSL Hosts whose HTTPS content is on another domain
-		'network_defaults' =>		array(), // Default settings for new blogs on a multisite network
+		'network_defaults' =>       array(), // Default settings for new blogs on a multisite network
+		'version' =>                '',      // Version of the plugin this blog has installed
 	);
 
 	/**
@@ -203,53 +204,59 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 		$defaults = $this->getSetting('network_defaults');
 		foreach ( $blogs as $blog_id ) {
-			// Add Settings
-			foreach ( $this->getSettings() as $option => $value ) {
-				if ( is_multisite() ) {
-					if ( add_blog_option($blog_id, $option, $value) && isset($defaults[$option]) && $defaults[$option] != '' ) {
-						if ( $option == 'ssl_host' && strpos($value, 'https://') !== 0 ) {
-							$value = 'https://' . rtrim($defaults[$option], '/') . '/';
+			if ( version_compare($this->getSetting('version', $blog_id), $this->getVersion(), '<') ) {
+				if ( $this->getSetting('version', $blog_id) == '' ) {
+					// Add Settings
+					foreach ( $this->getSettings() as $option => $value ) {
+						if ( is_multisite() ) {
+							if ( add_blog_option($blog_id, $option, $value) && isset($defaults[$option]) && $defaults[$option] != '' ) {
+								if ( $option == 'ssl_host' && strpos($value, 'https://') !== 0 ) {
+									$value = 'https://' . rtrim($defaults[$option], '/') . '/';
+								} else {
+									$value = $defaults[$option];
+								}
+								$this->setSetting($option, $value, $blog_id);
+							}
 						} else {
-							$value = $defaults[$option];
+							add_option($option, $value);
 						}
-						$this->setSetting($option, $value, $blog_id);
 					}
-				} else {
-					add_option($option, $value);
+				}
+
+				// Fix a bug that saved the ssl_host as an object
+				if ( ! is_string($this->getSetting('ssl_host', $blog_id)) ) {
+					$this->setSetting('ssl_host', $this->_settings['ssl_host'], $blog_id);
+					$this->setSetting('ssl_host_diff', $this->_settings['ssl_host_diff'], $blog_id);
+					$this->setSetting('ssl_host_subdomain', $this->_settings['ssl_host_subdomain'], $blog_id);
+				}
+
+				// Remove old ssl_port setting and append to HTTPS URL
+				if ( (int)$this->getSetting('ssl_port', $blog_id) > 0 ) {
+					if ( $this->getSetting('ssl_port', $blog_id) != 443 ) {
+						$ssl_host = Mvied_Url::fromString( $this->getSetting('ssl_host', $blog_id) );
+						$ssl_host->setPort($this->getSetting('ssl_port', $blog_id));
+						$this->setSetting('ssl_host', $ssl_host->toString(), $blog_id);
+					}
+					$this->setSetting('ssl_port', null, $blog_id);
+				}
+
+				// If secure front page option exists, create front page filter
+				if ( $this->getSetting('frontpage', $blog_id) ) {
+					$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim(str_replace('http://', '', $this->getHttpUrl()->toString()), '/') . '/$')));
+					$this->setSetting('frontpage', 0, $blog_id);
+				}
+
+				// Reset cache
+				$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
+				$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
+	
+				// Set default domain mapping
+				if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
+					$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
 				}
 			}
 
-			// Fix a bug that saved the ssl_host as an object
-			if ( ! is_string($this->getSetting('ssl_host', $blog_id)) ) {
-				$this->setSetting('ssl_host', $this->_settings['ssl_host'], $blog_id);
-				$this->setSetting('ssl_host_diff', $this->_settings['ssl_host_diff'], $blog_id);
-				$this->setSetting('ssl_host_subdomain', $this->_settings['ssl_host_subdomain'], $blog_id);
-			}
-
-			// Remove old ssl_port setting and append to HTTPS URL
-			if ( (int)$this->getSetting('ssl_port', $blog_id) > 0 ) {
-				if ( $this->getSetting('ssl_port', $blog_id) != 443 ) {
-					$ssl_host = Mvied_Url::fromString( $this->getSetting('ssl_host', $blog_id) );
-					$ssl_host->setPort($this->getSetting('ssl_port', $blog_id));
-					$this->setSetting('ssl_host', $ssl_host->toString(), $blog_id);
-				}
-				$this->setSetting('ssl_port', null, $blog_id);
-			}
-
-			// If secure front page option exists, create front page filter
-			if ( $this->getSetting('frontpage', $blog_id) ) {
-				$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim(str_replace('http://', '', $this->getHttpUrl()->toString()), '/') . '/$')));
-				$this->setSetting('frontpage', 0, $blog_id);
-			}
-
-			// Reset cache
-			$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
-			$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
-
-			// Set default domain mapping
-			if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
-				$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
-			}
+			$this->setSetting('version', $this->getVersion(), $blog_id);
 		}
 
 		$is_subdomain = $this->getHttpsUrl()->isSubdomain($this->getHttpUrl());
