@@ -173,7 +173,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @return void
 	 */
 	public function init() {
-		$this->getLogger()->log('Version: ' . $this->getVersion());
+		$this->getLogger()->log('WordPress HTTPS: ' . $this->getVersion());
 		$this->getLogger()->log('HTTP URL: ' . $this->getHttpUrl()->toString());
 		$this->getLogger()->log('HTTPS URL: ' . $this->getHttpsUrl()->toString());
 		$this->getLogger()->log('SSL: ' . ( $this->isSsl() ? 'Yes' : 'No' ));
