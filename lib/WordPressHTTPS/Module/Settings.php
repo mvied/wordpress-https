@@ -246,6 +246,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		$errors = array();
 		$reload = false;
 		$logout = false;
+		$ssl_host = clone $this->getPlugin()->getHttpsUrl();
 
 		foreach ($this->getPlugin()->getSettings() as $key => $default) {
 			if ( !array_key_exists($key, $_POST) && $default == 0 ) {
