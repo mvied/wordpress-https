@@ -1,8 +1,9 @@
 <?php 
 /**
- * Admin Url Filters Module
+ * Url Filters Module
  * 
- * Adds the settings page.
+ * Provides a mechanism to secure posts and pages using a simple
+ * string match or regular expressions.
  *
  * @author Mike Ems
  * @package WordPressHTTPS

@@ -1,8 +1,8 @@
 <?php 
 /**
- * Network admin Settings Module
+ * Network Module
  * 
- * Adds the network settings page.
+ * Adds the network settings page to network dashboard.
  *
  * @author Mike Ems
  * @package WordPressHTTPS

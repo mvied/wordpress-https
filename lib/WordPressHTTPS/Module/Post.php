@@ -2,7 +2,7 @@
 /**
  * Post Module
  * 
- * Adds settings to the edit post screen.
+ * Adds options metabox to dashboard when publishing posts and pages.
  *
  * @author Mike Ems
  * @package WordPressHTTPS

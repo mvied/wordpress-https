@@ -1,8 +1,9 @@
 <?php 
 /**
- * Admin Domain Mapping Module
+ * Domain Mapping Module
  * 
- * Adds the settings page.
+ * Provides a way for users to specify if a host hosts their HTTPS
+ * content on a different domain.
  *
  * @author Mike Ems
  * @package WordPressHTTPS

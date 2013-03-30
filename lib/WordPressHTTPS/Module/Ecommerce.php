@@ -1,6 +1,8 @@
 <?php
 /**
  * E-commerce Module
+ * 
+ * Handles conflicts with popular E-commerce plugins' SSL settings.
  *
  * @author Mike Ems
  * @package WordPressHTTPS

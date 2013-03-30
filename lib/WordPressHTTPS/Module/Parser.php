@@ -1,6 +1,8 @@
 <?php
 /**
- * HTML Parser Module
+ * Parser Module
+ * 
+ * Parses the output buffer with awesomeness.
  *
  * @author Mike Ems
  * @package WordPressHTTPS
