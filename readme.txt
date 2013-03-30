@@ -3,7 +3,7 @@ Contributors: Mvied
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=N9NFVADLVUR7A
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
-Tested up to: 3.5
+Tested up to: 3.6
 Stable tag: 3.3.6
 License: GPLv3
 
@@ -96,6 +96,8 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 
 == Changelog ==
 = 3.4.0b =
+* Tested with WordPress v3.6.
+* Added internal caching to Parser module to drastically reduce queries.
 * Added checks for domain mapping plugin.
 * Added Portuegese translation.
 * Fixed bug when external resources contained a port number, the port was not removed when testing for HTTPS.

@@ -136,7 +136,7 @@
 #wphttps-main #domain_mapping td {
 	padding: 10px 0;
 }
-#wphttps-main #domain_mapping td.arrow {
+#wphttps-main #domain_mapping td.sep {
 	padding: 8px 0;
 }
 #wphttps-main #domain_mapping .http_scheme,
@@ -166,7 +166,7 @@
 	overflow: hidden;
 	text-indent: -1000em;
 	float: left;
-	background: url(images/add.png) no-repeat 50% 50%;	
+	background: url(../img/add.png) no-repeat 50% 50%;
 }
 #wphttps-main #domain_mapping .remove {
 	display: block;
@@ -175,15 +175,15 @@
 	overflow: hidden;
 	text-indent: -1000em;
 	float: left;
-	background: url(images/delete.png) no-repeat 50% 50%;	
+	background: url(../img/delete.png) no-repeat 50% 50%;
 }
-#wphttps-main #domain_mapping .arrow .label {
+#wphttps-main #domain_mapping .sep .label {
 	display: block;
 	height: 16px;
 	width: 16px;
 	overflow: hidden;
 	text-indent: -1000em;
-	background: url(images/arrow_right.png) no-repeat 50% 50%;	
+	background: url(../img/arrow_right.png) no-repeat 50% 50%;
 	margin: 0 auto;
 }
 

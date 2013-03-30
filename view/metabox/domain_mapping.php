@@ -21,7 +21,7 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="http_domain">
 			<input type="text" name="http_domain[]" value="<?php echo $http_domain; ?>" />
 		</td>
-		<td class="arrow">
+		<td class="sep">
 			<span class="label">&gt;</span>
 		</td>
 		<td class="https_scheme">
@@ -44,7 +44,7 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="http_domain">
 			<input type="text" name="http_domain[]" value="" />
 		</td>
-		<td class="arrow">
+		<td class="sep">
 			<span class="label">&gt;</span>
 		</td>
 		<td class="https_scheme">
