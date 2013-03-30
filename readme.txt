@@ -95,8 +95,9 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
-= 3.3.7 =
+= 3.4.0b =
 * Added checks for domain mapping plugin.
+* Added Portuegese translation.
 * Fixed bug when external resources contained a port number, the port was not removed when testing for HTTPS.
 * External HTTPS elements on HTTP pages will now stay HTTPS.
 * Fonts should now be properly secured.

@@ -20,6 +20,7 @@ If you are still unable to resolve your issue, <a href="http://wordpress.org/sup
 ### Languages
 * English
 * German
+* Portuguese
 
 * Help to translate at [https://translate.foe-services.de/projects/wordpress-https](https://translate.foe-services.de/projects/wordpress-https)
 
