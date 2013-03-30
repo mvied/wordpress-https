@@ -251,6 +251,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				// Reset cache
 				$this->setSetting('secure_external_urls', $this->_settings['secure_external_urls'], $blog_id);
 				$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
+				$this->setSetting('path_cache', $this->_settings['path_cache'], $blog_id);
+				$this->setSetting('blog_cache', $this->_settings['blog_cache'], $blog_id);
 	
 				// Set default domain mapping
 				if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
