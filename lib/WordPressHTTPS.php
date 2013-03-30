@@ -310,7 +310,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 					$has_path = ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false;
 					$has_port = ( (int)$this->getHttpsUrl()->getPort() > 0 ? strpos($url, ':' . $this->getHttpsUrl()->getPort()) !== false : true );
 					if ( $url->getScheme() == 'http' || !$has_host || !$has_path || !$has_port ) {
-						$updated = clone $url;
+						$updated = Mvied_Url::fromString( apply_filters('https_internal_url', $url->toString()) );
 						$updated->setScheme('https');
 						$updated->setHost($this->getHttpsUrl()->getHost());
 						$updated->setPort($this->getHttpsUrl()->getPort());
@@ -334,8 +334,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 					}
 				}
 			} else {
-				$updated = clone $url;
-				$updated = Mvied_Url::fromString( apply_filters('https_external_url', $updated->toString()) );
+				$updated = Mvied_Url::fromString( apply_filters('https_external_url', $url->toString()) );
 				$updated->setPort(null);
 				if ( @in_array($updated->toString(), $this->getSetting('secure_external_urls')) == false && @in_array($updated->toString(), $this->getSetting('unsecure_external_urls')) == false ) {
 					$test = clone $updated;
@@ -392,6 +391,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 						$redirect_url = $redirect[1];
 						$url = str_replace($redirect_url, urlencode($this->makeUrlHttp(urldecode($redirect_url))), $url);
 					}
+					$updated = apply_filters('http_internal_url', $updated->toString());
 					$string = str_replace($url, $updated, $string);
 				}
 			} else {
