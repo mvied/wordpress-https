@@ -370,28 +370,9 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 										$blog_id = $blog_cache[$blog_path];
 									} else {
 										$blog_id = $blog_cache[$blog_path] = get_blog_id_from_url( $url_parts['host'], $blog_url_path);
-										break;
 									}
 								}
 							}
-						}
-					}
-
-					if ( !is_null($blog_id) && $blog_id != $wpdb->blogid ) {
-						// URL Filters
-						if ( sizeof((array)$this->getPlugin()->getSetting('secure_filter', $blog_id)) > 0 ) {
-							foreach( $this->getPlugin()->getSetting('secure_filter', $blog_id) as $filter ) {
-								if ( preg_match('/' . str_replace('/', '\/', $filter) . '/', $url) === 1 ) {
-									$force_ssl = true;
-								}
-							}
-						}
-						if ( ( $this->getPlugin()->getSetting('ssl_admin', $blog_id) || defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) && strpos($url_parts['path'], 'wp-admin') !== false && ( ! $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) || ( $this->getPlugin()->getSetting('ssl_host_diff', $blog_id) && function_exists('is_user_logged_in') && is_user_logged_in() ) ) ) {
-							$force_ssl = true;
-						} else if ( is_null($force_ssl) && $this->getPlugin()->getSetting('exclusive_https', $blog_id) ) {
-							$force_ssl = false;
-						} else if ( strpos($url, 'https://') === 0 ) {
-							$force_ssl = true;
 						}
 					}
 				}
