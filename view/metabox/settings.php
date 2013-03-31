@@ -114,6 +114,7 @@ $ssl_host = rtrim($ssl_host, '/');
 <script type="text/javascript">
 jQuery(document).ready(function($) {
 	var form = $('#<?php echo $this->getSlug(); ?>_settings_form').first();
+	var ssl_host_value = $('#ssl_host').val();
 	$('#settings-save').click(function() {
 		$(form).find('input[name="action"]').val('<?php echo $this->getSlug(); ?>_settings_save');
 	});
@@ -125,6 +126,10 @@ jQuery(document).ready(function($) {
 	});
 	$(form).submit(function(e) {
 		e.preventDefault();
+		if ( $('#ssl_host').val() != ssl_host_value && ! confirm('<?php _e('Are you sure you want to set your SSL Host to \\\'%s\\\'? An incorrect value here may render your admin dashboard unusable until you reset the plugin\\\'s settings following the directions in the FAQ.','wordpress-https'); ?>'.replace('%s', $('#ssl_host').val())) ) {
+			e.preventDefault();
+			return false;
+		}
 		$(form).find('.submit-waiting').show();
 		$.post(ajaxurl, $(form).serialize(), function(response) {
 			$(form).find('.submit-waiting').hide();
@@ -132,18 +137,11 @@ jQuery(document).ready(function($) {
 		});
 	});
 
-	/*.ajaxForm({
-		success: function(responseText, textStatus, XMLHttpRequest) {
-			$('#<?php echo $this->getSlug(); ?>_settings_form .submit-waiting').hide();
-			$('#message-body').html(responseText).fadeOut(0).fadeIn().delay(5000).fadeOut();
-		}
-	});*/
-
 	$('#settings-reset').click(function(e, el) {
-	   if ( ! confirm('<?php _e('Are you sure you want to reset all WordPress HTTPS settings?','wordpress-https'); ?>') ) {
+		if ( ! confirm('<?php _e('Are you sure you want to reset all WordPress HTTPS settings?','wordpress-https'); ?>') ) {
 			e.preventDefault();
 			return false;
-	   }
+		}
 	});
 });
 </script>
