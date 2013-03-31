@@ -126,7 +126,7 @@ jQuery(document).ready(function($) {
 	});
 	$(form).submit(function(e) {
 		e.preventDefault();
-		if ( $('#ssl_host').val() != ssl_host_value && ! confirm('<?php _e('Are you sure you want to set your SSL Host to \\\'%s\\\'? An incorrect value here may render your admin dashboard unusable until you reset the plugin\\\'s settings following the directions in the FAQ.','wordpress-https'); ?>'.replace('%s', $('#ssl_host').val())) ) {
+		if ( $('#ssl_host').val() != ssl_host_value && ! confirm("<?php _e("Are you sure you want to set your SSL Host to '%s'? An incorrect value here may render your admin dashboard unusable until you reset the plugin's settings following the directions in the FAQ.",'wordpress-https'); ?>".replace('%s', $('#ssl_host').val())) ) {
 			e.preventDefault();
 			return false;
 		}
