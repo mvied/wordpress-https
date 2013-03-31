@@ -63,7 +63,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 			<span class="label">://</span>
 		</td>
 		<td class="host">
-			<input type="text" name="url_mapping[host][]" value="<?php echo @$mapping[0]['host'] . ( isset($mapping[0]['port']) ? ':' . $mapping[0]['port'] : '' ) . @$mapping[0]['path']; ?>" />
+			<input type="text" name="url_mapping[host][]" value="<?php echo @$mapping[0]['host']; ?>" />
 		</td>
 		<td class="sep url-sep">
 			<span class="label">&gt;</span>
@@ -78,7 +78,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 			<span class="label">://</span>
 		</td>
 		<td class="host">
-			<input type="text" name="url_mapping[host][]" value="<?php echo @$mapping[1]['host'] . ( isset($mapping[1]['port']) ? ':' . $mapping[1]['port'] : '' ) . @$mapping[1]['path']; ?>" />
+			<input type="text" name="url_mapping[host][]" value="<?php echo @$mapping[1]['host']; ?>" />
 		</td>
 		<td class="controls">
 			<a class="remove" href="#" title="<?php _e('Remove URL Mapping','wordpress-https'); ?>"><?php _e('Remove','wordpress-https'); ?></a>

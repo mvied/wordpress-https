@@ -46,8 +46,8 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 				if ( !is_array($mapping) || @$mapping[0]['scheme'] != 'https' ) {
 					continue;
 				}
-				$http_url = 'http://' . @$mapping[1]['host'] . ( isset($mapping[1]['port']) ? ':' . $mapping[1]['port'] : '' ) . @$mapping[1]['path'];
-				$https_url = 'https://' . @$mapping[0]['host'] . ( isset($mapping[0]['port']) ? ':' . $mapping[0]['port'] : '' ) . @$mapping[0]['path'];
+				$http_url = 'http://' . @$mapping[1]['host'];
+				$https_url = 'https://' . @$mapping[0]['host'];
 				preg_match('|' . $https_url . '|', $url, $matches);
 				if ( sizeof($matches) > 0 ) {
 					$url = preg_replace('|' . $https_url . '|', $http_url, $url);
@@ -69,8 +69,8 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 				if ( !is_array($mapping) || @$mapping[0]['scheme'] != 'http' ) {
 					continue;
 				}
-				$http_url = 'http://' . @$mapping[0]['host'] . ( isset($mapping[0]['port']) ? ':' . $mapping[0]['port'] : '' ) . @$mapping[0]['path'];
-				$https_url = 'https://' . @$mapping[1]['host'] . ( isset($mapping[1]['port']) ? ':' . $mapping[1]['port'] : '' ) . @$mapping[1]['path'];
+				$http_url = 'http://' . @$mapping[0]['host'];
+				$https_url = 'https://' . @$mapping[1]['host'];
 				preg_match('|' . $http_url . '|', $url, $matches);
 				if ( sizeof($matches) > 0 ) {
 					$url = preg_replace('|' . $http_url . '|', $https_url, $url);
