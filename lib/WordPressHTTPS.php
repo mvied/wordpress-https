@@ -432,7 +432,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		} else if ( $url = Mvied_Url::fromString( $string ) ) {
 			if ( $this->isUrlLocal($url) ) {
 				if ( $url->getScheme() == 'https' ) {
-					$updated = clone $url;
+					$updated = Mvied_Url::fromString(apply_filters('http_internal_url', $url->toString()));
 					$updated->setScheme('http');
 					$updated->setHost($this->getHttpUrl()->getHost());
 					$updated->setPort($this->getHttpUrl()->getPort());
@@ -443,11 +443,11 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 						$redirect_url = $redirect[1];
 						$url = str_replace($redirect_url, urlencode($this->makeUrlHttp(urldecode($redirect_url))), $url);
 					}
-					$updated = apply_filters('http_internal_url', $updated->toString());
 					$string = str_replace($url, $updated, $string);
 				}
 			} else {
-				$updated = apply_filters('http_external_url', str_replace('https://', 'http://', $url));
+				$updated = Mvied_Url::fromString( apply_filters('http_external_url', $url->toString()) );
+				$updated->setScheme('http');
 				$string = str_replace($url, $updated, $string);
 			}
 		}

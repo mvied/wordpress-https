@@ -118,9 +118,14 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 		$upload_dir = wp_upload_dir();
 		$upload_path = str_replace($this->getPlugin()->getHttpsUrl()->getPath(), $this->getPlugin()->getHttpUrl()->getPath(), parse_url($upload_dir['baseurl'], PHP_URL_PATH));
 
-		if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
-			$updated = $this->getPlugin()->makeUrlHttp($url);
-			$this->_html = str_replace($url, $updated, $this->_html);
+		// Only filter external resources that are being unsecured
+		if ( !$this->getPlugin()->isUrlLocal($url) ) {
+			$updated = apply_filters('http_external_url', $url);
+		} else {
+			if ( ! is_admin() || ( is_admin() && strpos($url, $upload_path) === false ) ) {
+				$updated = $this->getPlugin()->makeUrlHttp($url);
+				$this->_html = str_replace($url, $updated, $this->_html);
+			}
 		}
 
 		// Add log entry if this change hasn't been logged
@@ -197,7 +202,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( !$this->secureElement($url, $type) && $this->getPlugin()->getSetting('remove_unsecure') ) {
 						$this->_html = str_replace($html, '', $this->_html);
 					}
-				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
+				} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 					$this->unsecureElement($url, $type);
 				}
 			}
@@ -217,7 +222,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 			$url = $matches[2][$i];
 			if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 				$this->secureElement($url, 'style');
-			} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
+			} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 				$this->unsecureElement($url, 'style');
 			}
 		}
@@ -272,7 +277,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 					if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
 						if ( $this->getPlugin()->isSsl() && ( $this->getPlugin()->getSetting('ssl_host_diff') || ( !$this->getPlugin()->getSetting('ssl_host_diff') && strpos($url, 'http://') === 0 ) ) ) {
 							$this->secureElement($url, $type);
-						} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 && $this->getPlugin()->isUrlLocal($url) ) {
+						} else if ( !$this->getPlugin()->isSsl() && strpos($url, 'https://') === 0 ) {
 							$this->unsecureElement($url, $type);
 						}
 						break 2;
