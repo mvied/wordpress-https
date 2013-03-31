@@ -199,7 +199,6 @@ jQuery(document).ready(function($) {
 		return false;
 	});
 
-
 	if ( $('#url_mapping tr').length <= 2 ) {
 		$('#url_mapping .remove').hide();
 	} else {

@@ -43,6 +43,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'debug' =>                  0,       // Debug Mode
 		'admin_menu' =>             'side',  // HTTPS Admin Menu location
 		'secure_filter' =>          array(), // Expressions to secure URL's against
+		'unsecure_filter' =>        array(), // Expressions to unsecure URL's against
 		'ssl_host_mapping' =>       array(), // External SSL Hosts whose HTTPS content is on another domain
 		'network_defaults' =>       array(), // Default settings for new blogs on a multisite network
 		'path_cache' =>             array(), // Cache of URL paths to Post IDs

@@ -29,6 +29,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 		}
 		
 		add_filter('force_ssl', array(&$this, 'secure_filter_url'), 10, 3);
+		add_filter('force_ssl', array(&$this, 'unsecure_filter_url'), 50, 3);
 	}
 
 	/**
@@ -43,9 +44,30 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	public function secure_filter_url( $force_ssl, $post_id = 0, $url = '' ) {
 		// Check secure filters
 		if ( is_null($force_ssl) && sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
-			foreach( $this->getPlugin()->getSetting('secure_filter') as $filter ) {
-				if ( preg_match('/' . str_replace('/', '\/', $filter) . '/', $url) === 1 ) {
+			foreach( (array)$this->getPlugin()->getSetting('secure_filter') as $filter ) {
+				if ( preg_match('|' . $filter . '|', $url) === 1 ) {
 					$force_ssl = true;
+				}
+			}
+		}
+		return $force_ssl;
+	}
+
+	/**
+	 * Unsecure Filter URL
+	 * WordPress HTTPS Filter - force_ssl
+	 *
+	 * @param boolean $force_ssl
+	 * @param int $post_id
+	 * @param string $url
+	 * @return boolean $force_ssl
+	 */
+	public function unsecure_filter_url( $force_ssl, $post_id = 0, $url = '' ) {
+		// Check unsecure filters
+		if ( is_null($force_ssl) && sizeof((array)$this->getPlugin()->getSetting('unsecure_filter')) > 0 ) {
+			foreach( (array)$this->getPlugin()->getSetting('unsecure_filter') as $filter ) {
+				if ( preg_match('|' . $filter . '|', $url) === 1 ) {
+					$force_ssl = false;
 				}
 			}
 		}
@@ -86,6 +108,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 		$reload = true;
 
 		$this->getPlugin()->setSetting('secure_filter', array());
+		$this->getPlugin()->setSetting('unsecure_filter', array());
 
 		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
 	}
@@ -105,10 +128,15 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 		$errors = array();
 		$reload = false;
 
-		$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
-		$filters = array_filter($filters); // Removes blank array items
-		$filters = stripslashes_deep($filters);
-		$this->getPlugin()->setSetting('secure_filter', $filters);
+		$secure_filters = array_map('trim', (array)$_POST['secure_url_filters']);
+		$secure_filters = array_filter($secure_filters); // Removes blank array items
+		$secure_filters = stripslashes_deep($secure_filters);
+		$this->getPlugin()->setSetting('secure_filter', $secure_filters);
+
+		$unsecure_filters = array_map('trim', (array)$_POST['unsecure_url_filters']);
+		$unsecure_filters = array_filter($unsecure_filters); // Removes blank array items
+		$unsecure_filters = stripslashes_deep($unsecure_filters);
+		$this->getPlugin()->setSetting('unsecure_filter', $unsecure_filters);
 
 		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
 	}

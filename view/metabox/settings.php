@@ -32,7 +32,7 @@ $ssl_host = rtrim($ssl_host, '/');
 				<label for="ssl_admin">
 					<input type="hidden" name="ssl_admin" value="<?php echo ((force_ssl_admin() && $this->getSetting('ssl_admin') == 1) ? 1 : 0); ?>" />
 					<input name="ssl_admin" type="checkbox" id="ssl_admin" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getSetting('ssl_admin')) ? ' checked="checked"' : '') ); ?> />
-					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %s FORCE_SSL_ADMIN','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">'); ?></a>.</p>
+					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %sFORCE_SSL_ADMIN%s.','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">', '</a>'); ?></p>
 				</label>
 			</fieldset>
 		</td>
@@ -44,7 +44,7 @@ $ssl_host = rtrim($ssl_host, '/');
 				<label for="exclusive_https">
 					<input type="hidden" name="exclusive_https" value="0" />
 					<input name="exclusive_https" type="checkbox" id="exclusive_https" value="1"<?php echo (($this->getSetting('exclusive_https')) ? ' checked="checked"' : ''); ?> />
-					<p class="description"><?php printf( __('Any page that is not secured via %s Force SSL %s or URL Filters will be redirected to HTTP.','wordpress-https'),'<a href="' . parse_url($this->getPluginUrl(), PHP_URL_PATH) . '/screenshot-2.png" class="thickbox">', '</a> '); ?></a></p>
+					<p class="description"><?php printf( __('Any page that is not secured via %sForce SSL%s or URL Filters will be redirected to HTTP.','wordpress-https'),'<a href="' . parse_url($this->getPluginUrl(), PHP_URL_PATH) . '/screenshot-2.png" class="thickbox">', '</a>'); ?></a></p>
 				</label>
 			</fieldset>
 		</td>

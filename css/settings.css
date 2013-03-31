@@ -130,7 +130,8 @@
 #wphttps-main #ssl_proxy_row p.description {
 	width: 65%;
 }
-#wphttps-main #url_mapping td {
+#wphttps-main #url_mapping td,
+#wphttps-main .url_filters td {
 	padding: 0 3px;
 }
 #wphttps-main #url_mapping td.sep {
@@ -145,7 +146,8 @@
 #wphttps-main #url_mapping td.scheme select {
 	width: 60px;
 }
-#wphttps-main #url_mapping td.controls {
+#wphttps-main #url_mapping td.controls,
+#wphttps-main .url_filters td.controls {
 	padding: 4px 0px;
 	width: 6%;
 }
@@ -155,12 +157,12 @@
 	text-align: right;
 	padding-right: 2%;
 }
-#wphttps-main #url_mapping input {
+#wphttps-main #url_mapping input,
+#wphttps-main .url_filters input {
 	width: 100%;
-	padding-left: 2%;
-	padding-right: 2%;
 }
-#wphttps-main #url_mapping .add {
+#wphttps-main #url_mapping .add,
+#wphttps-main .url_filters .add {
 	display: block;
 	height: 16px;
 	width: 16px;
@@ -169,7 +171,8 @@
 	float: left;
 	background: url(../img/add.png) no-repeat 50% 50%;
 }
-#wphttps-main #url_mapping .remove {
+#wphttps-main #url_mapping .remove,
+#wphttps-main .url_filters .remove {
 	display: block;
 	height: 16px;
 	width: 16px;
