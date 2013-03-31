@@ -84,6 +84,11 @@
 	margin: 5px 5px 0 0;
 	float: left;
 }
+
+#secure_url_filters h4 {
+	margin-top: .5em;
+}
+
 #wphttps-main #settings-reset,
 #wphttps-main #settings-cache-reset,
 #wphttps-main #network-settings-reset,
