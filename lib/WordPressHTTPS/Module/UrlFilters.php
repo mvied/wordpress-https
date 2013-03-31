@@ -20,8 +20,8 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	 */
 	public function init() {
 		if ( is_admin() ) {
-			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_filters_save', array(&$this, 'save'));
-			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_filters_reset', array(&$this, 'reset'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_url_filters_save', array(&$this, 'save'));
+			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_url_filters_reset', array(&$this, 'reset'));
 			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 				// Add meta boxes
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
@@ -66,7 +66,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
 			'default',
-			array( 'metabox' => 'filters' )
+			array( 'metabox' => 'url_filters' )
 		);
 	}
 
@@ -107,6 +107,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 
 		$filters = array_map('trim', explode("\n", $_POST['secure_filter']));
 		$filters = array_filter($filters); // Removes blank array items
+		$filters = stripslashes_deep($filters);
 		$this->getPlugin()->setSetting('secure_filter', $filters);
 
 		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
