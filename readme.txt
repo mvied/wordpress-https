@@ -99,6 +99,9 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Tested with WordPress v3.6.
 * Added internal caching to Parser module to drastically reduce queries.
 * Added checks for domain mapping plugin.
+* Renamed Domain Mapping featured to URL Mapping to reduce confusion.
+* Added ability to map both to and from HTTPS with URL Mapping.
+* Added ability to also map local resources using URL Mapping.
 * Added Portuegese translation.
 * Fixed bug when external resources contained a port number, the port was not removed when testing for HTTPS.
 * External HTTPS elements on HTTP pages will now stay HTTPS.

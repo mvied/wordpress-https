@@ -80,8 +80,39 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @var array
 	 */
 	public static $ssl_host_mapping = array(
-		'w.sharethis.com' => 'ws.sharethis.com',
-		'\d.gravatar.com' => 'secure.gravatar.com',
+		array(
+			array(
+				'scheme' => 'http',
+				'host' =>   'w.sharethis.com'
+			),array(
+				'scheme' => 'https',
+				'host'   => 'ws.sharethis.com'
+			)
+		),array(
+			array(
+				'scheme' => 'https',
+				'host' =>   'ws.sharethis.com'
+			),array(
+				'scheme' => 'http',
+				'host'   => 'w.sharethis.com'
+			)
+		),array(
+			array(
+				'scheme' => 'http',
+				'host' =>   '\d.gravatar.com'
+			),array(
+				'scheme' => 'https',
+				'host'   => 'secure.gravatar.com'
+			)
+		),array(
+			array(
+				'scheme' => 'https',
+				'host' =>   'secure.gravatar.com'
+			),array(
+				'scheme' => 'http',
+				'host'   => '0.gravatar.com'
+			)
+		)
 	);
 
 	/**
@@ -246,6 +277,25 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				if ( $this->getSetting('frontpage', $blog_id) ) {
 					$this->setSetting('secure_filter', array_merge($this->getSetting('secure_filter'), array(rtrim(str_replace('http://', '', $this->getHttpUrl()->toString()), '/') . '/$')));
 					$this->setSetting('frontpage', 0, $blog_id);
+				}
+
+				// Reformat ssl_host_mapping
+				$ssl_host_mapping = $this->getSetting('ssl_host_mapping', $blog_id);
+				if ( $ssl_host_mapping != array() && !is_array($ssl_host_mapping[0]) ) {
+					$mappings = array();
+					foreach( $ssl_host_mapping as $http_host => $https_host ) {
+						$mappings[] = array(
+							array(
+								'scheme' => 'http',
+								'host'   => $http_host
+							),
+							array(
+								'scheme' => 'https',
+								'host'   => $https_host
+							)
+						);
+					}
+					$this->setSetting('ssl_host_mapping', $mappings, $blog_id);
 				}
 
 				// Reset cache

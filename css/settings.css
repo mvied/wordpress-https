@@ -59,9 +59,6 @@
 	margin: 5px auto 13px auto;
 }
 
-#wphttps-main input[type="text"] {
-	margin: -5px 0 0 0;
-}
 #wphttps-main input[type="checkbox"] {
 	margin: 7px 0 0 0;
 	vertical-align: bottom;
@@ -90,8 +87,8 @@
 #wphttps-main #settings-reset,
 #wphttps-main #settings-cache-reset,
 #wphttps-main #network-settings-reset,
-#wphttps-main #filters-reset,
-#wphttps-main #domain-mapping-reset {
+#wphttps-main #url-filters-reset,
+#wphttps-main #url-mapping-reset {
 	float: left;
 	margin-right: 10px;
 }
@@ -133,33 +130,37 @@
 #wphttps-main #ssl_proxy_row p.description {
 	width: 65%;
 }
-#wphttps-main #domain_mapping td {
-	padding: 10px 0;
+#wphttps-main #url_mapping td {
+	padding: 0 3px;
 }
-#wphttps-main #domain_mapping td.sep {
-	padding: 8px 0;
+#wphttps-main #url_mapping td.sep {
+	line-height: 26px;
+	width: 1%;
+	text-align: center;
 }
-#wphttps-main #domain_mapping .http_scheme,
-#wphttps-main #domain_mapping .https_scheme {
-	width: 30px;
-	padding: 10px;
+#wphttps-main #url_mapping td.scheme {
+	width: 1%;
+	text-align: right;
 }
-#wphttps-main #domain_mapping .https_scheme {
-	width: 35px;
+#wphttps-main #url_mapping td.scheme select {
+	width: 60px;
 }
-#wphttps-main #domain_mapping .http_domain .label,
-#wphttps-main #domain_mapping .https_domain .label {
+#wphttps-main #url_mapping td.controls {
+	padding: 4px 0px;
+	width: 6%;
+}
+#wphttps-main #url_mapping .host .label {
 	display: block;
 	float: left;
 	text-align: right;
 	padding-right: 2%;
-} 
-#wphttps-main #domain_mapping input {
-	width: 96%;
+}
+#wphttps-main #url_mapping input {
+	width: 100%;
 	padding-left: 2%;
 	padding-right: 2%;
 }
-#wphttps-main #domain_mapping .add {
+#wphttps-main #url_mapping .add {
 	display: block;
 	height: 16px;
 	width: 16px;
@@ -168,7 +169,7 @@
 	float: left;
 	background: url(../img/add.png) no-repeat 50% 50%;
 }
-#wphttps-main #domain_mapping .remove {
+#wphttps-main #url_mapping .remove {
 	display: block;
 	height: 16px;
 	width: 16px;
@@ -177,7 +178,7 @@
 	float: left;
 	background: url(../img/delete.png) no-repeat 50% 50%;
 }
-#wphttps-main #domain_mapping .sep .label {
+#wphttps-main #url_mapping .url-sep .label {
 	display: block;
 	height: 16px;
 	width: 16px;
@@ -185,6 +186,7 @@
 	text-indent: -1000em;
 	background: url(../img/arrow_right.png) no-repeat 50% 50%;
 	margin: 0 auto;
+	padding: 5px 10px;
 }
 
 #wphttps-main #regex-help {
