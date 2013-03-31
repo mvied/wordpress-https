@@ -43,7 +43,7 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 	public function map_http_url( $url ) {
 		if ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) && sizeof($this->getPlugin()->getSetting('ssl_host_mapping')) > 0 ) {
 			foreach( $this->getPlugin()->getSetting('ssl_host_mapping') as $mapping ) {
-				if ( !is_array($mapping) || @$mapping[0]['scheme'] != 'https' ) {
+				if ( !is_array($mapping) || @$mapping[1]['scheme'] != 'http' ) {
 					continue;
 				}
 				$http_url = 'http://' . @$mapping[1]['host'];
@@ -66,7 +66,7 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 	public function map_https_url( $url ) {
 		if ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) && sizeof($this->getPlugin()->getSetting('ssl_host_mapping')) > 0 ) {
 			foreach( $this->getPlugin()->getSetting('ssl_host_mapping') as $mapping ) {
-				if ( !is_array($mapping) || @$mapping[0]['scheme'] != 'http' ) {
+				if ( !is_array($mapping) || @$mapping[1]['scheme'] != 'https' ) {
 					continue;
 				}
 				$http_url = 'http://' . @$mapping[0]['host'];

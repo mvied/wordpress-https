@@ -165,7 +165,7 @@ jQuery(document).ready(function($) {
 		e.preventDefault();
 		var thisSelect = this;
 		$(thisSelect).parents('tr').find('select').each(function(i, otherSelect) {
-			if ( thisSelect != otherSelect ) {
+			if ( i > 0 && thisSelect != otherSelect ) {
 				if ( $(thisSelect).val() == 'http' ) {
 					$(otherSelect).val('https');
 				} else {
