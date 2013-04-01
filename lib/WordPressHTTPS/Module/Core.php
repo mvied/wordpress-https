@@ -545,10 +545,11 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function set_cookie($cookie, $expire, $expiration, $user_id, $scheme) {
+		$secure = null;
 		if ( ( $scheme == 'secure_auth' && $this->getPlugin()->isSsl() ) || ( ( ( defined('FORCE_SSL_ADMIN') && constant('FORCE_SSL_ADMIN') ) || $this->getPlugin()->getSetting('ssl_admin') ) && ! $this->getPlugin()->getSetting('ssl_host_subdomain') ) ) {
 			$secure = true;
 		}
-		$secure = apply_filters('secure_auth_cookie', @$secure, $user_id);
+		$secure = apply_filters('secure_auth_cookie', $secure, $user_id);
 
 		if( $scheme == 'logged_in' ) {
 			$cookie_name = LOGGED_IN_COOKIE;

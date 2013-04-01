@@ -65,7 +65,7 @@ class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module {
 				return $post_id;
 			}
 
-			if ( @$_POST['post_type'] == 'page' ) {
+			if ( isset($_POST['post_type']) && $_POST['post_type'] == 'page' ) {
 				if ( !current_user_can('edit_page', $post_id) ) {
 					return $post_id;
 				}
@@ -75,14 +75,14 @@ class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module {
 				}
 			}
 
-			$force_ssl = ( @$_POST['force_ssl'] == 1 ? true : false);
+			$force_ssl = ( isset($_POST['force_ssl']) && $_POST['force_ssl'] == 1 ? true : false);
 			if ( $force_ssl ) {
 				update_post_meta($post_id, 'force_ssl', 1);
 			} else {
 				delete_post_meta($post_id, 'force_ssl');
 			}
 		
-			$force_ssl_children = ( @$_POST['force_ssl_children'] == 1  ? true : false);
+			$force_ssl_children = ( isset($_POST['force_ssl_children']) && $_POST['force_ssl_children'] == 1  ? true : false);
 			if ( $force_ssl_children ) {
 				update_post_meta($post_id, 'force_ssl_children', 1);
 			} else {

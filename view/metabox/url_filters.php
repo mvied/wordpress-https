@@ -11,7 +11,7 @@ if ( !defined('ABSPATH') ) exit;
 	<tr valign="top">
 		<td colspan="2"><h4><?php _e('Secure Filters','wordpress-https'); ?></h4></td>
 	</tr>
-<?php if ( sizeof($this->getSetting('secure_filter')) > 0 ) { foreach ( (array)$this->getSetting('secure_filter') as $filter ) { ?>
+<?php if ( sizeof($this->getSetting('secure_filter')) > 0 ) : foreach ( (array)$this->getSetting('secure_filter') as $filter ) : ?>
 	<tr valign="top" class="secure_url_filters_row">
 		<td>
 			<input type="text" name="secure_url_filters[]" value="<?php echo $filter; ?>" />
@@ -21,7 +21,7 @@ if ( !defined('ABSPATH') ) exit;
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
 		</td>
 	</tr>
-<?php } } else { ?>
+<?php endforeach; else: ?>
 	<tr valign="top" class="secure_url_filters_row">
 		<td>
 			<input type="text" name="secure_url_filters[]" value="" />
@@ -31,14 +31,14 @@ if ( !defined('ABSPATH') ) exit;
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
 		</td>
 	</tr>
-<?php } ?>
+<?php endif; ?>
 </table>
 
 <table class="form-table url_filters" id="unsecure_url_filters">
 	<tr valign="top">
 		<td colspan="2"><h4><?php _e('Unsecure Filters','wordpress-https'); ?></h4></td>
 	</tr>
-<?php if ( sizeof($this->getSetting('unsecure_filter')) > 0 ) { foreach ( (array)$this->getSetting('unsecure_filter') as $filter ) { ?>
+<?php if ( sizeof($this->getSetting('unsecure_filter')) > 0 ) : foreach ( (array)$this->getSetting('unsecure_filter') as $filter ) : ?>
 	<tr valign="top" class="unsecure_url_filters_row">
 		<td>
 			<input type="text" name="unsecure_url_filters[]" value="<?php echo $filter; ?>" />
@@ -48,7 +48,7 @@ if ( !defined('ABSPATH') ) exit;
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
 		</td>
 	</tr>
-<?php } } else { ?>
+<?php endforeach; else: ?>
 	<tr valign="top" class="unsecure_url_filters_row">
 		<td>
 			<input type="text" name="unsecure_url_filters[]" value="" />
@@ -58,7 +58,7 @@ if ( !defined('ABSPATH') ) exit;
 			<a class="add" href="#" title="<?php _e('Add URL Filter','wordpress-https'); ?>"><?php _e('Add','wordpress-https'); ?></a>
 		</td>
 	</tr>
-<?php } ?>
+<?php endif; ?>
 </table>
 
 <p class="button-controls">

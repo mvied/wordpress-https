@@ -55,8 +55,8 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 	<tr valign="top" class="url_mapping_row">
 		<td class="scheme">
 			<select name="url_mapping[scheme][]">
-				<option<?php echo @$mapping[0]['scheme'] == 'http' ? ' selected="selected"' : ''; ?>>http</option>
-				<option<?php echo @$mapping[0]['scheme'] == 'https' ? ' selected="selected"' : ''; ?>>https</option>
+				<option<?php echo isset($mapping[0]['scheme']) && $mapping[0]['scheme'] == 'http' ? ' selected="selected"' : ''; ?>>http</option>
+				<option<?php echo isset($mapping[0]['scheme']) && $mapping[0]['scheme'] == 'https' ? ' selected="selected"' : ''; ?>>https</option>
 			</select>
 		</td>
 		<td class="sep">
@@ -70,8 +70,8 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 		</td>
 		<td class="scheme">
 			<select name="url_mapping[scheme][]">
-				<option<?php echo @$mapping[1]['scheme'] == 'https' ? ' selected="selected"' : ''; ?>>https</option>
-				<option<?php echo @$mapping[1]['scheme'] == 'http' ? ' selected="selected"' : ''; ?>>http</option>
+				<option<?php echo isset($mapping[1]['scheme']) && $mapping[1]['scheme'] == 'https' ? ' selected="selected"' : ''; ?>>https</option>
+				<option<?php echo isset($mapping[1]['scheme']) && $mapping[1]['scheme'] == 'http' ? ' selected="selected"' : ''; ?>>http</option>
 			</select>
 		</td>
 		<td class="sep">
