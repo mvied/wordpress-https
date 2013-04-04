@@ -536,7 +536,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	public function redirect( $scheme = 'https' ) {
 		if ( isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], 'index.php') === false ) {
 			$current_path = $_SERVER['REDIRECT_URL'];
-			if ( strpos($_SERVER['REQUEST_URI'], '?') !== false strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
+			if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
 				$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
 			}
 		} else {
