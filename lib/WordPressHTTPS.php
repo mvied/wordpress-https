@@ -305,7 +305,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				$this->setSetting('path_cache', $this->_settings['path_cache'], $blog_id);
 				$this->setSetting('blog_cache', $this->_settings['blog_cache'], $blog_id);
 	
-				// Set default domain mapping
+				// Set default URL Mapping
 				if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
 					$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
 				}
@@ -534,9 +534,13 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @return void
 	 */
 	public function redirect( $scheme = 'https' ) {
-		$current_path = ( isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], 'index.php') === false ? $_SERVER['REDIRECT_URL'] : $_SERVER['REQUEST_URI'] );
-		if ( strpos($_SERVER['REQUEST_URI'], '?') !== false && isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
-			$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
+		if ( isset($_SERVER['REDIRECT_URL']) && strpos($_SERVER['REDIRECT_URL'], 'index.php') === false ) {
+			$current_path = $_SERVER['REDIRECT_URL'];
+			if ( strpos($_SERVER['REQUEST_URI'], '?') !== false strpos($_SERVER['REDIRECT_URL'], '?') === false ) {
+				$current_path .= substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '?'));
+			}
+		} else {
+			$current_path = $_SERVER['REQUEST_URI'];
 		}
 
 		$current_url = ( $this->isSsl() ? 'https' : 'http' ) . '://' . ( isset($_SERVER['HTTP_X_FORWARDED_SERVER']) ? $_SERVER['HTTP_X_FORWARDED_SERVER'] : $_SERVER['HTTP_HOST'] ) . $current_path;
