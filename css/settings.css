@@ -85,8 +85,8 @@
 	float: left;
 }
 
-#secure_url_filters h4 {
-	margin-top: .5em;
+#wphttps-main .url_filters h4 {
+	margin: 0;
 }
 
 #wphttps-main #settings-reset,
@@ -190,6 +190,7 @@
 	display: block;
 	height: 16px;
 	width: 16px;
+	line-height: 16px;
 	overflow: hidden;
 	text-indent: -1000em;
 	background: url(../img/arrow_right.png) no-repeat 50% 50%;

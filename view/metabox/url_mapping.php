@@ -28,7 +28,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 			<input id="http_url" type="text" name="http_host" value="<?php echo $http_url ?>" disabled="disabled" title="<?php echo _e('You can modify this mapping by changing your Home URL.','wordpress-https'); ?>" />
 		</td>
 		<td class="sep url-sep">
-			<span class="label">&gt;</span>
+			<span class="label">&raquo;</span>
 		</td>
 		<td class="scheme">
 			<select name="https_scheme" disabled="disabled">
@@ -66,7 +66,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 			<input type="text" name="url_mapping[host][]" value="<?php echo @$mapping[0]['host']; ?>" />
 		</td>
 		<td class="sep url-sep">
-			<span class="label">&gt;</span>
+			<span class="label">&raquo;</span>
 		</td>
 		<td class="scheme">
 			<select name="url_mapping[scheme][]">
@@ -104,7 +104,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 			<input type="text" name="url_mapping[host][]" value="" />
 		</td>
 		<td class="sep url-sep">
-			<span class="label">&gt;</span>
+			<span class="label">&raquo;</span>
 		</td>
 		<td class="scheme">
 			<select name="url_mapping[scheme][]">
