@@ -318,6 +318,11 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		foreach ( $blogs as $blog_id ) {
 			$this->setSetting('ssl_host_subdomain', $is_subdomain, $blog_id);
 		}
+
+		// Check for deprecated modules
+		if ( file_exists( $this->getModuleDirectory() . '/DomainMapping.php') ) {
+			@unlink($this->getModuleDirectory() . '/DomainMapping.php');
+		}
 	}
 
 	/**
