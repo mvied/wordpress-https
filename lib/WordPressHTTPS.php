@@ -23,6 +23,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 */
 	protected $_https_url;
 
+	protected $_local_url_cache = array();
+
 	/**
 	 * Plugin Settings
 	 * 
@@ -334,10 +336,14 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @return boolean
 	 */
 	public function isUrlLocal($url) {
+		if (array_key_exists($url, $this->_local_url_cache))
+			return $this->_local_url_cache[$url];
 		$hosts = $this->getLocalDomains();
 		if ( ($url_parts = @parse_url($url)) && isset($url_parts['host']) && !in_array($url_parts['host'], $hosts) ) {
+			$this->_local_url_cache[$url] = false;
 			return false;
 		}
+		$this->_local_url_cache[$url] = true;
 		return true;
 	}
 
@@ -362,7 +368,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				}
 			}
 		} else if ( $url = Mvied_Url::fromString( $string ) ) {
-			if ( $this->isUrlLocal($url) ) {
+			if ( $this->isUrlLocal($string) ) {
 				if ( $url->getScheme() == 'http' || ( $url->getScheme() == 'https' && $this->getSetting('ssl_host_diff') ) ) {
 					$has_host = ( $this->getHttpUrl()->getHost() == $this->getHttpsUrl()->getHost() ) || strpos($url, $this->getHttpsUrl()->getHost()) !== false;
 					$has_path = ( $this->getHttpUrl()->getPath() == $this->getHttpsUrl()->getPath() ) || strpos($url, $this->getHttpsUrl()->getPath()) !== false;
@@ -436,7 +442,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				$string = str_replace($this->getHttpsUrl()->getPath(), $this->getHttpUrl()->getPath(), $string);
 			}
 		} else if ( $url = Mvied_Url::fromString( $string ) ) {
-			if ( $this->isUrlLocal($url) ) {
+			if ( $this->isUrlLocal($string) ) {
 				if ( $url->getScheme() == 'https' ) {
 					$updated = Mvied_Url::fromString(apply_filters('http_internal_url', $url->toString()));
 					$updated->setScheme('http');

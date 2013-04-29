@@ -43,8 +43,9 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	 */
 	public function secure_filter_url( $force_ssl, $post_id = 0, $url = '' ) {
 		// Check secure filters
-		if ( is_null($force_ssl) && sizeof((array)$this->getPlugin()->getSetting('secure_filter')) > 0 ) {
-			foreach( (array)$this->getPlugin()->getSetting('secure_filter') as $filter ) {
+		$plugin = $this->getPlugin();
+		if ( is_null($force_ssl) && sizeof((array)$plugin->getSetting('secure_filter')) > 0 ) {
+			foreach( (array)$plugin->getSetting('secure_filter') as $filter ) {
 				if ( preg_match('|' . $filter . '|', $url) === 1 ) {
 					$force_ssl = true;
 				}
@@ -64,8 +65,9 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	 */
 	public function unsecure_filter_url( $force_ssl, $post_id = 0, $url = '' ) {
 		// Check unsecure filters
-		if ( is_null($force_ssl) && sizeof((array)$this->getPlugin()->getSetting('unsecure_filter')) > 0 ) {
-			foreach( (array)$this->getPlugin()->getSetting('unsecure_filter') as $filter ) {
+		$plugin = $this->getPlugin();
+		if ( is_null($force_ssl) && sizeof((array)$plugin->getSetting('unsecure_filter')) > 0 ) {
+			foreach( (array)$plugin->getSetting('unsecure_filter') as $filter ) {
 				if ( preg_match('|' . $filter . '|', $url) === 1 ) {
 					$force_ssl = false;
 				}
