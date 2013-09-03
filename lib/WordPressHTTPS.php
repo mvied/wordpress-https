@@ -23,6 +23,11 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 */
 	protected $_https_url;
 
+	/**
+	 * Local URL Cache
+	 *
+	 * @var multitype:string
+	 */
 	protected $_local_url_cache = array();
 
 	/**
@@ -30,7 +35,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * 
 	 * setting_name => default_value
 	 *
-	 * @var array
+	 * @var multitype:multitype
 	 */
 	protected $_settings = array(
 		'ssl_host' =>               '',      // Hostname for SSL Host
@@ -57,7 +62,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * File extensions to be loaded securely.
 	 * File type => Array of extensions
 	 * 
-	 * @var array
+	 * @var multitype:multitype
 	 */
 	protected $_file_extensions = array(
 		'script' => array(
@@ -80,7 +85,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Default External SSL Host Mapping
-	 * @var array
+	 * @var multitype:multitype
 	 */
 	public static $ssl_host_mapping = array(
 		array(
