@@ -39,7 +39,7 @@ class WordPressHTTPS_Module_Post extends Mvied_Plugin_Module {
 		foreach($post_types as $post_type ) {
 			add_meta_box(
 				$this->getPlugin()->getSlug(),
-				__( 'HTTPS', $this->getPlugin()->getSlug() ),
+				__( 'HTTPS', 'wordpress-https' ),
 				array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 				$post_type,
 				'side',

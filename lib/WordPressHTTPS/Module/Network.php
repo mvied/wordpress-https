@@ -54,7 +54,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 	public function add_meta_boxes() {
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_settings',
-			__( 'Network Settings', $this->getPlugin()->getSlug() ),
+			__( 'Network Settings', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug() . '_network',
 			'main',
@@ -63,7 +63,7 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',
-			__( 'Loading...', $this->getPlugin()->getSlug() ),
+			__( 'Loading...', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug() . '_network',
 			'main',

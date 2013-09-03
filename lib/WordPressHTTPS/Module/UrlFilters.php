@@ -85,7 +85,7 @@ class WordPressHTTPS_Module_UrlFilters extends Mvied_Plugin_Module {
 	public function add_meta_boxes() {
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_filters',
-			__( 'URL Filters', $this->getPlugin()->getSlug() ),
+			__( 'URL Filters', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',

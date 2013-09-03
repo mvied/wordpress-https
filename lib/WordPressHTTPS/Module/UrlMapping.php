@@ -89,7 +89,7 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 	public function add_meta_boxes() {
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_url_mapping',
-			__( 'URL Mapping', $this->getPlugin()->getSlug() ),
+			__( 'URL Mapping', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',

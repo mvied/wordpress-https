@@ -60,7 +60,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	public function add_meta_boxes() {
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_settings',
-			__( 'General Settings', $this->getPlugin()->getSlug() ),
+			__( 'General Settings', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
@@ -69,7 +69,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_updates',
-			__( 'Developer Updates', $this->getPlugin()->getSlug() ),
+			__( 'Developer Updates', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
@@ -78,7 +78,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_support',
-			__( 'Support', $this->getPlugin()->getSlug() ),
+			__( 'Support', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
@@ -87,7 +87,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_rate',
-			__( 'Feedback', $this->getPlugin()->getSlug() ),
+			__( 'Feedback', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
@@ -96,7 +96,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate',
-			__( 'Donate', $this->getPlugin()->getSlug() ),
+			__( 'Donate', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
@@ -105,7 +105,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',
-			__( 'Loading...', $this->getPlugin()->getSlug() ),
+			__( 'Loading...', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'main',
@@ -196,7 +196,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = __('Cache reset.','wordpress-https');
+		$message = __('Cache reset.', 'wordpress-https' );
 		$errors = array();
 		$reload = false;
 
@@ -219,7 +219,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			return false;
 		}
 
-		$message = __('Settings reset.','wordpress-https');
+		$message = __('Settings reset.', 'wordpress-https' );
 		$errors = array();
 		$reload = true;
 
@@ -238,11 +238,11 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function save() {
-		if ( !wp_verify_nonce($_POST['_wpnonce'], $this->getPlugin()->getSlug()) ) {
+		if ( !wp_verify_nonce($_POST['_wpnonce'], 'wordpress-https') ) {
 			return false;
 		}
 
-		$message = __('Settings saved.','wordpress-https');
+		$message = __('Settings saved.', 'wordpress-https' );
 		$errors = array();
 		$reload = false;
 		$logout = false;
