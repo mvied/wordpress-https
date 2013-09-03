@@ -294,12 +294,13 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return boolean $force_ssl
 	 */
 	public function secure_element( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
+		$plugin = $this->getPlugin();
+		if ( $url != '' && $plugin->isUrlLocal($url) ) {
 			$filename = basename($url);
-			foreach( $this->getPlugin()->getFileExtensions() as $type => $extensions ) {
+			foreach( $plugin->getFileExtensions() as $type => $extensions ) {
 				foreach( $extensions as $extension ) {
 					if ( preg_match('/\.' . $extension . '(\?|$)/', $filename) ) {
-						if ( $this->getPlugin()->isSsl() ) {
+						if ( $plugin->isSsl() ) {
 							$force_ssl = true;
 						} else {
 							$force_ssl = false;
@@ -411,21 +412,22 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_scripts() {
 		global $wp_scripts;
+		$plugin = $this->getPlugin();
 		if ( isset($wp_scripts) && sizeof($wp_scripts->registered) > 0 ) {
 			foreach ( $wp_scripts->registered as $script ) {
 				if ( in_array($script->handle, $wp_scripts->queue) ) {
 					if ( strpos($script->src, 'http') === 0 ) {
-						if ( $this->getPlugin()->isSsl() ) {
-							$updated = $this->getPlugin()->makeUrlHttps($script->src);
+						if ( $plugin->isSsl() ) {
+							$updated = $plugin->makeUrlHttps($script->src);
 							$script->src = $updated;
 						} else {
-							$updated = $this->getPlugin()->makeUrlHttp($script->src);
+							$updated = $plugin->makeUrlHttp($script->src);
 							$script->src = $updated;
 						}
 						if ( $script->src != $updated ) {
 							$log = '[FIXED] Element: <script> - ' . $url . ' => ' . $updated;
-							if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
-								$this->getPlugin()->getLogger()->log($log);
+							if ( ! in_array($log, $plugin->getLogger()->getLog()) ) {
+								$plugin->getLogger()->log($log);
 							}
 						}
 					}
@@ -442,21 +444,22 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_styles() {
 		global $wp_styles;
+		$plugin = $this->getPlugin();
 		if ( isset($wp_styles) && sizeof($wp_styles->registered) > 0 ) {
 			foreach ( (array)$wp_styles->registered as $style ) {
 				if ( in_array($style->handle, $wp_styles->queue) ) {
 					if ( strpos($style->src, 'http') === 0 ) {
-						if ( $this->getPlugin()->isSsl() ) {
-							$updated = $this->getPlugin()->makeUrlHttps($style->src);
+						if ( $plugin->isSsl() ) {
+							$updated = $plugin->makeUrlHttps($style->src);
 							$style->src = $updated;
 						} else {
-							$updated = $this->getPlugin()->makeUrlHttp($style->src);
+							$updated = $plugin->makeUrlHttp($style->src);
 							$style->src = $updated;
 						}
 						if ( $style->src != $updated ) {
 							$log = '[FIXED] Element: <link> - ' . $url . ' => ' . $updated;
-							if ( ! in_array($log, $this->getPlugin()->getLogger()->getLog()) ) {
-								$this->getPlugin()->getLogger()->log($log);
+							if ( ! in_array($log, $plugin->getLogger()->getLog()) ) {
+								$plugin->getLogger()->log($log);
 							}
 						}
 					}
