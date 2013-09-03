@@ -41,8 +41,9 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 	 * @return string $url
 	 */
 	public function map_http_url( $url ) {
-		if ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) && sizeof($this->getPlugin()->getSetting('ssl_host_mapping')) > 0 ) {
-			foreach( $this->getPlugin()->getSetting('ssl_host_mapping') as $mapping ) {
+		$plugin = $this->getPlugin();
+		if ( is_array($plugin->getSetting('ssl_host_mapping')) && sizeof($plugin->getSetting('ssl_host_mapping')) > 0 ) {
+			foreach( $plugin->getSetting('ssl_host_mapping') as $mapping ) {
 				if ( !is_array($mapping) || ( isset($mapping[1]['scheme']) && $mapping[1]['scheme'] != 'http' ) ) {
 					continue;
 				}
@@ -64,8 +65,9 @@ class WordPressHTTPS_Module_UrlMapping extends Mvied_Plugin_Module {
 	 * @return string $url
 	 */
 	public function map_https_url( $url ) {
-		if ( is_array($this->getPlugin()->getSetting('ssl_host_mapping')) && sizeof($this->getPlugin()->getSetting('ssl_host_mapping')) > 0 ) {
-			foreach( $this->getPlugin()->getSetting('ssl_host_mapping') as $mapping ) {
+		$plugin = $this->getPlugin();
+		if ( is_array($plugin->getSetting('ssl_host_mapping')) && sizeof($plugin->getSetting('ssl_host_mapping')) > 0 ) {
+			foreach( $plugin->getSetting('ssl_host_mapping') as $mapping ) {
 				if ( !is_array($mapping) || ( isset($mapping[1]['scheme']) && $mapping[1]['scheme'] != 'https' ) ) {
 					continue;
 				}
