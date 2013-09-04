@@ -15,138 +15,138 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
 "_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2\n"
-"X-Poedit-Basepath: ../\n"
+"X-Poedit-Basepath: \n"
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Network.php:57
+#: lib/WordPressHTTPS/Module/Network.php:57
 msgid "Network Settings"
 msgstr "Configurações de Rede"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Network.php:66
-#: ../lib/WordPressHTTPS/Module/Settings.php:108
+#: lib/WordPressHTTPS/Module/Network.php:66
+#: lib/WordPressHTTPS/Module/Settings.php:108
 msgid "Loading..."
 msgstr "Carregando..."
 
 # @ default
-#: ../lib/WordPressHTTPS/Module/Network.php:83
-#: ../lib/WordPressHTTPS/Module/Settings.php:125
+#: lib/WordPressHTTPS/Module/Network.php:83
+#: lib/WordPressHTTPS/Module/Settings.php:125
 msgid "You do not have sufficient permissions to access this page."
 msgstr ""
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Network.php:121
+#: lib/WordPressHTTPS/Module/Network.php:121
 #, fuzzy
 msgid "Network settings saved."
 msgstr "Configurações de Rede"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Post.php:42 ../view/network.php:10
-#: ../view/settings.php:10
+#: lib/WordPressHTTPS/Module/Post.php:42 view/network.php:10
+#: view/settings.php:10
 msgid "HTTPS"
 msgstr "HTTPS"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:63
+#: lib/WordPressHTTPS/Module/Settings.php:63
 msgid "General Settings"
 msgstr "Configurações Gerais"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:72
+#: lib/WordPressHTTPS/Module/Settings.php:72
 msgid "Developer Updates"
 msgstr "Atualizações para Desenvolvedor"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:81
+#: lib/WordPressHTTPS/Module/Settings.php:81
 msgid "Support"
 msgstr "Suporte"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:90
+#: lib/WordPressHTTPS/Module/Settings.php:90
 msgid "Feedback"
 msgstr "Feedback"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:99
+#: lib/WordPressHTTPS/Module/Settings.php:99
 msgid "Donate"
 msgstr "Doar"
 
-#: ../lib/WordPressHTTPS/Module/Settings.php:199
+#: lib/WordPressHTTPS/Module/Settings.php:199
 msgid "Cache reset."
 msgstr "Resetar"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:222
+#: lib/WordPressHTTPS/Module/Settings.php:222
 #, fuzzy
 msgid "Settings reset."
 msgstr "Configurações"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/Settings.php:245
+#: lib/WordPressHTTPS/Module/Settings.php:245
 #, fuzzy
 msgid "Settings saved."
 msgstr "Configurações"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/UrlFilters.php:86
+#: lib/WordPressHTTPS/Module/UrlFilters.php:86
 msgid "URL Filters"
 msgstr "Filtro URL"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/UrlFilters.php:106
+#: lib/WordPressHTTPS/Module/UrlFilters.php:106
 #, fuzzy
 msgid "URL Filters reset."
 msgstr "Filtro URL"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/UrlFilters.php:127
+#: lib/WordPressHTTPS/Module/UrlFilters.php:127
 #, fuzzy
 msgid "URL Filters saved."
 msgstr "Filtro URL"
 
 # @ wordpress-https
-#: ../lib/WordPressHTTPS/Module/UrlMapping.php:92
+#: lib/WordPressHTTPS/Module/UrlMapping.php:92
 #, fuzzy
 msgid "URL Mapping"
 msgstr "Mapeamento de Domínio"
 
-#: ../lib/WordPressHTTPS/Module/UrlMapping.php:112
+#: lib/WordPressHTTPS/Module/UrlMapping.php:112
 msgid "URL Mapping reset."
 msgstr ""
 
-#: ../lib/WordPressHTTPS/Module/UrlMapping.php:132
+#: lib/WordPressHTTPS/Module/UrlMapping.php:132
 msgid "URL Mapping saved."
 msgstr ""
 
 # @ wordpress-https
-#: ../view/settings.php:26
+#: view/settings.php:26
 msgid "Expressions"
 msgstr "Expressões"
 
 # @ wordpress-https
-#: ../view/settings.php:30
+#: view/settings.php:30
 msgid "A single character: a, b, or c"
 msgstr "Um único caracter: a,b, ou c"
 
 # @ wordpress-https
-#: ../view/settings.php:34
+#: view/settings.php:34
 msgid "Any single character <em>but</em> a, b, or c"
 msgstr "Qualquer caracter único <em>mais</em> a, b, ou c"
 
 # @ wordpress-https
-#: ../view/settings.php:38
+#: view/settings.php:38
 msgid "Any character in the range a-z"
 msgstr "Qualquer caracter entre a-z"
 
 # @ wordpress-https
-#: ../view/settings.php:42
+#: view/settings.php:42
 msgid "Any character in the range a-z or A-Z (any alphabetical character)"
 msgstr "Qualquer caracter entre a-z ou A-Z (Em qualquer order alfabética)"
 
 # @ wordpress-https
-#: ../view/settings.php:46
+#: view/settings.php:46
 #, fuzzy
 msgid "Any whitespace character [ \\t\\n\\r\\f\\v]"
 msgstr ""
@@ -154,7 +154,7 @@ msgstr ""
 "\\r\\f\\v]"
 
 # @ wordpress-https
-#: ../view/settings.php:50
+#: view/settings.php:50
 #, fuzzy
 msgid "Any non-whitespace character [^ \\t\\n\\r\\f\\v]"
 msgstr ""
@@ -162,63 +162,63 @@ msgstr ""
 "\\r\\f\\v]"
 
 # @ wordpress-https
-#: ../view/settings.php:54
+#: view/settings.php:54
 msgid "Any digit [0-9]"
 msgstr "Qualquer digito  [0-9]"
 
 # @ wordpress-https
-#: ../view/settings.php:58
+#: view/settings.php:58
 msgid "Any non-digit [^0-9]"
 msgstr "Qualquer sem digito  [0-9]"
 
 # @ wordpress-https
-#: ../view/settings.php:62
+#: view/settings.php:62
 msgid "Any word character [a-zA-Z0-9_]"
 msgstr "Qualquer caracter de palavra [a-zA-Z0-9_]"
 
 # @ wordpress-https
-#: ../view/settings.php:66
+#: view/settings.php:66
 msgid "Any non-word character [^a-zA-Z0-9_]"
 msgstr "Qualquer caracter sem palavra [^a-zA-Z0-9_]"
 
 # @ wordpress-https
-#: ../view/settings.php:70
+#: view/settings.php:70
 msgid "A word boundary between \\w and \\W"
 msgstr "Uma fronteira entre  \\w and \\W"
 
 # @ wordpress-https
-#: ../view/settings.php:74
+#: view/settings.php:74
 msgid "A position that is not a word boundary"
 msgstr "Uma poisição que não seja uma fronteira na palavra"
 
 # @ wordpress-https
-#: ../view/settings.php:78
+#: view/settings.php:78
 msgid ""
 "Alternation: matches either the subexpression to the left or to the right"
 msgstr "Alternativas: busca pode ser da esquerda ou direita"
 
 # @ wordpress-https
-#: ../view/settings.php:82
+#: view/settings.php:82
 msgid "Grouping: group all together for repetition operators"
 msgstr "Agrupamento: Agrupe todos juntos para operações repitidas"
 
 # @ wordpress-https
-#: ../view/settings.php:86
+#: view/settings.php:86
 msgid "Beginning of the string"
 msgstr "Começo da linha"
 
 # @ wordpress-https
-#: ../view/settings.php:90
+#: view/settings.php:90
 msgid "End of the string"
 msgstr "Final da linha"
 
 # @ wordpress-https
-#: ../view/settings.php:93
+#: view/settings.php:93
 msgid "Repetition&#160;Operators"
 msgstr "Repetição&#160;Operações"
 
 # @ wordpress-https
-#: ../view/settings.php:97
+#: view/settings.php:97
 msgid ""
 "Match the previous item at least <em>n</em> times but no more than <em>m</"
 "em> times"
@@ -227,135 +227,135 @@ msgstr ""
 "<em>m</em> vezes"
 
 # @ wordpress-https
-#: ../view/settings.php:101
+#: view/settings.php:101
 msgid "Match the previous item <em>n</em> or more times"
 msgstr "Igual ao item a quantidade <em>n</em> anterior ou mais vezes"
 
 # @ wordpress-https
-#: ../view/settings.php:105
+#: view/settings.php:105
 msgid "Match exactly <em>n</em> occurrences of the previous item"
 msgstr "Exatamente igual <em>n</em> ocorrencias do item anterior"
 
 # @ wordpress-https
-#: ../view/settings.php:109
+#: view/settings.php:109
 msgid "Match 0 or 1 occurrences of the previous item {0,1}"
 msgstr "Encontre 0 ou 1 ocorrencias do item anterior {0,1}"
 
 # @ wordpress-https
-#: ../view/settings.php:113
+#: view/settings.php:113
 msgid "Match 1 or more occurrences of the previous item {1,}"
 msgstr "Encontrar 1 ou mais ocorrencias do item anterior {1,}"
 
 # @ wordpress-https
-#: ../view/settings.php:117
+#: view/settings.php:117
 msgid "Match 0 or more occurrences of the previous item {0,}"
 msgstr "Encontrar 0 ou mais ocorrencias do item anterior {0,}"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:11
+#: view/metabox/network.php:11
 msgid "Blog"
 msgstr "Blog"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:12 ../view/metabox/settings.php:19
+#: view/metabox/network.php:12 view/metabox/settings.php:19
 msgid "SSL Host"
 msgstr "Hospeadgem do SSL"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:13
+#: view/metabox/network.php:13
 msgid "Force SSL Admin"
 msgstr "Forçar SSL Admin"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:14 ../view/metabox/settings.php:41
+#: view/metabox/network.php:14 view/metabox/settings.php:41
 msgid "Force SSL Exclusively"
 msgstr "Forçar SSL Exclusivamente"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:15 ../view/metabox/settings.php:53
+#: view/metabox/network.php:15 view/metabox/settings.php:53
 msgid "Remove Unsecure Elements"
 msgstr "Remover Elementos Inseguro"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:16 ../view/metabox/settings.php:65
+#: view/metabox/network.php:16 view/metabox/settings.php:65
 msgid "Debug Mode"
 msgstr "Modo Depuração"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:17 ../view/metabox/settings.php:77
+#: view/metabox/network.php:17 view/metabox/settings.php:77
 msgid "Proxy"
 msgstr "Proxy"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:18 ../view/metabox/settings.php:90
+#: view/metabox/network.php:18 view/metabox/settings.php:90
 msgid "Admin Menu Location"
 msgstr "Localidade no Menu"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:39 ../view/metabox/network.php:71
-#: ../view/metabox/settings.php:81
+#: view/metabox/network.php:39 view/metabox/network.php:71
+#: view/metabox/settings.php:81
 msgid "No"
 msgstr "Não"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:40 ../view/metabox/network.php:72
-#: ../view/metabox/settings.php:82
+#: view/metabox/network.php:40 view/metabox/network.php:72
+#: view/metabox/settings.php:82
 msgid "Auto"
 msgstr "Auto"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:41 ../view/metabox/network.php:73
-#: ../view/metabox/settings.php:83
+#: view/metabox/network.php:41 view/metabox/network.php:73
+#: view/metabox/settings.php:83
 msgid "Yes"
 msgstr "Sim"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:46 ../view/metabox/network.php:78
-#: ../view/metabox/settings.php:94
+#: view/metabox/network.php:46 view/metabox/network.php:78
+#: view/metabox/settings.php:94
 msgid "Sidebar"
 msgstr "Barra Lateral"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:47 ../view/metabox/network.php:79
-#: ../view/metabox/settings.php:97
+#: view/metabox/network.php:47 view/metabox/network.php:79
+#: view/metabox/settings.php:97
 msgid "Settings"
 msgstr "Configurações"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:88 ../view/metabox/settings.php:108
-#: ../view/metabox/url_filters.php:65 ../view/metabox/url_mapping.php:130
+#: view/metabox/network.php:88 view/metabox/settings.php:108
+#: view/metabox/url_filters.php:65 view/metabox/url_mapping.php:130
 msgid "Save Changes"
 msgstr "Salvar Alterações"
 
 # @ wordpress-https
-#: ../view/metabox/network.php:89 ../view/metabox/settings.php:111
-#: ../view/metabox/url_filters.php:67 ../view/metabox/url_mapping.php:132
+#: view/metabox/network.php:89 view/metabox/settings.php:111
+#: view/metabox/url_filters.php:67 view/metabox/url_mapping.php:132
 msgid "Waiting..."
 msgstr "Aguardando..."
 
 # @ wordpress-https
-#: ../view/metabox/post.php:26
+#: view/metabox/post.php:26
 #, php-format
 msgid "This post's parent page '%s' has 'Secure child posts' enabled."
 msgstr "A página pai do post %s estão com a sub-página habilitadas."
 
 # @ wordpress-https
-#: ../view/metabox/post.php:26
+#: view/metabox/post.php:26
 msgid "Secure post"
 msgstr "Post Seguro"
 
 # @ wordpress-https
-#: ../view/metabox/post.php:29
+#: view/metabox/post.php:29
 msgid "Secure child posts"
 msgstr "Segurar sub-posts"
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:29
+#: view/metabox/settings.php:29
 msgid "Force SSL Administration"
 msgstr "Forçar SSL na Administração"
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:35
+#: view/metabox/settings.php:35
 #, fuzzy, php-format
 msgid ""
 "Always use HTTPS while in the admin panel. This setting is identical to "
@@ -365,7 +365,7 @@ msgstr ""
 "%s FORCE_SSL_ADMIN"
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:47
+#: view/metabox/settings.php:47
 #, fuzzy, php-format
 msgid ""
 "Any page that is not secured via %sForce SSL%s or URL Filters will be "
@@ -375,7 +375,7 @@ msgstr ""
 "redirecionada para HTTP."
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:59
+#: view/metabox/settings.php:59
 msgid ""
 "Remove elements inaccessible over HTTPS. May break other plugins' "
 "functionality."
@@ -384,12 +384,12 @@ msgstr ""
 "funcionabilidade de outros plugins."
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:71
+#: view/metabox/settings.php:71
 msgid "Outputs debug information to the browser's console."
 msgstr "Mostrar os dados de depuração no console do navegador."
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:85
+#: view/metabox/settings.php:85
 msgid ""
 "If you think you may behind a proxy, set to Auto. Otherwise, leave the "
 "setting on No."
@@ -397,18 +397,18 @@ msgstr ""
 "Se você achar que está usando proxy, marque a opção Auto. Ou, deixe em Não."
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:109 ../view/metabox/url_filters.php:66
-#: ../view/metabox/url_mapping.php:131
+#: view/metabox/settings.php:109 view/metabox/url_filters.php:66
+#: view/metabox/url_mapping.php:131
 msgid "Reset"
 msgstr "Resetar"
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:110
+#: view/metabox/settings.php:110
 #, fuzzy
 msgid "Cache Reset"
 msgstr "Resetar"
 
-#: ../view/metabox/settings.php:129
+#: view/metabox/settings.php:129
 #, php-format
 msgid ""
 "Are you sure you want to set your SSL Host to '%s'? An incorrect value here "
@@ -417,12 +417,12 @@ msgid ""
 msgstr ""
 
 # @ wordpress-https
-#: ../view/metabox/settings.php:141
+#: view/metabox/settings.php:141
 msgid "Are you sure you want to reset all WordPress HTTPS settings?"
 msgstr ""
 "Tem certeza que deseja resetar todas as configurações do WordPress HTTPS?"
 
-#: ../view/metabox/url_filters.php:8
+#: view/metabox/url_filters.php:8
 #, php-format
 msgid ""
 "URL Filters allow you to specify what content should always be secure or "
@@ -430,55 +430,55 @@ msgid ""
 msgstr ""
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:8 ../view/metabox/url_mapping.php:12
+#: view/metabox/url_filters.php:8 view/metabox/url_mapping.php:12
 msgid "Regular Expressions Help"
 msgstr "Ajuda com Expressões Regulares"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:12
+#: view/metabox/url_filters.php:12
 msgid "Secure Filters"
 msgstr "Filtros Seguro"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:20 ../view/metabox/url_filters.php:30
-#: ../view/metabox/url_filters.php:47 ../view/metabox/url_filters.php:57
+#: view/metabox/url_filters.php:20 view/metabox/url_filters.php:30
+#: view/metabox/url_filters.php:47 view/metabox/url_filters.php:57
 msgid "Remove URL Filter"
 msgstr "Remover filtro de URL"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:20 ../view/metabox/url_filters.php:30
-#: ../view/metabox/url_filters.php:47 ../view/metabox/url_filters.php:57
-#: ../view/metabox/url_mapping.php:84 ../view/metabox/url_mapping.php:122
+#: view/metabox/url_filters.php:20 view/metabox/url_filters.php:30
+#: view/metabox/url_filters.php:47 view/metabox/url_filters.php:57
+#: view/metabox/url_mapping.php:84 view/metabox/url_mapping.php:122
 msgid "Remove"
 msgstr "Remover"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:21 ../view/metabox/url_filters.php:31
-#: ../view/metabox/url_filters.php:48 ../view/metabox/url_filters.php:58
+#: view/metabox/url_filters.php:21 view/metabox/url_filters.php:31
+#: view/metabox/url_filters.php:48 view/metabox/url_filters.php:58
 msgid "Add URL Filter"
 msgstr "Adicionar filtro de URL"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:21 ../view/metabox/url_filters.php:31
-#: ../view/metabox/url_filters.php:48 ../view/metabox/url_filters.php:58
-#: ../view/metabox/url_mapping.php:85 ../view/metabox/url_mapping.php:123
+#: view/metabox/url_filters.php:21 view/metabox/url_filters.php:31
+#: view/metabox/url_filters.php:48 view/metabox/url_filters.php:58
+#: view/metabox/url_mapping.php:85 view/metabox/url_mapping.php:123
 msgid "Add"
 msgstr "Adicionar"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:39
+#: view/metabox/url_filters.php:39
 #, fuzzy
 msgid "Unsecure Filters"
 msgstr "Filtros Seguro"
 
 # @ wordpress-https
-#: ../view/metabox/url_filters.php:90
+#: view/metabox/url_filters.php:90
 #, fuzzy
 msgid "Are you sure you want to reset all WordPress HTTPS URL Filters?"
 msgstr "Tem certeza que deseja resetar todos os filtros do WordPress HTTPS?"
 
 # @ wordpress-https
-#: ../view/metabox/url_mapping.php:12
+#: view/metabox/url_mapping.php:12
 #, fuzzy, php-format
 msgid ""
 "URL Mapping allows you to map urls that host their HTTPS content on a "
@@ -489,29 +489,29 @@ msgstr ""
 "hospede seu próprio conteúdo em HTTPS em um domínio diferente. Pode-se usar "
 "expressões regulares"
 
-#: ../view/metabox/url_mapping.php:28
+#: view/metabox/url_mapping.php:28
 msgid "You can modify this mapping by changing your Home URL."
 msgstr ""
 
-#: ../view/metabox/url_mapping.php:42
+#: view/metabox/url_mapping.php:42
 msgid ""
 "You can modify this mapping by changing your SSL Host in the settings above."
 msgstr ""
 
 # @ wordpress-https
-#: ../view/metabox/url_mapping.php:84 ../view/metabox/url_mapping.php:122
+#: view/metabox/url_mapping.php:84 view/metabox/url_mapping.php:122
 #, fuzzy
 msgid "Remove URL Mapping"
 msgstr "Remover filtro de URL"
 
 # @ wordpress-https
-#: ../view/metabox/url_mapping.php:85 ../view/metabox/url_mapping.php:123
+#: view/metabox/url_mapping.php:85 view/metabox/url_mapping.php:123
 #, fuzzy
 msgid "Add URL Mapping"
 msgstr "Adicionar filtro de URL"
 
 # @ wordpress-https
-#: ../view/metabox/url_mapping.php:142
+#: view/metabox/url_mapping.php:142
 #, fuzzy
 msgid "Are you sure you want to reset all WordPress HTTPS url mappings?"
 msgstr ""
