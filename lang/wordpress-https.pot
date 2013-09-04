@@ -1,361 +1,401 @@
-# Copyright (C) 2013
-# This file is distributed under the same license as the  package.
 msgid ""
 msgstr ""
 "Project-Id-Version: WordPress HTTPS\n"
-"POT-Creation-Date: 2013-03-29 17:08-0600\n"
-"PO-Revision-Date: 2013-03-29 17:12-0600\n"
+"POT-Creation-Date: 2013-09-03 20:27-0600\n"
+"PO-Revision-Date: 2013-09-03 20:28-0600\n"
 "Last-Translator: Mike Ems <mike@mvied.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
 
-#: wordpress-https.php:5
-msgid "WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites."
+#: ../lib/WordPressHTTPS/Module/Network.php:57
+msgid "Network Settings"
 msgstr ""
 
-#: view/network.php:10 view/settings.php:10
-#: lib/WordPressHTTPS/Module/Post.php:42
+#: ../lib/WordPressHTTPS/Module/Network.php:66
+#: ../lib/WordPressHTTPS/Module/Settings.php:108
+msgid "Loading..."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Network.php:83
+#: ../lib/WordPressHTTPS/Module/Settings.php:125
+msgid "You do not have sufficient permissions to access this page."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Network.php:121
+msgid "Network settings saved."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Post.php:42 ../view/network.php:10
+#: ../view/settings.php:10
 msgid "HTTPS"
 msgstr ""
 
-#: view/settings.php:26
+#: ../lib/WordPressHTTPS/Module/Settings.php:63
+msgid "General Settings"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:72
+msgid "Developer Updates"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:81
+msgid "Support"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:90
+msgid "Feedback"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:99
+msgid "Donate"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:199
+msgid "Cache reset."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:222
+msgid "Settings reset."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/Settings.php:245
+msgid "Settings saved."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlFilters.php:86
+msgid "URL Filters"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlFilters.php:106
+msgid "URL Filters reset."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlFilters.php:127
+msgid "URL Filters saved."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlMapping.php:92
+msgid "URL Mapping"
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlMapping.php:112
+msgid "URL Mapping reset."
+msgstr ""
+
+#: ../lib/WordPressHTTPS/Module/UrlMapping.php:132
+msgid "URL Mapping saved."
+msgstr ""
+
+#: ../view/settings.php:26
 msgid "Expressions"
 msgstr ""
 
-#: view/settings.php:30
+#: ../view/settings.php:30
 msgid "A single character: a, b, or c"
 msgstr ""
 
-#: view/settings.php:34
+#: ../view/settings.php:34
 msgid "Any single character <em>but</em> a, b, or c"
 msgstr ""
 
-#: view/settings.php:38
+#: ../view/settings.php:38
 msgid "Any character in the range a-z"
 msgstr ""
 
-#: view/settings.php:42
+#: ../view/settings.php:42
 msgid "Any character in the range a-z or A-Z (any alphabetical character)"
 msgstr ""
 
-#: view/settings.php:46
+#: ../view/settings.php:46
 msgid "Any whitespace character [ \\t\\n\\r\\f\\v]"
 msgstr ""
 
-#: view/settings.php:50
+#: ../view/settings.php:50
 msgid "Any non-whitespace character [^ \\t\\n\\r\\f\\v]"
 msgstr ""
 
-#: view/settings.php:54
+#: ../view/settings.php:54
 msgid "Any digit [0-9]"
 msgstr ""
 
-#: view/settings.php:58
+#: ../view/settings.php:58
 msgid "Any non-digit [^0-9]"
 msgstr ""
 
-#: view/settings.php:62
+#: ../view/settings.php:62
 msgid "Any word character [a-zA-Z0-9_]"
 msgstr ""
 
-#: view/settings.php:66
+#: ../view/settings.php:66
 msgid "Any non-word character [^a-zA-Z0-9_]"
 msgstr ""
 
-#: view/settings.php:70
+#: ../view/settings.php:70
 msgid "A word boundary between \\w and \\W"
 msgstr ""
 
-#: view/settings.php:74
+#: ../view/settings.php:74
 msgid "A position that is not a word boundary"
 msgstr ""
 
-#: view/settings.php:78
+#: ../view/settings.php:78
 msgid ""
 "Alternation: matches either the subexpression to the left or to the right"
 msgstr ""
 
-#: view/settings.php:82
+#: ../view/settings.php:82
 msgid "Grouping: group all together for repetition operators"
 msgstr ""
 
-#: view/settings.php:86
+#: ../view/settings.php:86
 msgid "Beginning of the string"
 msgstr ""
 
-#: view/settings.php:90
+#: ../view/settings.php:90
 msgid "End of the string"
 msgstr ""
 
-#: view/settings.php:93
+#: ../view/settings.php:93
 msgid "Repetition&#160;Operators"
 msgstr ""
 
-#: view/settings.php:97
+#: ../view/settings.php:97
 msgid ""
 "Match the previous item at least <em>n</em> times but no more than <em>m</"
 "em> times"
 msgstr ""
 
-#: view/settings.php:101
+#: ../view/settings.php:101
 msgid "Match the previous item <em>n</em> or more times"
 msgstr ""
 
-#: view/settings.php:105
+#: ../view/settings.php:105
 msgid "Match exactly <em>n</em> occurrences of the previous item"
 msgstr ""
 
-#: view/settings.php:109
+#: ../view/settings.php:109
 msgid "Match 0 or 1 occurrences of the previous item {0,1}"
 msgstr ""
 
-#: view/settings.php:113
+#: ../view/settings.php:113
 msgid "Match 1 or more occurrences of the previous item {1,}"
 msgstr ""
 
-#: view/settings.php:117
+#: ../view/settings.php:117
 msgid "Match 0 or more occurrences of the previous item {0,}"
 msgstr ""
 
-#: view/metabox/domain_mapping.php:8
-#, php-format
-msgid ""
-"Domain mapping allows you to map external domains that host their HTTPS "
-"content on a different domain. You may use %s regular expressions %s"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:8 view/metabox/filters.php:12
-msgid "Regular Expressions Help"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:34 view/metabox/domain_mapping.php:57
-msgid "Remove URL Filter"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:34 view/metabox/domain_mapping.php:57
-msgid "Remove"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:35 view/metabox/domain_mapping.php:58
-msgid "Add URL Filter"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:35 view/metabox/domain_mapping.php:58
-msgid "Add"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:64 view/metabox/filters.php:21
-#: view/metabox/network.php:88 view/metabox/settings.php:108
-msgid "Save Changes"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:65 view/metabox/filters.php:22
-#: view/metabox/settings.php:109
-msgid "Reset"
-msgstr ""
-
-#: view/metabox/domain_mapping.php:66 view/metabox/filters.php:23
-#: view/metabox/network.php:89 view/metabox/settings.php:110
-msgid "Waiting..."
-msgstr ""
-
-#: view/metabox/domain_mapping.php:119
-msgid "Are you sure you want to reset all WordPress HTTPS domain mappings?"
-msgstr ""
-
-#: view/metabox/filters.php:11
-msgid "Secure Filters"
-msgstr ""
-
-#: view/metabox/filters.php:12
-#, php-format
-msgid ""
-"Example: If you have an E-commerce shop and all of the URL's begin with /"
-"store/, you could secure all store links by entering '/store/' on one line. "
-"You may use %s regular expressions %s"
-msgstr ""
-
-#: view/metabox/filters.php:46
-msgid "Are you sure you want to reset all WordPress HTTPS filters?"
-msgstr ""
-
-#: view/metabox/network.php:11
+#: ../view/metabox/network.php:11
 msgid "Blog"
 msgstr ""
 
-#: view/metabox/network.php:12 view/metabox/settings.php:19
+#: ../view/metabox/network.php:12 ../view/metabox/settings.php:19
 msgid "SSL Host"
 msgstr ""
 
-#: view/metabox/network.php:13
+#: ../view/metabox/network.php:13
 msgid "Force SSL Admin"
 msgstr ""
 
-#: view/metabox/network.php:14 view/metabox/settings.php:41
+#: ../view/metabox/network.php:14 ../view/metabox/settings.php:41
 msgid "Force SSL Exclusively"
 msgstr ""
 
-#: view/metabox/network.php:15 view/metabox/settings.php:53
+#: ../view/metabox/network.php:15 ../view/metabox/settings.php:53
 msgid "Remove Unsecure Elements"
 msgstr ""
 
-#: view/metabox/network.php:16 view/metabox/settings.php:65
+#: ../view/metabox/network.php:16 ../view/metabox/settings.php:65
 msgid "Debug Mode"
 msgstr ""
 
-#: view/metabox/network.php:17 view/metabox/settings.php:77
+#: ../view/metabox/network.php:17 ../view/metabox/settings.php:77
 msgid "Proxy"
 msgstr ""
 
-#: view/metabox/network.php:18 view/metabox/settings.php:90
+#: ../view/metabox/network.php:18 ../view/metabox/settings.php:90
 msgid "Admin Menu Location"
 msgstr ""
 
-#: view/metabox/network.php:39 view/metabox/network.php:71
-#: view/metabox/settings.php:81
+#: ../view/metabox/network.php:39 ../view/metabox/network.php:71
+#: ../view/metabox/settings.php:81
 msgid "No"
 msgstr ""
 
-#: view/metabox/network.php:40 view/metabox/network.php:72
-#: view/metabox/settings.php:82
+#: ../view/metabox/network.php:40 ../view/metabox/network.php:72
+#: ../view/metabox/settings.php:82
 msgid "Auto"
 msgstr ""
 
-#: view/metabox/network.php:41 view/metabox/network.php:73
-#: view/metabox/settings.php:83
+#: ../view/metabox/network.php:41 ../view/metabox/network.php:73
+#: ../view/metabox/settings.php:83
 msgid "Yes"
 msgstr ""
 
-#: view/metabox/network.php:46 view/metabox/network.php:78
-#: view/metabox/settings.php:94
+#: ../view/metabox/network.php:46 ../view/metabox/network.php:78
+#: ../view/metabox/settings.php:94
 msgid "Sidebar"
 msgstr ""
 
-#: view/metabox/network.php:47 view/metabox/network.php:79
-#: view/metabox/settings.php:97
+#: ../view/metabox/network.php:47 ../view/metabox/network.php:79
+#: ../view/metabox/settings.php:97
 msgid "Settings"
 msgstr ""
 
-#: view/metabox/post.php:26
+#: ../view/metabox/network.php:88 ../view/metabox/settings.php:108
+#: ../view/metabox/url_filters.php:65 ../view/metabox/url_mapping.php:130
+msgid "Save Changes"
+msgstr ""
+
+#: ../view/metabox/network.php:89 ../view/metabox/settings.php:111
+#: ../view/metabox/url_filters.php:67 ../view/metabox/url_mapping.php:132
+msgid "Waiting..."
+msgstr ""
+
+#: ../view/metabox/post.php:26
 #, php-format
 msgid "This post's parent page '%s' has 'Secure child posts' enabled."
 msgstr ""
 
-#: view/metabox/post.php:26
+#: ../view/metabox/post.php:26
 msgid "Secure post"
 msgstr ""
 
-#: view/metabox/post.php:29
+#: ../view/metabox/post.php:29
 msgid "Secure child posts"
 msgstr ""
 
-#: view/metabox/settings.php:29
+#: ../view/metabox/settings.php:29
 msgid "Force SSL Administration"
 msgstr ""
 
-#: view/metabox/settings.php:35
+#: ../view/metabox/settings.php:35
 #, php-format
 msgid ""
-"Always use HTTPS while in the admin panel. This setting is identical to %s "
-"FORCE_SSL_ADMIN"
+"Always use HTTPS while in the admin panel. This setting is identical to "
+"%sFORCE_SSL_ADMIN%s."
 msgstr ""
 
-#: view/metabox/settings.php:47
+#: ../view/metabox/settings.php:47
 #, php-format
 msgid ""
-"Any page that is not secured via %s Force SSL %s or URL Filters will be "
+"Any page that is not secured via %sForce SSL%s or URL Filters will be "
 "redirected to HTTP."
 msgstr ""
 
-#: view/metabox/settings.php:59
+#: ../view/metabox/settings.php:59
 msgid ""
 "Remove elements inaccessible over HTTPS. May break other plugins' "
 "functionality."
 msgstr ""
 
-#: view/metabox/settings.php:71
+#: ../view/metabox/settings.php:71
 msgid "Outputs debug information to the browser's console."
 msgstr ""
 
-#: view/metabox/settings.php:85
+#: ../view/metabox/settings.php:85
 msgid ""
 "If you think you may behind a proxy, set to Auto. Otherwise, leave the "
 "setting on No."
 msgstr ""
 
-#: view/metabox/settings.php:139
+#: ../view/metabox/settings.php:109 ../view/metabox/url_filters.php:66
+#: ../view/metabox/url_mapping.php:131
+msgid "Reset"
+msgstr ""
+
+#: ../view/metabox/settings.php:110
+msgid "Cache Reset"
+msgstr ""
+
+#: ../view/metabox/settings.php:129
+#, php-format
+msgid ""
+"Are you sure you want to set your SSL Host to '%s'? An incorrect value here "
+"may render your admin dashboard unusable until you reset the plugin's "
+"settings following the directions in the FAQ."
+msgstr ""
+
+#: ../view/metabox/settings.php:141
 msgid "Are you sure you want to reset all WordPress HTTPS settings?"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/DomainMapping.php:61
-msgid "Domain Mapping"
+#: ../view/metabox/url_filters.php:8
+#, php-format
+msgid ""
+"URL Filters allow you to specify what content should always be secure or "
+"unsecure using simple string comparisons or %sregular expressions%s."
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/DomainMapping.php:81
-msgid "Domain Mapping reset."
+#: ../view/metabox/url_filters.php:8 ../view/metabox/url_mapping.php:12
+msgid "Regular Expressions Help"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/DomainMapping.php:101
-msgid "Domain Mapping saved."
+#: ../view/metabox/url_filters.php:12
+msgid "Secure Filters"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Network.php:57
-msgid "Network Settings"
+#: ../view/metabox/url_filters.php:20 ../view/metabox/url_filters.php:30
+#: ../view/metabox/url_filters.php:47 ../view/metabox/url_filters.php:57
+msgid "Remove URL Filter"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Network.php:66
-#: lib/WordPressHTTPS/Module/Settings.php:107
-msgid "Loading..."
+#: ../view/metabox/url_filters.php:20 ../view/metabox/url_filters.php:30
+#: ../view/metabox/url_filters.php:47 ../view/metabox/url_filters.php:57
+#: ../view/metabox/url_mapping.php:84 ../view/metabox/url_mapping.php:122
+msgid "Remove"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Network.php:83
-#: lib/WordPressHTTPS/Module/Settings.php:124
-msgid "You do not have sufficient permissions to access this page."
+#: ../view/metabox/url_filters.php:21 ../view/metabox/url_filters.php:31
+#: ../view/metabox/url_filters.php:48 ../view/metabox/url_filters.php:58
+msgid "Add URL Filter"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Network.php:121
-msgid "Network settings saved."
+#: ../view/metabox/url_filters.php:21 ../view/metabox/url_filters.php:31
+#: ../view/metabox/url_filters.php:48 ../view/metabox/url_filters.php:58
+#: ../view/metabox/url_mapping.php:85 ../view/metabox/url_mapping.php:123
+msgid "Add"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:62
-msgid "General Settings"
+#: ../view/metabox/url_filters.php:39
+msgid "Unsecure Filters"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:71
-msgid "Developer Updates"
+#: ../view/metabox/url_filters.php:90
+msgid "Are you sure you want to reset all WordPress HTTPS URL Filters?"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:80
-msgid "Support"
+#: ../view/metabox/url_mapping.php:12
+#, php-format
+msgid ""
+"URL Mapping allows you to map urls that host their HTTPS content on a "
+"different url. You may use %s regular expressions %s for the URL on the left "
+"side of the mapping."
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:89
-msgid "Feedback"
+#: ../view/metabox/url_mapping.php:28
+msgid "You can modify this mapping by changing your Home URL."
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:98
-msgid "Donate"
+#: ../view/metabox/url_mapping.php:42
+msgid ""
+"You can modify this mapping by changing your SSL Host in the settings above."
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:198
-msgid "Settings reset."
+#: ../view/metabox/url_mapping.php:84 ../view/metabox/url_mapping.php:122
+msgid "Remove URL Mapping"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/Settings.php:221
-msgid "Settings saved."
+#: ../view/metabox/url_mapping.php:85 ../view/metabox/url_mapping.php:123
+msgid "Add URL Mapping"
 msgstr ""
 
-#: lib/WordPressHTTPS/Module/UrlFilters.php:63
-msgid "URL Filters"
-msgstr ""
-
-#: lib/WordPressHTTPS/Module/UrlFilters.php:83
-msgid "URL Filters reset."
-msgstr ""
-
-#: lib/WordPressHTTPS/Module/UrlFilters.php:103
-msgid "URL Filters saved."
+#: ../view/metabox/url_mapping.php:142
+msgid "Are you sure you want to reset all WordPress HTTPS url mappings?"
 msgstr ""
