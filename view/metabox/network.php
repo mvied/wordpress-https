@@ -36,9 +36,9 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="blog-debug"><input type="hidden" name="blog[<?php echo $blog_id; ?>][debug]" value="0" /><input name="blog[<?php echo $blog_id; ?>][debug]" type="checkbox" value="1"<?php echo (($this->getSetting('debug', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
 			<select name="blog[<?php echo $blog_id; ?>][ssl_proxy]">
-				<option value="0"<?php echo ((! $this->getSetting('ssl_proxy', $blog_id)) ? ' selected="selected"' : ''); ?>><?php _e('No','wordpress-https'); ?></option>
+				<option value="0"<?php echo ((! $this->getSetting('ssl_proxy', $blog_id)) ? ' selected="selected"' : ''); ?>><?php _e('No'); ?></option>
 				<option value="auto"<?php echo (($this->getSetting('ssl_proxy', $blog_id) === 'auto') ? ' selected="selected"' : ''); ?>><?php _e('Auto','wordpress-https'); ?></option>
-				<option value="1"<?php echo (($this->getSetting('ssl_proxy', $blog_id) == 1) ? ' selected="selected"' : ''); ?>><?php _e('Yes','wordpress-https'); ?></option>
+				<option value="1"<?php echo (($this->getSetting('ssl_proxy', $blog_id) == 1) ? ' selected="selected"' : ''); ?>><?php _e('Yes'); ?></option>
 			</select>
 		</td>
 		<td class="blog-admin_menu">
@@ -68,9 +68,9 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="blog-debug"><input type="hidden" name="blog_default[debug]" value="0" /><input name="blog_default[debug]" type="checkbox" value="1"<?php echo ($defaults['debug'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
 			<select name="blog_default[ssl_proxy]">
-				<option value="0"<?php echo (! $defaults['ssl_proxy'] ? ' selected="selected"' : ''); ?>><?php _e('No','wordpress-https'); ?></option>
+				<option value="0"<?php echo (! $defaults['ssl_proxy'] ? ' selected="selected"' : ''); ?>><?php _e('No'); ?></option>
 				<option value="auto"<?php echo ($defaults['ssl_proxy'] === 'auto' ? ' selected="selected"' : ''); ?>><?php _e('Auto','wordpress-https'); ?></option>
-				<option value="1"<?php echo ($defaults['ssl_proxy'] === 1 ? ' selected="selected"' : ''); ?>><?php _e('Yes','wordpress-https'); ?></option>
+				<option value="1"<?php echo ($defaults['ssl_proxy'] === 1 ? ' selected="selected"' : ''); ?>><?php _e('Yes'); ?></option>
 			</select>
 		</td>
 		<td class="blog-admin_menu">
@@ -85,7 +85,7 @@ if ( !defined('ABSPATH') ) exit;
 </table>
 
 <p class="button-controls">
-	<input type="submit" name="network-settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="network-settings-save" />
+	<input type="submit" name="network-settings-save" value="<?php _e('Save Changes'); ?>" class="button-primary" id="network-settings-save" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>

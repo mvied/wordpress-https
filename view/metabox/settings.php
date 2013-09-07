@@ -32,7 +32,7 @@ $ssl_host = rtrim($ssl_host, '/');
 				<label for="ssl_admin">
 					<input type="hidden" name="ssl_admin" value="<?php echo ((force_ssl_admin() && $this->getSetting('ssl_admin') == 1) ? 1 : 0); ?>" />
 					<input name="ssl_admin" type="checkbox" id="ssl_admin" value="1"<?php echo ((force_ssl_admin()) ? ' checked="checked" disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : (($this->getSetting('ssl_admin')) ? ' checked="checked"' : '') ); ?> />
-					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %sFORCE_SSL_ADMIN%s.','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">', '</a>'); ?></p>
+					<p class="description"><?php printf( __('Always use HTTPS while in the admin panel. This setting is identical to %s.','wordpress-https'),'<a href="http://codex.wordpress.org/Administration_Over_SSL#Example_2" target="_blank">' . 'FORCE_SSL_ADMIN' . '</a>'); ?></p>
 				</label>
 			</fieldset>
 		</td>
@@ -44,7 +44,7 @@ $ssl_host = rtrim($ssl_host, '/');
 				<label for="exclusive_https">
 					<input type="hidden" name="exclusive_https" value="0" />
 					<input name="exclusive_https" type="checkbox" id="exclusive_https" value="1"<?php echo (($this->getSetting('exclusive_https')) ? ' checked="checked"' : ''); ?> />
-					<p class="description"><?php printf( __('Any page that is not secured via %sForce SSL%s or URL Filters will be redirected to HTTP.','wordpress-https'),'<a href="' . parse_url($this->getPluginUrl(), PHP_URL_PATH) . '/screenshot-2.png" class="thickbox">', '</a>'); ?></a></p>
+					<p class="description"><?php printf( __('Any page that is not secured via %s or URL Filters will be redirected to HTTP.','wordpress-https'),'<a href="' . parse_url($this->getPluginUrl(), PHP_URL_PATH) . '/screenshot-2.png" class="thickbox">' . __('Force SSL','wordpress-https') . '</a>'); ?></a></p>
 				</label>
 			</fieldset>
 		</td>
@@ -56,7 +56,7 @@ $ssl_host = rtrim($ssl_host, '/');
 				<label for="remove_unsecure">
 					<input type="hidden" name="remove_unsecure" value="0" />
 					<input name="remove_unsecure" type="checkbox" id="remove_unsecure" value="1"<?php echo (($this->getSetting('remove_unsecure')) ? ' checked="checked"' : ''); ?> />
-					<p class="description"><?php _e('Remove elements inaccessible over HTTPS. May break other plugins\' functionality.','wordpress-https'); ?></p>
+					<p class="description"><?php _e("Remove elements inaccessible over HTTPS. May break other plugins' functionality.",'wordpress-https'); ?></p>
 				</label>
 			</fieldset>
 		</td>
@@ -78,9 +78,9 @@ $ssl_host = rtrim($ssl_host, '/');
 		<td>
 			<fieldset>
 				<label for="ssl_proxy" class="label-radio">
-					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> <span><?php _e('No','wordpress-https'); ?></span>
+					<input type="radio" name="ssl_proxy" value="0"<?php echo ((! $this->getSetting('ssl_proxy')) ? ' checked="checked"' : ''); ?>> <span><?php _e('No'); ?></span>
 					<input type="radio" name="ssl_proxy" value="auto"<?php echo (($this->getSetting('ssl_proxy') === 'auto') ? ' checked="checked"' : ''); ?>> <span><?php _e('Auto','wordpress-https'); ?></span>
-					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span><?php _e('Yes','wordpress-https'); ?></span>
+					<input type="radio" name="ssl_proxy" value="1"<?php echo (($this->getSetting('ssl_proxy') == 1) ? ' checked="checked"' : ''); ?>> <span><?php _e('Yes'); ?></span>
 				</label>
 				<p class="description"><?php _e('If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No.','wordpress-https'); ?></p>
 			</fieldset>
@@ -105,9 +105,9 @@ $ssl_host = rtrim($ssl_host, '/');
 <input type="hidden" name="ssl_host_diff" value="<?php echo (($this->getSetting('ssl_host_diff') != 1) ? 0 : 1); ?>" />
 
 <p class="button-controls">
-	<input type="submit" name="settings-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="settings-save" />
-	<input type="submit" name="settings-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="settings-reset" />
-	<input type="submit" name="settings-cache-reset" value="<?php _e('Cache Reset','wordpress-https'); ?>" class="button-secondary" id="settings-cache-reset" />
+	<input type="submit" name="settings-save" value="<?php _e('Save Changes'); ?>" class="button-primary" id="settings-save" />
+	<input type="submit" name="settings-reset" value="<?php _e('Reset'); ?>" class="button-secondary" id="settings-reset" />
+	<input type="submit" name="settings-cache-reset" value="<?php _e('Purge Cache','wordpress-https'); ?>" class="button-secondary" id="settings-cache-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
