@@ -127,8 +127,8 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 </table>
 
 <p class="button-controls">
-	<input type="submit" name="url-mapping-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="url-mapping-save" />
-	<input type="submit" name="url-mapping-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="url-mapping-reset" />
+	<input type="submit" name="url-mapping-save" value="<?php _e('Save Changes'); ?>" class="button-primary" id="url-mapping-save" />
+	<input type="submit" name="url-mapping-reset" value="<?php _e('Reset'); ?>" class="button-secondary" id="url-mapping-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
