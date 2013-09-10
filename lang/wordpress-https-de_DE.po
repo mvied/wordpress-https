@@ -2,39 +2,38 @@
 # This file is distributed under the same license as the WordPress HTTPS package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WordPress HTTPS\n"
-"POT-Creation-Date: 2013-09-03 20:27-0600\n"
-"PO-Revision-Date: 2013-09-03 20:30-0600\n"
-"Last-Translator: Mike Ems <mike@mvied.com>\n"
-"Language-Team: \n"
+"PO-Revision-Date: 2013-09-10 22:59:42+0000\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.5.7\n"
+"X-Generator: GlotPress/0.1\n"
+"Project-Id-Version: WordPress HTTPS\n"
+
+#: view/metabox/settings.php:35
+msgid "Always use HTTPS while in the admin panel. This setting is identical to %s."
+msgstr "HTTPS immer nutzen für den Admin-Bereich. Diese Einstellung ist identisch mit %s."
+
+#: view/metabox/settings.php:47
+msgid "Any page that is not secured via %s or URL Filters will be redirected to HTTP."
+msgstr "Jede Seite, die nicht per %s oder URL-Filter gesichert sind werden auf HTTP umgeleitet."
+
+#: view/metabox/settings.php:47
+msgid "Force SSL"
+msgstr "Force SSL"
+
+#: view/metabox/settings.php:110
+msgid "Purge Cache"
+msgstr "Cache leeren"
 
 #: lib/WordPressHTTPS/Module/Network.php:57
 msgid "Network Settings"
-msgstr "Netzwerk-Einstellungen"
+msgstr "Netwerk-Einstellungen"
 
 #: lib/WordPressHTTPS/Module/Network.php:66
 #: lib/WordPressHTTPS/Module/Settings.php:108
 msgid "Loading..."
 msgstr "Lade..."
-
-#: lib/WordPressHTTPS/Module/Network.php:83
-#: lib/WordPressHTTPS/Module/Settings.php:125
-msgid "You do not have sufficient permissions to access this page."
-msgstr "Sie haben keine Berechtigung diese Seite anzuzeigen."
-
-#: lib/WordPressHTTPS/Module/Network.php:121
-msgid "Network settings saved."
-msgstr "Netzwerk-Einstellungen gespeichert."
-
-#: lib/WordPressHTTPS/Module/Post.php:42 view/network.php:10
-#: view/settings.php:10
-msgid "HTTPS"
-msgstr "HTTPS"
 
 #: lib/WordPressHTTPS/Module/Settings.php:63
 msgid "General Settings"
@@ -54,43 +53,28 @@ msgstr "Feedback"
 
 #: lib/WordPressHTTPS/Module/Settings.php:99
 msgid "Donate"
-msgstr "Spende"
+msgstr "Donate"
 
-#: lib/WordPressHTTPS/Module/Settings.php:199
-msgid "Cache reset."
-msgstr ""
-
-#: lib/WordPressHTTPS/Module/Settings.php:222
-msgid "Settings reset."
-msgstr "Einstellungen zurücksetzen."
-
-#: lib/WordPressHTTPS/Module/Settings.php:245
-msgid "Settings saved."
-msgstr "Einstellungen gespeichert."
-
-#: lib/WordPressHTTPS/Module/UrlFilters.php:86
+#: lib/WordPressHTTPS/Module/UrlFilters.php:88
 msgid "URL Filters"
-msgstr "URL Filters"
+msgstr "URL Filter"
 
-#: lib/WordPressHTTPS/Module/UrlFilters.php:106
-msgid "URL Filters reset."
-msgstr "URL Filters zurücksetzen."
-
-#: lib/WordPressHTTPS/Module/UrlFilters.php:127
-msgid "URL Filters saved."
-msgstr "URL Filters gespeichert."
-
-#: lib/WordPressHTTPS/Module/UrlMapping.php:92
+#: lib/WordPressHTTPS/Module/UrlMapping.php:94
 msgid "URL Mapping"
-msgstr "URL Mapping"
+msgstr "URL-Mapping"
 
-#: lib/WordPressHTTPS/Module/UrlMapping.php:112
-msgid "URL Mapping reset."
-msgstr "URL Mapping zurücksetzen."
+#: view/metabox/url_mapping.php:85 view/metabox/url_mapping.php:123
+msgid "Add URL Mapping"
+msgstr "URL-Mapping hinzufügen"
 
-#: lib/WordPressHTTPS/Module/UrlMapping.php:132
-msgid "URL Mapping saved."
-msgstr "URL Mapping gespeichert."
+#: view/metabox/url_mapping.php:142
+msgid "Are you sure you want to reset all WordPress HTTPS url mappings?"
+msgstr "Bist du sicher, dass du alle URL-Mappings für WordPress HTTPS zurücksetzen willst?"
+
+#: lib/WordPressHTTPS/Module/Post.php:42 view/network.php:10
+#: view/settings.php:10
+msgid "HTTPS"
+msgstr "HTTPS"
 
 #: view/settings.php:26
 msgid "Expressions"
@@ -145,10 +129,8 @@ msgid "A position that is not a word boundary"
 msgstr "Eine Position, die keine Wortgrenze ist"
 
 #: view/settings.php:78
-msgid ""
-"Alternation: matches either the subexpression to the left or to the right"
-msgstr ""
-"Wechsel: Entspricht entweder des Unter-Ausdrucks zur Linken oder zur Rechten"
+msgid "Alternation: matches either the subexpression to the left or to the right"
+msgstr "Wechsel: Entspricht entweder des Unter-Ausdrucks zur Linken oder zur Rechten"
 
 #: view/settings.php:82
 msgid "Grouping: group all together for repetition operators"
@@ -167,12 +149,8 @@ msgid "Repetition&#160;Operators"
 msgstr "Wiederholungs&#160;Operatoren"
 
 #: view/settings.php:97
-msgid ""
-"Match the previous item at least <em>n</em> times but no more than <em>m</"
-"em> times"
-msgstr ""
-"Entspricht einer Häufigkeit von mindestens <em>n</em> aber nicht mehr als "
-"<em>m</em>"
+msgid "Match the previous item at least <em>n</em> times but no more than <em>m</em> times"
+msgstr "Entspricht einer Häufigkeit von mindestens <em>n</em> aber nicht mehr als <em>m</em>"
 
 #: view/settings.php:101
 msgid "Match the previous item <em>n</em> or more times"
@@ -180,23 +158,51 @@ msgstr "Entspricht einer Häufigkeit von <em>n</em> oder mehr"
 
 #: view/settings.php:105
 msgid "Match exactly <em>n</em> occurrences of the previous item"
-msgstr ""
-"Entspricht einer Häufigkeit von genau <em>n</em> des vorherigen Elements"
+msgstr "Entspricht einer Häufigkeit von genau <em>n</em> des vorherigen Elements"
 
 #: view/settings.php:109
 msgid "Match 0 or 1 occurrences of the previous item {0,1}"
-msgstr ""
-"Entspricht einer Häufigkeit von 0 oder 1 des vorherigen Elements {0,1} "
+msgstr "Entspricht einer Häufigkeit von 0 oder 1 des vorherigen Elements {0,1} "
 
 #: view/settings.php:113
 msgid "Match 1 or more occurrences of the previous item {1,}"
-msgstr ""
-"Entspricht einer Häufigkeit von 1 oder mehr des vorherigen Elements {1,}"
+msgstr "Entspricht einer Häufigkeit von 1 oder mehr des vorherigen Elements {1,}"
 
 #: view/settings.php:117
 msgid "Match 0 or more occurrences of the previous item {0,}"
-msgstr ""
-"Entspricht einer Häufigkeit von 0 oder mehr des vorherigen Elements {0,} "
+msgstr "Entspricht einer Häufigkeit von 0 oder mehr des vorherigen Elements {0,} "
+
+#: lib/WordPressHTTPS/Module/Network.php:121
+msgid "Network settings saved."
+msgstr "Netzwerk-Einstellungen gespeichert."
+
+#: lib/WordPressHTTPS/Module/Settings.php:199
+msgid "Cache reset."
+msgstr "Cache geleert."
+
+#: lib/WordPressHTTPS/Module/Settings.php:222
+msgid "Settings reset."
+msgstr "Einstellungen zurücksetzen."
+
+#: lib/WordPressHTTPS/Module/Settings.php:245
+msgid "Settings saved."
+msgstr "Einstellungen gespeichert."
+
+#: lib/WordPressHTTPS/Module/UrlFilters.php:108
+msgid "URL Filters reset."
+msgstr "URL Filters zurücksetzen."
+
+#: lib/WordPressHTTPS/Module/UrlFilters.php:129
+msgid "URL Filters saved."
+msgstr "URL Filters gespeichert."
+
+#: lib/WordPressHTTPS/Module/UrlMapping.php:114
+msgid "URL Mapping reset."
+msgstr "URL-Mapping zurückgesetzt."
+
+#: lib/WordPressHTTPS/Module/UrlMapping.php:134
+msgid "URL Mapping saved."
+msgstr "URL-Mapping gespeichert."
 
 #: view/metabox/network.php:11
 msgid "Blog"
@@ -230,20 +236,10 @@ msgstr "Proxy"
 msgid "Admin Menu Location"
 msgstr "Position des Admin-Menüs"
 
-#: view/metabox/network.php:39 view/metabox/network.php:71
-#: view/metabox/settings.php:81
-msgid "No"
-msgstr "Nein"
-
 #: view/metabox/network.php:40 view/metabox/network.php:72
 #: view/metabox/settings.php:82
 msgid "Auto"
 msgstr "Auto"
-
-#: view/metabox/network.php:41 view/metabox/network.php:73
-#: view/metabox/settings.php:83
-msgid "Yes"
-msgstr "Ja"
 
 #: view/metabox/network.php:46 view/metabox/network.php:78
 #: view/metabox/settings.php:94
@@ -255,20 +251,14 @@ msgstr "Seitenleiste"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: view/metabox/network.php:88 view/metabox/settings.php:108
-#: view/metabox/url_filters.php:65 view/metabox/url_mapping.php:130
-msgid "Save Changes"
-msgstr "Änderungen speichern"
-
 #: view/metabox/network.php:89 view/metabox/settings.php:111
 #: view/metabox/url_filters.php:67 view/metabox/url_mapping.php:132
 msgid "Waiting..."
 msgstr "Warte..."
 
 #: view/metabox/post.php:26
-#, php-format
 msgid "This post's parent page '%s' has 'Secure child posts' enabled."
-msgstr "This post's parent page '%s' has 'Secure child posts' enabled."
+msgstr "Die Eltern-Seite '%s' dieses Beitrags hat 'Sichere Unter-Artikel' aktiviert."
 
 #: view/metabox/post.php:26
 msgid "Secure post"
@@ -282,73 +272,28 @@ msgstr "Sichere Unter-Artikel"
 msgid "Force SSL Administration"
 msgstr "Force SSL Administration"
 
-#: view/metabox/settings.php:35
-#, fuzzy, php-format
-msgid ""
-"Always use HTTPS while in the admin panel. This setting is identical to "
-"%sFORCE_SSL_ADMIN%s."
-msgstr ""
-"Nutze immer HTTPS für den Admin-Bereich. Diese Einstellung ist identisch mit "
-"%s FORCE_SSL_ADMIN"
-
-#: view/metabox/settings.php:47
-#, fuzzy, php-format
-msgid ""
-"Any page that is not secured via %sForce SSL%s or URL Filters will be "
-"redirected to HTTP."
-msgstr ""
-"Alle Seiten, die nicht durch %s Force SSL %s oder URL Filter gesichert "
-"werden, werde auf HTTP umgeleitet."
-
 #: view/metabox/settings.php:59
-msgid ""
-"Remove elements inaccessible over HTTPS. May break other plugins' "
-"functionality."
-msgstr ""
-"Entferne alle Elemente unerreichbar über HTTPS. Könnte Funktionen anderer "
-"Plugins beeinträchtigen."
+msgid "Remove elements inaccessible over HTTPS. May break other plugins' functionality."
+msgstr "Entferne alle Elemente unerreichbar über HTTPS. Könnte Funktionen anderer Plugins beeinträchtigen."
 
 #: view/metabox/settings.php:71
 msgid "Outputs debug information to the browser's console."
 msgstr "Gibt Debug-Informationen in der Konsole des Browsers aus."
 
 #: view/metabox/settings.php:85
-msgid ""
-"If you think you may behind a proxy, set to Auto. Otherwise, leave the "
-"setting on No."
-msgstr ""
-"Wenn Sie denken, dass Sie sich hinter einem Proxy befinden, wählen Sie Auto. "
-"Ansonsten lassen Sie es auf Nein."
-
-#: view/metabox/settings.php:109 view/metabox/url_filters.php:66
-#: view/metabox/url_mapping.php:131
-msgid "Reset"
-msgstr "Reset"
-
-#: view/metabox/settings.php:110
-#, fuzzy
-msgid "Cache Reset"
-msgstr "Reset"
+msgid "If you think you may behind a proxy, set to Auto. Otherwise, leave the setting on No."
+msgstr "Wenn Sie denken, dass Sie sich hinter einem Proxy befinden, wählen Sie Auto. Ansonsten lassen Sie es auf Nein."
 
 #: view/metabox/settings.php:129
-#, php-format
-msgid ""
-"Are you sure you want to set your SSL Host to '%s'? An incorrect value here "
-"may render your admin dashboard unusable until you reset the plugin's "
-"settings following the directions in the FAQ."
-msgstr ""
+msgid "Are you sure you want to set your SSL Host to '%s'? An incorrect value here may render your admin dashboard unusable until you reset the plugin's settings following the directions in the FAQ."
+msgstr "Sind Sie sicher, dass Sie den SSL-Host auf '%s' setzen wollen? Ein fehlerhafter Wert an dieser Stelle blockiert möglicherweise den Zugriff auf den Admin-Bereich bis die Einstellungen des Plugins zurückgesetzt wurden. Siehe FAQ."
 
 #: view/metabox/settings.php:141
 msgid "Are you sure you want to reset all WordPress HTTPS settings?"
-msgstr ""
-"Sind Sie sicher, dass Sie alle WordPress HTTPS Einstellungen zurücksetzen "
-"wollen?"
+msgstr "Sind Sie sicher, dass Sie alle WordPress HTTPS Einstellungen zurücksetzen wollen?"
 
 #: view/metabox/url_filters.php:8
-#, php-format
-msgid ""
-"URL Filters allow you to specify what content should always be secure or "
-"unsecure using simple string comparisons or %sregular expressions%s."
+msgid "URL Filters allow you to specify what content should always be secure or unsecure using simple string comparisons or %sregular expressions%s."
 msgstr ""
 
 #: view/metabox/url_filters.php:8 view/metabox/url_mapping.php:12
@@ -382,67 +327,25 @@ msgid "Add"
 msgstr "Hinzufügen"
 
 #: view/metabox/url_filters.php:39
-#, fuzzy
 msgid "Unsecure Filters"
-msgstr "Sicherheits-Filter"
+msgstr "Unsichere Filter"
 
 #: view/metabox/url_filters.php:90
-#, fuzzy
 msgid "Are you sure you want to reset all WordPress HTTPS URL Filters?"
-msgstr ""
-"Sind Sie sicher, dass Sie alle WordPress HTTPS Filter zurücksetzen wollen?"
+msgstr "Sind Sie sicher, dass Sie alle WordPress HTTPS URL-Filter zurücksetzen wollen?"
 
 #: view/metabox/url_mapping.php:12
-#, fuzzy, php-format
-msgid ""
-"URL Mapping allows you to map urls that host their HTTPS content on a "
-"different url. You may use %s regular expressions %s for the URL on the left "
-"side of the mapping."
+msgid "URL Mapping allows you to map urls that host their HTTPS content on a different url. You may use %s regular expressions %s for the URL on the left side of the mapping."
 msgstr ""
-"Domain Mapping erlaubt es externe Domains auf deren HTTPS Domains "
-"umzuleiten. Sie können auch %s Reguläre Ausdrücke %s nutzen"
 
 #: view/metabox/url_mapping.php:28
 msgid "You can modify this mapping by changing your Home URL."
-msgstr ""
+msgstr "Sie können dieses Mapping ändern, indem Sie ihre Home URL ändern."
 
 #: view/metabox/url_mapping.php:42
-msgid ""
-"You can modify this mapping by changing your SSL Host in the settings above."
-msgstr ""
+msgid "You can modify this mapping by changing your SSL Host in the settings above."
+msgstr "Sie können dieses Mapping ändern, indem Sie den SSL-Host in den Einstellungen oben ändern."
 
 #: view/metabox/url_mapping.php:84 view/metabox/url_mapping.php:122
-#, fuzzy
 msgid "Remove URL Mapping"
-msgstr "URL Filter entfernen"
-
-#: view/metabox/url_mapping.php:85 view/metabox/url_mapping.php:123
-#, fuzzy
-msgid "Add URL Mapping"
-msgstr "URL Filter hinzufügen"
-
-#: view/metabox/url_mapping.php:142
-#, fuzzy
-msgid "Are you sure you want to reset all WordPress HTTPS url mappings?"
-msgstr ""
-"Sind Sie sicher, dass du alle WordPress HTTPS domain mappings zurücksetzen "
-"willst?"
-
-#~ msgid ""
-#~ "WordPress HTTPS is intended to be an all-in-one solution to using SSL on "
-#~ "WordPress sites."
-#~ msgstr ""
-#~ "WordPress HTTPS ist eine All-in-One Lösung für SSL auf WordPress Seiten"
-
-#~ msgid ""
-#~ "Example: If you have an E-commerce shop and all of the URL's begin with /"
-#~ "store/, you could secure all store links by entering '/store/' on one "
-#~ "line. You may use %s regular expressions %s"
-#~ msgstr ""
-#~ "Beispiel: Sollten Sie einen E-Commerce Shop betreiben und alle URLs  "
-#~ "beginnen mit /store/, können Sie alle Links zum Shop durch die Eingabe "
-#~ "von '/store/' in einer Zeile sichern. Sie können auch %s Reguläre "
-#~ "Ausdrücke %s nutzen"
-
-#~ msgid "Port"
-#~ msgstr "Port"
+msgstr "URL-Mapping entfernen"
