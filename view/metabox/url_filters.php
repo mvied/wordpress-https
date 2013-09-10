@@ -5,7 +5,7 @@ if ( !defined('ABSPATH') ) exit;
 <?php wp_nonce_field($this->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />
 
-<p><?php printf( __("URL Filters allow you to specify what content should always be secure or unsecure using simple string comparisons or %sregular expressions%s.",'wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">','</a>'); ?></p>
+<p><?php printf( __('URL Filters allow you to specify what content should always be secure or unsecure using simple string comparisons or %s.','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">'.__('Regular Expressions','wordpress-https').'</a>'); ?></p>
 
 <table class="form-table url_filters" id="secure_url_filters">
 	<tr valign="top">
@@ -62,8 +62,8 @@ if ( !defined('ABSPATH') ) exit;
 </table>
 
 <p class="button-controls">
-	<input type="submit" name="url-filters-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="url-filters-save" />
-	<input type="submit" name="url-filters-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="url-filters-reset" />
+	<input type="submit" name="url-filters-save" value="<?php _e('Save Changes'); ?>" class="button-primary" id="url-filters-save" />
+	<input type="submit" name="url-filters-reset" value="<?php _e('Reset'); ?>" class="button-secondary" id="url-filters-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
