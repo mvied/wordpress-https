@@ -9,7 +9,7 @@ $https_url = rtrim($https_url->setScheme('')->toString(), '/');
 <?php wp_nonce_field($this->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />
 
-<p><?php printf( __('URL Mapping allows you to map urls that host their HTTPS content on a different url. You may use %s regular expressions %s for the URL on the left side of the mapping.','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help&" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">', '</a>') ; ?></p>
+<p><?php printf( __('URL Mapping allows you to map urls that host their HTTPS content on a different url. You may use %s for the URL on the left side of the mapping.','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">'.__('Regular Expressions','wordpress-https').'</a>') ; ?></p>
 
 <table class="form-table" id="url_mapping">
 	<thead>
