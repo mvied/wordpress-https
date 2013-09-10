@@ -8,7 +8,7 @@
 
 ### WordPress
 * Requires at least: 3.0
-* Tested up to: 3.5
+* Tested up to: 3.6
 
 ### About
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
@@ -22,7 +22,7 @@ If you are still unable to resolve your issue, <a href="http://wordpress.org/sup
 * German
 * Portuguese
 
-* Help to translate at [https://translate.foe-services.de/projects/wordpress-https](https://translate.foe-services.de/projects/wordpress-https)
+* Help to translate at [http://wp-translate.org/projects/wordpress-https](http://wp-translate.org/projects/wordpress-https)
 
 ### Resources
 * [Changelog](https://wordpress.org/extend/plugins/wordpress-https/changelog/)
