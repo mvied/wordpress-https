@@ -62,8 +62,8 @@ if ( !defined('ABSPATH') ) exit;
 </table>
 
 <p class="button-controls">
-	<input type="submit" name="url-filters-save" value="<?php _e('Save Changes','wordpress-https'); ?>" class="button-primary" id="url-filters-save" />
-	<input type="submit" name="url-filters-reset" value="<?php _e('Reset','wordpress-https'); ?>" class="button-secondary" id="url-filters-reset" />
+	<input type="submit" name="url-filters-save" value="<?php _e('Save Changes'); ?>" class="button-primary" id="url-filters-save" />
+	<input type="submit" name="url-filters-reset" value="<?php _e('Reset'); ?>" class="button-secondary" id="url-filters-reset" />
 	<img alt="<?php _e('Waiting...','wordpress-https'); ?>" src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" class="waiting submit-waiting" />
 </p>
 </form>
