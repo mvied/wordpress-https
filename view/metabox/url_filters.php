@@ -5,7 +5,7 @@ if ( !defined('ABSPATH') ) exit;
 <?php wp_nonce_field($this->getSlug()); ?>
 <input type="hidden" name="action" id="action" value="" />
 
-<p><?php printf( __("URL Filters allow you to specify what content should always be secure or unsecure using simple string comparisons or %sregular expressions%s.",'wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">','</a>'); ?></p>
+<p><?php printf( __('URL Filters allow you to specify what content should always be secure or unsecure using simple string comparisons or %s.','wordpress-https'),'<a href="#TB_inline?height=155&width=350&inlineId=regex-help" class="thickbox" title="' . __('Regular Expressions Help','wordpress-https') . '">'.__('Regular Expressions','wordpress-https').'</a>'); ?></p>
 
 <table class="form-table url_filters" id="secure_url_filters">
 	<tr valign="top">
