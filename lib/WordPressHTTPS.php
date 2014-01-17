@@ -72,7 +72,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 			'jpg',
 			'jpeg',
 			'png',
-			'gif'
+			'gif',
+			'ico'
 		),
 		'style'  => array(
 			'css'
