@@ -195,7 +195,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		);
 
 		if ( is_multisite() && is_subdomain_install() ) {
-			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM " . $wpdb->blogs, NULL));
+			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM %d", $wpdb->blogs));
 			$hosts = array_merge($hosts, $multisite_hosts);
 		}
 
@@ -238,7 +238,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		global $wpdb;
 
 		if ( is_multisite() && is_network_admin() ) {
-			$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs, NULL));
+			$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM %d", $wpdb->blogs));
 		} else {
 			$blogs = array($wpdb->blogid);
 		}
