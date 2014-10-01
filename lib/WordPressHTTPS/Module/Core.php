@@ -59,8 +59,15 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
-		$filters = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link', 'day_link', 'month_link', 'year_link', 'comment_reply_link', 'category_link', 'author_link', 'archives_link', 'tag_link', 'search_link');
-		foreach( $filters as $filter ) {
+		//add filters that provide the post or post id
+		$filters_that_use_post = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link',  'search_link');
+		foreach( $filters_that_use_post as $filter ) {
+			add_filter($filter, array(&$this, 'secure_post_link'), 10, 3);
+		}
+
+		//add filters that don't provide a post id
+		$filters_without_post = array('comment_reply_link', 'day_link', 'month_link', 'year_link','category_link', 'author_link', 'archives_link', 'tag_link',);
+		foreach( $filters_without_post as $filter ) {
 			add_filter($filter, array(&$this, 'secure_post_link'), 10);
 		}
 
@@ -231,11 +238,15 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * Secure Post Link
 	 *
 	 * @param string $url
+	 * @param WP_Post|int $post if one is provided
 	 * @return string $url
 	 */
-	public function secure_post_link( $url ) {
+	public function secure_post_link( $url, $post = null) {
 		$plugin = $this->getPlugin();
-		$force_ssl = apply_filters('force_ssl', null, 0, $url);
+		if( $post instanceof WP_Post){
+			$post = $post->ID;
+		}
+		$force_ssl = apply_filters('force_ssl', null, $post, $url);
 		if ( $force_ssl ) {
 			$url = $plugin->makeUrlHttps($url);
 		} else if ( !is_null($force_ssl) && !$force_ssl ) {
@@ -481,7 +492,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 	/**
 	 * Proxy Check
-	 * 
+	 *
 	 * If the server is on a proxy and not correctly reporting HTTPS, this
 	 * JavaScript makes sure that the correct redirect takes place.
 	 *
@@ -501,7 +512,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 	/**
 	 * Redirect Check
-	 * 
+	 *
 	 * Checks if the current page needs to be redirected
 	 *
 	 * @param none
@@ -538,7 +549,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 
 	/**
 	 * Add Access-Control-Allow-Origin header to AJAX calls
-	 * 
+	 *
 	 * @param none
 	 * @return void
 	 */
@@ -598,7 +609,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 				$cookie_path_site = str_replace($plugin->getHttpsUrl()->getPath(), '', $cookie_path_site);
 				$cookie_path_plugins = str_replace($plugin->getHttpsUrl()->getPath(), '', $cookie_path_plugins);
 			}
-			
+
 			if ( $plugin->getHttpUrl()->getPath() != '/' ) {
 				$cookie_path = str_replace($plugin->getHttpUrl()->getPath(), '', $cookie_path);
 				$cookie_path_site = str_replace($plugin->getHttpUrl()->getPath(), '', $cookie_path_site);
@@ -616,7 +627,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			if ( $cookie_path != $cookie_path_site ) {
 				setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure, true);
 			}
-		} else {		
+		} else {
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
 			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
 		}
@@ -658,7 +669,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			$cookie_path_site = str_replace($plugin->getHttpsUrl()->getPath(), '', $cookie_path_site);
 			$cookie_path_plugins = str_replace($plugin->getHttpsUrl()->getPath(), '', $cookie_path_plugins);
 		}
-		
+
 		if ( $plugin->getHttpUrl()->getPath() != '/' ) {
 			$cookie_path = str_replace($plugin->getHttpUrl()->getPath(), '', $cookie_path);
 			$cookie_path_site = str_replace($plugin->getHttpUrl()->getPath(), '', $cookie_path_site);
