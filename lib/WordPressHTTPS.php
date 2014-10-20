@@ -56,6 +56,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'path_cache' =>             array(), // Cache of URL paths to Post IDs
 		'blog_cache' =>             array(), // Cache of URL paths to Blog IDs
 		'version' =>                '',      // Version of the plugin this blog has installed
+		'hosts' =>					array(),
 	);
 
 	/**
@@ -189,22 +190,28 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @return array $hosts Array of domains local to the WordPress installation.
 	 */
 	public function getLocalDomains() {
+		$hosts = $this->getSetting( 'hosts' );
+
+		if ( ! empty( $hosts ) )
+			return $hosts;
+
 		global $wpdb;
 		$hosts = array(
 			$this->getHttpUrl()->getHost(),
-			$this->getHttpsUrl()->getHost()
+			$this->getHttpsUrl()->getHost(),
 		);
 
 		if ( is_multisite() && is_subdomain_install() ) {
-			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM %d", $wpdb->blogs));
-			$hosts = array_merge($hosts, $multisite_hosts);
+			$multisite_hosts = $wpdb->get_col($wpdb->prepare( "SELECT domain FROM %d", $wpdb->blogs ) );
+			$hosts = array_merge( $hosts, $multisite_hosts );
 		}
 
-		if ( function_exists('domain_mapping_siteurl') ) {
-			if ( $mapped_host = parse_url(domain_mapping_siteurl(false), PHP_URL_HOST) ) {
+		if ( function_exists( 'domain_mapping_siteurl' ) ) {
+			if ( $mapped_host = parse_url( domain_mapping_siteurl( false ), PHP_URL_HOST ) )
 				$hosts[] = $mapped_host;
-			}
 		}
+
+		$this->setSetting( 'hosts', $hosts );
 
 		return $hosts;
 	}
