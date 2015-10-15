@@ -360,6 +360,9 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 * @return string $string
 	 */
 	public function makeUrlHttps( $string ) {
+      if(is_object($string) && !method_exists($string, "__toString")) {
+         return false;
+
 		if ( (string)$string == '' ) {
 			return false;
 		}
