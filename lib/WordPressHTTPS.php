@@ -1,4 +1,4 @@
-<?php 
+<?php
 /**
  * WordPress HTTPS
  *
@@ -32,7 +32,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Plugin Settings
-	 * 
+	 *
 	 * setting_name => default_value
 	 *
 	 * @var multitype:multitype
@@ -56,12 +56,13 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'path_cache' =>             array(), // Cache of URL paths to Post IDs
 		'blog_cache' =>             array(), // Cache of URL paths to Blog IDs
 		'version' =>                '',      // Version of the plugin this blog has installed
+		'hosts' =>					array(),
 	);
 
 	/**
 	 * File extensions to be loaded securely.
 	 * File type => Array of extensions
-	 * 
+	 *
 	 * @var multitype:multitype
 	 */
 	protected $_file_extensions = array(
@@ -126,7 +127,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Get File Extensions to Secure
-	 * 
+	 *
 	 * @param none
 	 * @return array
 	 */
@@ -136,7 +137,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Get HTTP Url
-	 * 
+	 *
 	 * @param none
 	 * @return Mvied_Url
 	 */
@@ -149,7 +150,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Get HTTPS Url
-	 * 
+	 *
 	 * @param none
 	 * @return Mvied_Url
 	 */
@@ -184,27 +185,33 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Get domains local to the WordPress installation.
-	 * 
+	 *
 	 * @param none
 	 * @return array $hosts Array of domains local to the WordPress installation.
 	 */
 	public function getLocalDomains() {
+		$hosts = $this->getSetting( 'hosts' );
+
+		if ( ! empty( $hosts ) )
+			return $hosts;
+
 		global $wpdb;
 		$hosts = array(
 			$this->getHttpUrl()->getHost(),
-			$this->getHttpsUrl()->getHost()
+			$this->getHttpsUrl()->getHost(),
 		);
 
 		if ( is_multisite() && is_subdomain_install() ) {
-			$multisite_hosts = $wpdb->get_col($wpdb->prepare("SELECT domain FROM %d", $wpdb->blogs));
-			$hosts = array_merge($hosts, $multisite_hosts);
+			$multisite_hosts = $wpdb->get_col($wpdb->prepare( "SELECT domain FROM %d", $wpdb->blogs ) );
+			$hosts = array_merge( $hosts, $multisite_hosts );
 		}
 
-		if ( function_exists('domain_mapping_siteurl') ) {
-			if ( $mapped_host = parse_url(domain_mapping_siteurl(false), PHP_URL_HOST) ) {
+		if ( function_exists( 'domain_mapping_siteurl' ) ) {
+			if ( $mapped_host = parse_url( domain_mapping_siteurl( false ), PHP_URL_HOST ) )
 				$hosts[] = $mapped_host;
-			}
 		}
+
+		$this->setSetting( 'hosts', $hosts );
 
 		return $hosts;
 	}
@@ -231,7 +238,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Install
-	 * 
+	 *
 	 * @param none
 	 * @return void
 	 */
@@ -312,7 +319,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				$this->setSetting('unsecure_external_urls', $this->_settings['unsecure_external_urls'], $blog_id);
 				$this->setSetting('path_cache', $this->_settings['path_cache'], $blog_id);
 				$this->setSetting('blog_cache', $this->_settings['blog_cache'], $blog_id);
-	
+
 				// Set default URL Mapping
 				if ( $this->getSetting('ssl_host_mapping', $blog_id) == array() ) {
 					$this->setSetting('ssl_host_mapping', WordPressHTTPS::$ssl_host_mapping, $blog_id);
@@ -335,7 +342,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 
 	/**
 	 * Is Local URL
-	 * 
+	 *
 	 * Determines if URL is local or external
 	 *
 	 * @param string $url
@@ -537,7 +544,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		}
 		return apply_filters('is_ssl', $is_ssl);
 	}
-	
+
 	/**
 	 * Maintained for backwards compatibility.
 	 *
@@ -609,7 +616,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 			$scannedDirectories[$directory]['name'] = $directory;
 			if ( is_readable($directory) && ($files = scandir($directory)) ) {
 				$scannedDirectories[$directory]['files'] = $files;
-				unset($files); 
+				unset($files);
 			} else {
 				$scannedDirectories[$directory]['error'] = "Unable to read directory.";
 			}
