@@ -296,7 +296,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function secure_login( $force_ssl, $post_id = 0, $url = '' ) {
 		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
-			if ( force_ssl_login() && preg_match('/wp-login\.php$/', $url) === 1 ) {
+			if ( force_ssl_admin() && preg_match('/wp-login\.php$/', $url) === 1 ) {
 				$force_ssl = true;
 			}
 		}
