@@ -295,9 +295,20 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return boolean $force_ssl
 	 */
 	public function secure_login( $force_ssl, $post_id = 0, $url = '' ) {
-		if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
-			if ( force_ssl_admin() && preg_match('/wp-login\.php$/', $url) === 1 ) {
-				$force_ssl = true;
+		/**
+		 * Forward compatibility for Wordpress 4.4+
+		 */
+		if ( version_compare(get_bloginfo('version'), '4.4', '>') ) {
+			if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
+				if ( force_ssl_admin() && preg_match('/wp-login\.php$/', $url) === 1 ) {
+					$force_ssl = true;
+				}
+			}
+		} else {
+			if ( $url != '' && $this->getPlugin()->isUrlLocal($url) ) {
+				if ( force_ssl_login() && preg_match('/wp-login\.php$/', $url) === 1 ) {
+					$force_ssl = true;
+				}
 			}
 		}
 		return $force_ssl;
