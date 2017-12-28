@@ -1,0 +1,1 @@
+<p>Please show your appreciation for WordPress HTTPS by giving it a positive <a href="http://wordpress.org/support/view/plugin-reviews/wordpress-https#postform" target="_blank">review</a> in the plugin repository!</p>

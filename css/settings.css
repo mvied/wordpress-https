@@ -84,6 +84,9 @@
 	margin: 5px 5px 0 0;
 	float: left;
 }
+#wphttps-main .form-table td fieldset label {
+	width: 100%;
+}
 
 #wphttps-main .url_filters h4 {
 	margin: 0;

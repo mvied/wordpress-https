@@ -63,12 +63,12 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',
-			__( 'Loading...', 'wordpress-https' ),
+			__( 'Promotion', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug() . '_network',
 			'main',
 			'low',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate2.php' )
+			array( 'metabox' => 'donate2' )
 		);
 	}
 

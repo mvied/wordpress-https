@@ -22,7 +22,6 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_save', array(&$this, 'save'));
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_reset', array(&$this, 'reset'));
 			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_settings_cache_reset', array(&$this, 'cache_reset'));
-			add_action('wp_ajax_' . $this->getPlugin()->getSlug() . '_ajax_metabox', array(&$this, 'ajax_metabox'));
 			if ( isset($_GET['page']) && strpos($_GET['page'], $this->getPlugin()->getSlug()) !== false ) {
 				// Add meta boxes
 				add_action('admin_init', array(&$this, 'add_meta_boxes'));
@@ -68,22 +67,13 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			array( 'metabox' => 'settings' )
 		);
 		add_meta_box(
-			$this->getPlugin()->getSlug() . '_updates',
-			__( 'Developer Updates', 'wordpress-https' ),
-			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
-			'toplevel_page_' . $this->getPlugin()->getSlug(),
-			'side',
-			'high',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/updates.php' )
-		);
-		add_meta_box(
 			$this->getPlugin()->getSlug() . '_support',
 			__( 'Support', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'high',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/support.php' )
+			array( 'metabox' => 'support' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_rate',
@@ -92,7 +82,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/rate.php' )
+			array( 'metabox' => 'feedback' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate',
@@ -101,16 +91,16 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
 			'side',
 			'core',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate.php' )
+			array( 'metabox' => 'donate' )
 		);
 		add_meta_box(
 			$this->getPlugin()->getSlug() . '_donate2',
-			__( 'Loading...', 'wordpress-https' ),
+			__( 'Promotion', 'wordpress-https' ),
 			array($this->getPlugin()->getModule('Admin'), 'meta_box_render'),
 			'toplevel_page_' . $this->getPlugin()->getSlug(),
-			'main',
+			'side',
 			'low',
-			array( 'metabox' => 'ajax', 'url' => 'http://wordpresshttps.com/client/donate2.php' )
+			array( 'metabox' => 'donate2' )
 		);
 	}
 
@@ -126,36 +116,6 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		}
 
 		self::render();
-	}
-
-	/**
-	 * Dispatch request for ajax metabox
-	 *
-	 * @param none
-	 * @return void
-	 */
-	public function ajax_metabox() {
-		// Disable errors
-		error_reporting(0);
-
-		// Set headers
-		header("Status: 200");
-		header("HTTP/1.1 200 OK");
-		header('Content-Type: text/html');
-		header('Cache-Control: no-store, no-cache, must-revalidate');
-		header('Cache-Control: post-check=0, pre-check=0', FALSE);
-		header('Pragma: no-cache');
-		header("Vary: Accept-Encoding");
-
-		if ( ! wp_verify_nonce($_POST['_nonce'], $this->getPlugin()->getSlug()) ) {
-			exit;
-		}
-
-		$content = Mvied_Url::fromString( $_POST['url'] )->getContent();
-		if ( $content ) {
-			echo $content;
-		}
-		exit;
 	}
 
 	/**
