@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: 3.3.6
+Stable tag: 4.9.1
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
@@ -95,8 +95,8 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
-= 3.4.0b =
-* Tested with WordPress v3.6.
+= 3.4.0 =
+* Tested with WordPress v4.9.1
 * Many improvements to performance. Special thanks to <a href="https://github.com/heshiming">He Shiming</a> for help with profiling and improvements.
 * Added internal caching to Parser module to drastically reduce queries.
 * Added checks for Domain Mapping plugin.
