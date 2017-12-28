@@ -18,11 +18,7 @@ Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installati
 If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and I or someone from the community will be able to assist you.
 
 ### Languages
-* English
-* German
-* Portuguese
-
-* Help to translate at [http://wp-translate.org/projects/wordpress-https](http://wp-translate.org/projects/wordpress-https)
+* Help to translate at [https://translate.wordpress.org/projects/wp-plugins/wordpress-https](https://translate.wordpress.org/projects/wp-plugins/wordpress-https)
 
 ### Resources
 * [Changelog](https://wordpress.org/extend/plugins/wordpress-https/changelog/)

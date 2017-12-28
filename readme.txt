@@ -13,7 +13,7 @@ WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPre
 <p>Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>. If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>.</p>
 <p>If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and I or someone from the community will be able to assist you.</p>
 <p>Contribute Code at <a href="https://github.com/Mvied/wordpress-https">https://github.com/Mvied/wordpress-https</a></p>
-<p>Contribute Translations at <a href="http://wp-translate.org/projects/wordpress-https">http://wp-translate.org/projects/wordpress-https</a></p>
+<p>Contribute Translations at <a href="https://translate.wordpress.org/projects/wp-plugins/wordpress-https">https://translate.wordpress.org/projects/wp-plugins/wordpress-https</a></p>
 
 == Installation ==
 1. Upload the `wordpress-https` folder to the `/wp-content/plugins/` directory.
@@ -103,7 +103,6 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Renamed Domain Mapping featured to URL Mapping to reduce confusion with Domain Mapping plugin.
 * Added ability to map both to and from HTTPS with URL Mapping.
 * Added ability to also map local resources using URL Mapping.
-* Added Portuegese translation.
 * Fixed bug when external resources contained a port number, the port was not removed when testing for HTTPS.
 * External HTTPS elements on HTTP pages will now stay HTTPS.
 * Fonts should now be properly secured.
