@@ -96,6 +96,11 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.5.0 =
+* [Feature] Content fixing is now optional in the plugin settings. This option should be on by default.
+* [Bug] Fixed `the_permalink_rss` filtering.
+* [Bug] Remove network defaults on uninstall.
+* [Bug] Fixed issue displaying multisite network settings from previous release.
 = 3.4.0 =
 * Tested with WordPress v4.9.1
 * Many improvements to performance. Special thanks to <a href="https://github.com/heshiming">He Shiming</a> for help with profiling and improvements.
@@ -303,5 +308,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 * Initial Release.
 
 == Upgrade Notice ==
+= 3.5.0 =
+Content Fixer is now optional in the plugin settings. This option should be on by default.
 = 3.2 =
 You may lose your SSL Host setting upon upgrading if it is not default (matching your Site URL).

@@ -2,6 +2,7 @@
 /**
  * WordPress HTTPS
  *
+ * @class WordPressHTTPS
  * @author Mike Ems
  * @package WordPressHTTPS
  *
@@ -44,6 +45,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		'ssl_host_diff' =>          0,       // Is SSL Host different than WordPress host
 		'ssl_host_subdomain' =>     0,       // Is SSL Host a subdomain of WordPress host
 		'exclusive_https' =>        0,       // Redirect pages that are not secured to HTTP
+		'content_fixer' =>          1,       // Fix unsecure elements in HTML
 		'remove_unsecure' =>        0,       // Remove unsecure elements from HTML
 		'ssl_admin' =>              0,       // Force SSL Over Administration Panel (The same as FORCE_SSL_ADMIN)
 		'ssl_proxy' =>              0,       // Proxy detection

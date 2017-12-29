@@ -12,6 +12,7 @@ if ( !defined('ABSPATH') ) exit;
 		<th class="blog-host"><?php _e('SSL Host','wordpress-https'); ?></th>
 		<th class="blog-ssl_admin"><?php _e('Force SSL Admin','wordpress-https'); ?></th>
 		<th class="blog-exclusive_https"><?php _e('Force SSL Exclusively','wordpress-https'); ?></th>
+		<th class="blog-content_fixer"><?php _e('Content Fixer','wordpress-https'); ?></th>
 		<th class="blog-remove_unsecure"><?php _e('Remove Unsecure Elements','wordpress-https'); ?></th>
 		<th class="blog-debug"><?php _e('Debug Mode','wordpress-https'); ?></th>
 		<th class="blog-proxy"><?php _e('Proxy','wordpress-https'); ?></th>
@@ -32,6 +33,7 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="blog-host"><input name="blog[<?php echo $blog_id; ?>][ssl_host]" type="text" class="regular-text code" value="<?php echo $ssl_host; ?>" /></td>
 		<td class="blog-ssl_admin"><input type="hidden" name="blog[<?php echo $blog_id; ?>][ssl_admin]" value="<?php echo ((force_ssl_admin() && $this->getSetting('ssl_admin', $blog_id) == 1) ? 1 : 0); ?>" /><input name="blog[<?php echo $blog_id; ?>][ssl_admin]" type="checkbox" value="1"<?php echo ((force_ssl_admin()) ? ' disabled="disabled" title="FORCE_SSL_ADMIN is true in wp-config.php"' : '') . ($this->getSetting('ssl_admin', $blog_id) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-exclusive_https"><input type="hidden" name="blog[<?php echo $blog_id; ?>][exclusive_https]" value="0" /><input name="blog[<?php echo $blog_id; ?>][exclusive_https]" type="checkbox" value="1"<?php echo (($this->getSetting('exclusive_https', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
+		<td class="blog-content_fixer"><input type="hidden" name="blog[<?php echo $blog_id; ?>][content_fixer]" value="0" /><input name="blog[<?php echo $blog_id; ?>][content_fixer]" type="checkbox" value="1"<?php echo (($this->getSetting('content_fixer', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-remove_unsecure"><input type="hidden" name="blog[<?php echo $blog_id; ?>][remove_unsecure]" value="0" /><input name="blog[<?php echo $blog_id; ?>][remove_unsecure]" type="checkbox" value="1"<?php echo (($this->getSetting('remove_unsecure', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-debug"><input type="hidden" name="blog[<?php echo $blog_id; ?>][debug]" value="0" /><input name="blog[<?php echo $blog_id; ?>][debug]" type="checkbox" value="1"<?php echo (($this->getSetting('debug', $blog_id)) ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">
@@ -51,11 +53,11 @@ if ( !defined('ABSPATH') ) exit;
 <?php
 	}
 
-	$defaults = $this->getSetting('network_defaults');
-	if ( sizeof($defaults) == 0 ) {
-		foreach( $this->getSettings() as $setting => $default ) {
-			$defaults[$setting] = $default;
-		}
+	foreach( $this->getSettings() as $setting => $default ) {
+		$defaults[$setting] = $default;
+	}
+	foreach( $this->getSetting('network_defaults') as $setting => $default ) {
+		$defaults[$setting] = $default;
 	}
 ?>
 
@@ -64,6 +66,7 @@ if ( !defined('ABSPATH') ) exit;
 		<td class="blog-host"><input name="blog_default[ssl_host]" type="text" class="regular-text code" value="<?php echo $defaults['ssl_host']; ?>" /></td>
 		<td class="blog-ssl_admin"><input type="hidden" name="blog_default[ssl_admin]" value="0" /><input name="blog_default[ssl_admin]" type="checkbox" value="1"<?php echo ($defaults['ssl_admin'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-exclusive_https"><input type="hidden" name="blog_default[exclusive_https]" value="0" /><input name="blog_default[exclusive_https]" type="checkbox" value="1"<?php echo ($defaults['exclusive_https'] ? ' checked="checked"' : ''); ?> /></td>
+		<td class="blog-content_fixer"><input type="hidden" name="blog_default[content_fixer]" value="0" /><input name="blog_default[content_fixer]" type="checkbox" value="1"<?php echo ($defaults['content_fixer'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-remove_unsecure"><input type="hidden" name="blog_default[remove_unsecure]" value="0" /><input name="blog_default[remove_unsecure]" type="checkbox" value="1"<?php echo ($defaults['remove_unsecure'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-debug"><input type="hidden" name="blog_default[debug]" value="0" /><input name="blog_default[debug]" type="checkbox" value="1"<?php echo ($defaults['debug'] ? ' checked="checked"' : ''); ?> /></td>
 		<td class="blog-proxy">

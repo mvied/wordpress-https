@@ -60,6 +60,9 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
 
+		// Filter wordpress_https_parser_ob for output buffering
+		add_filter('wordpress_https_parser_ob', array(&$this, 'is_content_fixer'), 50, 3);
+
 		//add filters that provide the post or post id
 		$filters_that_use_post = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link',  'search_link');
 		foreach( $filters_that_use_post as $filter ) {
@@ -120,6 +123,14 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			add_action('template_redirect', array(&$this, 'redirect_check'));
 			add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 		}
+	}
+
+	/**
+	 * Is Content Fixer Enabled?
+	 * @return mixed
+	 */
+	public function is_content_fixer() {
+		return $this->getPlugin()->getSetting('content_fixer');
 	}
 
 	/**

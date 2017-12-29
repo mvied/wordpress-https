@@ -49,6 +49,18 @@ $ssl_host = rtrim($ssl_host, '/');
 			</fieldset>
 		</td>
 	</tr>
+	<tr valign="top" id="content_fixer_row">
+		<th scope="row"><?php _e('Content Fixer','wordpress-https'); ?></th>
+		<td>
+			<fieldset>
+				<label for="content_fixer">
+					<input type="hidden" name="content_fixer" value="0" />
+					<input name="content_fixer" type="checkbox" id="content_fixer" value="1"<?php echo (($this->getSetting('content_fixer')) ? ' checked="checked"' : ''); ?> />
+					<p class="description"><?php _e("Fixes insecure HTTP elements on HTTPS pages.",'wordpress-https'); ?></p>
+				</label>
+			</fieldset>
+		</td>
+	</tr>
 	<tr valign="top" id="remove_unsecure_row">
 		<th scope="row"><?php _e('Remove Unsecure Elements','wordpress-https'); ?></th>
 		<td>

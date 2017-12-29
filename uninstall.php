@@ -7,6 +7,7 @@ if ( !defined('WP_UNINSTALL_PLUGIN') ) {
 }
 
 $options = array(
+	'wordpress-https_content_fixer',
 	'wordpress-https_network_defaults',
 	'wordpress-https_external_urls',
 	'wordpress-https_secure_external_urls',
