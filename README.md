@@ -20,6 +20,14 @@ If you are still unable to resolve your issue, <a href="http://wordpress.org/sup
 ### Languages
 * Help to translate at [https://translate.wordpress.org/projects/wp-plugins/wordpress-https](https://translate.wordpress.org/projects/wp-plugins/wordpress-https)
 
+### Roadmap
+* v3.5.0
+   * Automated testing.
+   * Store URL cache in a table to increase performance for large sites. [#25](https://github.com/mvied/wordpress-https/issues/25)
+   * Compatibility with multi-lingual websites [#42](https://github.com/mvied/wordpress-https/issues/42)
+   * Cross-browser cookie issues on Shared SSL [#27](https://github.com/mvied/wordpress-https/issues/27)
+   * Multisite links broken [#46](https://github.com/mvied/wordpress-https/issues/46)
+
 ### Resources
 * [Changelog](https://wordpress.org/extend/plugins/wordpress-https/changelog/)
 * [Installation](https://wordpress.org/extend/plugins/wordpress-https/installation/)

@@ -13,6 +13,7 @@ WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPre
 <p>Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>. If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>.</p>
 <p>If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and someone from the community may be able to assist you. If you need immediate assistance, I am available for hire. Unfortunately, I do not have time to support the plugin for free.</p>
 <p>Contribute Code at <a href="https://github.com/Mvied/wordpress-https">https://github.com/Mvied/wordpress-https</a></p>
+<p>Issue Tracker at <a href="https://github.com/mvied/wordpress-https/issues">https://github.com/mvied/wordpress-https/issues</a>
 <p>Contribute Translations at <a href="https://translate.wordpress.org/projects/wp-plugins/wordpress-https">https://translate.wordpress.org/projects/wp-plugins/wordpress-https</a></p>
 
 == Installation ==
