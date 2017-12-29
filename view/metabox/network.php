@@ -21,7 +21,7 @@ if ( !defined('ABSPATH') ) exit;
 	<tbody>
 <?php
 	global $wpdb;
-	$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM " . $wpdb->blogs, NULL));
+	$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
 	foreach($blogs as $blog_id) {
 		$ssl_host = ($this->getSetting('ssl_host', $blog_id) != '' ?  $this->getSetting('ssl_host', $blog_id) : get_site_url($blog_id, '', 'https'));
 		$ssl_host = preg_replace('/http[s]?:\/\//', '', $ssl_host);

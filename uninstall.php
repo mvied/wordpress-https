@@ -30,7 +30,7 @@ $options = array(
 
 global $wpdb;
 if ( is_multisite() && is_network_admin() ) {
-	$blogs = $wpdb->get_col($wpdb->prepare("SELECT blog_id FROM %d", $wpdb->blogs));
+	$blogs = $wpdb->get_col("SELECT blog_id FROM {$wpdb->blogs}");
 } else {
 	$blogs = array($wpdb->blogid);
 }

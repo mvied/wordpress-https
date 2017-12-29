@@ -26,7 +26,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	/**
 	 * Local URL Cache
 	 *
-	 * @var multitype:string
+	 * @var array:string
 	 */
 	protected $_local_url_cache = array();
 
@@ -202,7 +202,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 		);
 
 		if ( is_multisite() && is_subdomain_install() ) {
-			$multisite_hosts = $wpdb->get_col($wpdb->prepare( "SELECT domain FROM %s", $wpdb->blogs ) );
+			$multisite_hosts = $wpdb->get_col("SELECT domain FROM {$wpdb->blogs}");
 			$hosts = array_merge( $hosts, $multisite_hosts );
 		}
 
