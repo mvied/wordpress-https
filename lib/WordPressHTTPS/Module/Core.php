@@ -32,6 +32,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('logout_url', array(&$this, 'secure_url'), 10);
 		add_filter('login_url', array(&$this, 'secure_url'), 10);
 		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
+		add_filter('the_permalink_rss', array(&$this, 'secure_url'), 10);
 
 		// Filter Element URL's
 		add_filter('get_avatar', array(&$this, 'element_url'), 10);
