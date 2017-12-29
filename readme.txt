@@ -98,6 +98,7 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 == Changelog ==
 = 3.5.0 =
 * [Feature] Content fixing is now optional in the plugin settings. This option should be on by default.
+* [Feature] Content Fixer option to disable output buffering. <a href="https://github.com/mvied/wordpress-https/issues/56">#56</a>
 * [Bug] Fixed `the_permalink_rss` filtering.
 * [Bug] Remove network defaults on uninstall.
 * [Bug] Fixed issue displaying multisite network settings from previous release.
