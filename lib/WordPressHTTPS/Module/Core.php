@@ -16,12 +16,20 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
+		global $wp_scripts, $wp_styles;
 		$plugin = $this->getPlugin();
 		if ( $plugin->getSetting('ssl_host_diff') && $plugin->isSsl() ) {
 			// Prevent WordPress' canonical redirect when using a different SSL Host
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
+		}
+
+		if ($this->getPlugin()->isSsl()) {
+			wp_scripts();
+			wp_styles();
+			$wp_styles->base_url = set_url_scheme( $wp_styles->base_url, 'https' );
+			$wp_scripts->base_url = set_url_scheme( $wp_scripts->base_url, 'https' );
 		}
 
 		// Add SSL Host to allowed redirect hosts
@@ -457,6 +465,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_scripts() {
 		global $wp_scripts;
+		$wp_scripts->base_url = set_url_scheme( $wp_scripts->base_url, 'https' );
 		$plugin = $this->getPlugin();
 		if ( isset($wp_scripts) && sizeof($wp_scripts->registered) > 0 ) {
 			foreach ( $wp_scripts->registered as $script ) {
@@ -489,6 +498,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_styles() {
 		global $wp_styles;
+		$wp_styles->base_url = set_url_scheme( $wp_styles->base_url, 'https' );
 		$plugin = $this->getPlugin();
 		if ( isset($wp_styles) && sizeof($wp_styles->registered) > 0 ) {
 			foreach ( (array)$wp_styles->registered as $style ) {
