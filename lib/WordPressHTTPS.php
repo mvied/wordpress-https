@@ -442,7 +442,8 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 				}
 			} else {
 				$updated = Mvied_Url::fromString( apply_filters('https_external_url', $url->toString()) );
-				$updated->setPort(null);
+				if (!$updated || !is_string((string)$updated))
+					return;
 				if ( @in_array($updated->toString(), $this->getSetting('secure_external_urls')) == false && @in_array($updated->toString(), $this->getSetting('unsecure_external_urls')) == false ) {
 					$test = clone $updated;
 					$test->setScheme('https');
