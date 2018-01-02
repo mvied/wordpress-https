@@ -35,6 +35,8 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		// Add SSL Host to allowed redirect hosts
 		add_filter('allowed_redirect_hosts' , array(&$this, 'allowed_redirect_hosts'), 10, 1);
 
+		add_filter( 'the_permalink_rss', array( &$this, 'secure_url' ), 10 );
+
 		if ( !$this->getPlugin()->getSetting('content_fixer') ) {
 			// Filter URL's
 			add_filter( 'home_url', array( &$this, 'secure_url' ), 10 );
@@ -42,7 +44,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			add_filter( 'logout_url', array( &$this, 'secure_url' ), 10 );
 			add_filter( 'login_url', array( &$this, 'secure_url' ), 10 );
 			add_filter( 'network_admin_url', array( &$this, 'secure_url' ), 10 );
-			add_filter( 'the_permalink_rss', array( &$this, 'secure_url' ), 10 );
 
 			// Filter Element URL's
 			add_filter( 'get_avatar', array( &$this, 'element_url' ), 10 );
