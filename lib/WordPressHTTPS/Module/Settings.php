@@ -164,6 +164,7 @@ class WordPressHTTPS_Module_Settings extends Mvied_Plugin_Module {
 		$this->getPlugin()->setSetting('unsecure_external_urls', array());
 		$this->getPlugin()->setSetting('path_cache', array());
 		$this->getPlugin()->setSetting('blog_cache', array());
+		$this->getPlugin()->setSetting('hosts', array());
 
 		$this->getPlugin()->renderView('ajax_message', array('message' => $message, 'errors' => $errors, 'reload' => $reload));
 	}
