@@ -12,30 +12,31 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	/**
 	 * Initialize
 	 *
-	 * @param none
 	 * @return void
 	 */
 	public function init() {
 		global $wp_scripts, $wp_styles;
 		$plugin = $this->getPlugin();
-		if ( $plugin->getSetting('ssl_host_diff') && $plugin->isSsl() ) {
+		$isSsl = $plugin->isSsl();
+		if ( $plugin->getSetting('ssl_host_diff') && $isSsl ) {
 			// Prevent WordPress' canonical redirect when using a different SSL Host
 			remove_filter('template_redirect', 'redirect_canonical');
 			// Add SSL Host path to rewrite rules
 			add_filter('rewrite_rules_array', array(&$this, 'rewrite_rules'), 10, 1);
 		}
 
-		if ($this->getPlugin()->isSsl()) {
+		if ( $isSsl ) {
 			wp_scripts();
 			wp_styles();
-			$wp_styles->base_url = set_url_scheme( $wp_styles->base_url, 'https' );
-			$wp_scripts->base_url = set_url_scheme( $wp_scripts->base_url, 'https' );
+			$wp_styles->base_url = $this->getPlugin()->makeUrlHttps($wp_styles->base_url);
+			$wp_scripts->base_url = $this->getPlugin()->makeUrlHttps($wp_scripts->base_url);
 		}
 
 		// Add SSL Host to allowed redirect hosts
 		add_filter('allowed_redirect_hosts' , array(&$this, 'allowed_redirect_hosts'), 10, 1);
 
 		// Filter URL's
+		add_filter('home_url', array(&$this, 'secure_url'), 10);
 		add_filter('bloginfo_url', array(&$this, 'secure_url'), 10);
 		add_filter('logout_url', array(&$this, 'secure_url'), 10);
 		add_filter('login_url', array(&$this, 'secure_url'), 10);
@@ -49,12 +50,16 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('stylesheet_directory_uri', array(&$this, 'element_url'), 10);
 		add_filter('plugins_url', array(&$this, 'element_url'), 10);
 		add_filter('includes_url', array(&$this, 'element_url'), 10);
+		add_filter('content_url', array(&$this, 'element_url'), 10);
 
 		// Filter admin_url in admin
 		if ( is_admin() ) {
 			add_filter('admin_url', array(&$this, 'admin_url'), 10, 2);
 		// Filter site_url publicly
 		} else {
+			if ( $isSsl ) {
+				add_filter('admin_url', array(&$this, 'admin_url'), 10, 2);
+			}
 			add_filter('site_url', array(&$this, 'site_url'), 10, 4);
 		}
 
@@ -67,9 +72,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('force_ssl', array(&$this, 'secure_element'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
-
-		// Filter wordpress_https_parser_ob for output buffering
-		add_filter('wordpress_https_parser_ob', array(&$this, 'is_content_fixer'), 50, 3);
 
 		//add filters that provide the post or post id
 		$filters_that_use_post = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link',  'search_link');
@@ -94,7 +96,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			add_action('clear_auth_cookie', array(&$this, 'clear_cookies'));
 
 			// Set authentication cookie
-			if ( $plugin->isSsl() ) {
+			if ( $isSsl ) {
 				add_action('set_auth_cookie', array(&$this, 'set_cookie'), 10, 5);
 				add_action('set_logged_in_cookie', array(&$this, 'set_cookie'), 10, 5);
 			}
@@ -111,7 +113,7 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		// Run proxy check
 		if ( $plugin->getSetting('ssl_proxy') === 'auto' ) {
 			// If page is not SSL and no proxy cookie is detected, run proxy check
-			if ( ! $plugin->isSsl() && ! isset($_COOKIE['wp_proxy']) ) {
+			if ( ! $isSsl && ! isset($_COOKIE['wp_proxy']) ) {
 				add_action('init', array(&$this, 'proxy_check'), 1);
 				add_action('admin_init', array(&$this, 'proxy_check'), 1);
 			// Update ssl_proxy setting if a proxy has been detected
@@ -131,14 +133,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 			add_action('template_redirect', array(&$this, 'redirect_check'));
 			add_action('template_redirect', array(&$this, 'clear_redirect_count_cookie'), 9, 1);
 		}
-	}
-
-	/**
-	 * Is Content Fixer Enabled?
-	 * @return mixed
-	 */
-	public function is_content_fixer() {
-		return $this->getPlugin()->getSetting('content_fixer');
 	}
 
 	/**
@@ -465,8 +459,8 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_scripts() {
 		global $wp_scripts;
-		$wp_scripts->base_url = set_url_scheme( $wp_scripts->base_url, 'https' );
 		$plugin = $this->getPlugin();
+		$wp_scripts->base_url = $plugin->makeUrlHttps($wp_scripts->base_url);
 		if ( isset($wp_scripts) && sizeof($wp_scripts->registered) > 0 ) {
 			foreach ( $wp_scripts->registered as $script ) {
 				if ( in_array($script->handle, $wp_scripts->queue) ) {
@@ -498,8 +492,8 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 	 */
 	public function fix_styles() {
 		global $wp_styles;
-		$wp_styles->base_url = set_url_scheme( $wp_styles->base_url, 'https' );
 		$plugin = $this->getPlugin();
+		$wp_styles->base_url = $plugin->makeUrlHttps($wp_styles->base_url);
 		if ( isset($wp_styles) && sizeof($wp_styles->registered) > 0 ) {
 			foreach ( (array)$wp_styles->registered as $style ) {
 				if ( in_array($style->handle, $wp_styles->queue) ) {

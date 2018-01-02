@@ -42,14 +42,6 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
 
-		if ( $this->getPlugin()->getSetting('content_fixer') ) {
-			$this->normalizeElements();
-			$this->fixLinksAndForms();
-			$this->fixExtensions();
-			$this->fixElements();
-			$this->fixCssElements();
-			$this->fixRelativeElements();
-		}
 
 		// Output logger contents to browsers console if in Debug Mode
 		if ( $this->getPlugin()->getSetting('debug') == true ) {
