@@ -25,7 +25,7 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		if ( ! is_admin() && apply_filters( 'wordpress_https_parser_ob', true )  ) {
+		if ( apply_filters( 'wordpress_https_parser_ob', true )  ) {
 			// Start output buffering
 			add_action('init', array(&$this, 'startOutputBuffering'));
 		}
@@ -42,12 +42,14 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	public function parseHtml( $buffer ) {
 		$this->_html = $buffer;
 
-		$this->normalizeElements();
-		$this->fixLinksAndForms();
-		$this->fixExtensions();
-		$this->fixElements();
-		$this->fixCssElements();
-		$this->fixRelativeElements();
+		if ( $this->getPlugin()->getSetting('content_fixer') ) {
+			$this->normalizeElements();
+			$this->fixLinksAndForms();
+			$this->fixExtensions();
+			$this->fixElements();
+			$this->fixCssElements();
+			$this->fixRelativeElements();
+		}
 
 		// Output logger contents to browsers console if in Debug Mode
 		if ( $this->getPlugin()->getSetting('debug') == true ) {
