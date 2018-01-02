@@ -11,10 +11,18 @@
 	margin: 0;
 }
 
-#wphttps-main #icon-options-https {
-	background: url(../img/admin-icon32.png) no-repeat;
+#wphttps-main #icon-options-https.icon32 {
+	display: block;
+	float: left;
+	height: 32px;
+	width: 32px;
+	margin-left: 5px;
+	background: url(../img/admin-icon32.png) no-repeat 100% 100%;
 }
-
+.wrap [class$=icon32]+h2 {
+	line-height: 1em;
+	padding: 5px 0 0 40px;
+}
 #wphttps-main .meta-box-sortables {
 	margin: 0 8px;
 }
