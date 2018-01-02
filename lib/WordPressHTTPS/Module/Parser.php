@@ -25,8 +25,10 @@ class WordPressHTTPS_Module_Parser extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		// Start output buffering
-		add_action('init', array(&$this, 'startOutputBuffering'));
+		if ( apply_filters( 'wordpress_https_parser_ob', true )  ) {
+			// Start output buffering
+			add_action('init', array(&$this, 'startOutputBuffering'));
+		}
 	}
 
 	/**
