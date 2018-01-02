@@ -31,7 +31,7 @@ class WordPressHTTPS extends Mvied_Plugin_Modular {
 	 */
 	protected $_local_url_cache = array();
 
-1	/**
+	/**
 	 * Local HTTP URL Cache
 	 *
 	 * @var array:string
