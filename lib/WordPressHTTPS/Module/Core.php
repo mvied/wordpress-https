@@ -35,32 +35,63 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		// Add SSL Host to allowed redirect hosts
 		add_filter('allowed_redirect_hosts' , array(&$this, 'allowed_redirect_hosts'), 10, 1);
 
-		// Filter URL's
-		add_filter('home_url', array(&$this, 'secure_url'), 10);
-		add_filter('bloginfo_url', array(&$this, 'secure_url'), 10);
-		add_filter('logout_url', array(&$this, 'secure_url'), 10);
-		add_filter('login_url', array(&$this, 'secure_url'), 10);
-		add_filter('network_admin_url', array(&$this, 'secure_url'), 10);
-		add_filter('the_permalink_rss', array(&$this, 'secure_url'), 10);
+		if ( !$this->getPlugin()->getSetting('content_fixer') ) {
+			// Filter URL's
+			add_filter( 'home_url', array( &$this, 'secure_url' ), 10 );
+			add_filter( 'bloginfo_url', array( &$this, 'secure_url' ), 10 );
+			add_filter( 'logout_url', array( &$this, 'secure_url' ), 10 );
+			add_filter( 'login_url', array( &$this, 'secure_url' ), 10 );
+			add_filter( 'network_admin_url', array( &$this, 'secure_url' ), 10 );
+			add_filter( 'the_permalink_rss', array( &$this, 'secure_url' ), 10 );
 
-		// Filter Element URL's
-		add_filter('get_avatar', array(&$this, 'element_url'), 10);
-		add_filter('wp_get_attachment_url', array(&$this, 'element_url'), 10);
-		add_filter('template_directory_uri', array(&$this, 'element_url'), 10);
-		add_filter('stylesheet_directory_uri', array(&$this, 'element_url'), 10);
-		add_filter('plugins_url', array(&$this, 'element_url'), 10);
-		add_filter('includes_url', array(&$this, 'element_url'), 10);
-		add_filter('content_url', array(&$this, 'element_url'), 10);
+			// Filter Element URL's
+			add_filter( 'get_avatar', array( &$this, 'element_url' ), 10 );
+			add_filter( 'wp_get_attachment_url', array( &$this, 'element_url' ), 10 );
+			add_filter( 'template_directory_uri', array( &$this, 'element_url' ), 10 );
+			add_filter( 'stylesheet_directory_uri', array( &$this, 'element_url' ), 10 );
+			add_filter( 'plugins_url', array( &$this, 'element_url' ), 10 );
+			add_filter( 'includes_url', array( &$this, 'element_url' ), 10 );
+			add_filter( 'content_url', array( &$this, 'element_url' ), 10 );
 
-		// Filter admin_url in admin
-		if ( is_admin() ) {
-			add_filter('admin_url', array(&$this, 'admin_url'), 10, 2);
-		// Filter site_url publicly
-		} else {
-			if ( $isSsl ) {
-				add_filter('admin_url', array(&$this, 'admin_url'), 10, 2);
+			// Filter admin_url in admin
+			if ( is_admin() ) {
+				add_filter( 'admin_url', array( &$this, 'admin_url' ), 10, 2 );
+				// Filter site_url publicly
+			} else {
+				if ( $isSsl ) {
+					add_filter( 'admin_url', array( &$this, 'admin_url' ), 10, 2 );
+				}
+				add_filter( 'site_url', array( &$this, 'site_url' ), 10, 4 );
 			}
-			add_filter('site_url', array(&$this, 'site_url'), 10, 4);
+
+			//add filters that provide the post or post id
+			$filters_that_use_post = array(
+				'page_link',
+				'preview_page_link',
+				'post_link',
+				'preview_page_link',
+				'post_type_link',
+				'attachment_link',
+				'search_link'
+			);
+			foreach ( $filters_that_use_post as $filter ) {
+				add_filter( $filter, array( &$this, 'secure_post_link' ), 10, 3 );
+			}
+
+			//add filters that don't provide a post id
+			$filters_without_post = array(
+				'comment_reply_link',
+				'day_link',
+				'month_link',
+				'year_link',
+				'category_link',
+				'author_link',
+				'archives_link',
+				'tag_link',
+			);
+			foreach ( $filters_without_post as $filter ) {
+				add_filter( $filter, array( &$this, 'secure_post_link' ), 10 );
+			}
 		}
 
 		// Filter force_ssl
@@ -72,18 +103,6 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 		add_filter('force_ssl', array(&$this, 'secure_element'), 30, 3);
 		add_filter('force_ssl', array(&$this, 'secure_post'), 40, 3);
 		add_filter('force_ssl', array(&$this, 'secure_exclusive'), 50, 3);
-
-		//add filters that provide the post or post id
-		$filters_that_use_post = array('page_link', 'preview_page_link', 'post_link', 'preview_page_link', 'post_type_link', 'attachment_link',  'search_link');
-		foreach( $filters_that_use_post as $filter ) {
-			add_filter($filter, array(&$this, 'secure_post_link'), 10, 3);
-		}
-
-		//add filters that don't provide a post id
-		$filters_without_post = array('comment_reply_link', 'day_link', 'month_link', 'year_link','category_link', 'author_link', 'archives_link', 'tag_link',);
-		foreach( $filters_without_post as $filter ) {
-			add_filter($filter, array(&$this, 'secure_post_link'), 10);
-		}
 
 		// Run install when new blog is created
 		add_action('wpmu_new_blog', array($plugin, 'install'), 10, 0);
