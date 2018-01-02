@@ -27,10 +27,10 @@ class WordPressHTTPS_Module_Network extends Mvied_Plugin_Module {
 				// Add scripts
 				add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 			}
-		}
 
-		if ( is_multisite() ) {
-			add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
+			if ( is_multisite() ) {
+				add_action('network_admin_menu', array(&$this, 'network_admin_menu'));
+			}
 		}
 	}
 
