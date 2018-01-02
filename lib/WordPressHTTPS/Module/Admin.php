@@ -18,13 +18,14 @@ class WordPressHTTPS_Module_Admin extends Mvied_Plugin_Module {
 	 * @return void
 	 */
 	public function init() {
-		// Load on plugins page
-		if ( isset($GLOBALS['pagenow']) && $GLOBALS['pagenow'] == 'plugins.php' ) {
-			add_filter( 'plugin_row_meta', array(&$this, 'plugin_links'), 10, 2);
+		if ( is_admin() ) {
+			// Load on plugins page
+			if ( strpos($_SERVER['REQUEST_URI'], 'plugins.php' ) ) {
+				add_filter( 'plugin_row_meta', array(&$this, 'plugin_links'), 10, 2);
+			}
+			// Add global admin scripts
+			add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 		}
-
-		// Add global admin scripts
-		add_action('admin_enqueue_scripts', array(&$this, 'admin_enqueue_scripts'));
 	}
 
 	/**
