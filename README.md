@@ -7,7 +7,7 @@
 [Issue Tracker](https://github.com/Mvied/wordpress-https/issues)
 
 ### WordPress
-* Requires at least: 3.0
+* Requires at least: 3.5
 * Tested up to: 4.9.1
 
 ### About
