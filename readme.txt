@@ -4,25 +4,25 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.5
 Tested up to: 4.9.1
-Stable tag: 3.4.1
+Stable tag: 3.4.2
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
 
 == Description ==
-<p>WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
-    WordPress HTTPS is well-known for being the "heavy-hitter" of SSL plugins. The latest release focuses on speed and performance.</p>
-<p>If your SSL needs are simple, there are many fantastic, light-weight alternatives to WordPress HTTPS such as:
-    <a href="https://wordpress.org/plugins/really-simple-ssl/" target="_blank">Really Simple SSL</a> (great for securing the entire site),
-    <a href="https://wordpress.org/plugins/ssl-insecure-content-fixer/">SSL Insecure Content Fixer</a> (great at fixing most insecure content errors).</p>
-<p>Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>.
-    If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>.</p>
-<p>If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a>
-    and someone from the community may be able to assist you. If you need immediate assistance, I am available for hire.
-    Unfortunately, I do not have time to support the plugin for free.</p>
-<p>Contribute Code at <a href="https://github.com/Mvied/wordpress-https">https://github.com/Mvied/wordpress-https</a></p>
-<p>Issue Tracker at <a href="https://github.com/mvied/wordpress-https/issues">https://github.com/mvied/wordpress-https/issues</a>
-<p>Contribute Translations at <a href="https://translate.wordpress.org/projects/wp-plugins/wordpress-https">https://translate.wordpress.org/projects/wp-plugins/wordpress-https</a></p>
+WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites. WordPress HTTPS is well-known for being the "heavy-hitter" of SSL plugins. The latest release focuses on speed and performance.
+
+Read the <a href="http://wordpress.org/extend/plugins/wordpress-https/installation/">Installation Guide</a>. If after setting up the plugin you are experiencing issues, please check the <a href="http://wordpress.org/extend/plugins/wordpress-https/faq/">FAQ</a>. If you are still unable to resolve your issue, <a href="http://wordpress.org/support/plugin/wordpress-https">start a support topic</a> and someone from the community may be able to assist you. If you need immediate assistance, I am available for hire. Unfortunately, I do not have time to support the plugin for free.
+
+If your SSL needs are simple, there are many fantastic, light-weight alternatives to WordPress HTTPS such as:
+<a href="https://wordpress.org/plugins/really-simple-ssl/" target="_blank">Really Simple SSL</a> (great for securing the entire site)
+<a href="https://wordpress.org/plugins/ssl-insecure-content-fixer/">SSL Insecure Content Fixer</a> (great at fixing most insecure content errors)
+
+Contribute Code at <a href="https://github.com/Mvied/wordpress-https">https://github.com/Mvied/wordpress-https</a>
+
+Issue Tracker at <a href="https://github.com/mvied/wordpress-https/issues">https://github.com/mvied/wordpress-https/issues</a>
+
+Contribute Translations at <a href="https://translate.wordpress.org/projects/wp-plugins/wordpress-https">https://translate.wordpress.org/projects/wp-plugins/wordpress-https</a>
 
 == Installation ==
 1. Upload the `wordpress-https` folder to the `/wp-content/plugins/` directory.
@@ -104,6 +104,8 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
+= 3.4.2 =
+* [Bug] Patch issue causing insecure content errors. If you are still having issues after updating, please revert to 3.4.0 and let me know in the support forum.
 = 3.4.1 =
 * [Feature] Content Fixer is now optional in the plugin settings. This option should be on by default and is the preferred method to use the plugin.
 * [Feature] Output buffering optional via `wordpress_https_parser_ob` filter. <a href="https://github.com/mvied/wordpress-https/issues/56">#56</a>
