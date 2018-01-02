@@ -21,7 +21,7 @@ If you are still unable to resolve your issue, <a href="http://wordpress.org/sup
 * Help to translate at [https://translate.wordpress.org/projects/wp-plugins/wordpress-https](https://translate.wordpress.org/projects/wp-plugins/wordpress-https)
 
 ### Roadmap
-* v3.5.0
+* [v3.5.0](https://github.com/mvied/wordpress-https/projects/1)
    * Automated testing [#57](https://github.com/mvied/wordpress-https/issues/57)
    * Make output buffering optional [#56](https://github.com/mvied/wordpress-https/issues/56)
    * Store URL cache in a table to increase performance for large sites [#25](https://github.com/mvied/wordpress-https/issues/25)
