@@ -674,8 +674,8 @@ class WordPressHTTPS_Module_Core extends Mvied_Plugin_Module {
 				setcookie($cookie_name, $cookie, $expire, $cookie_path_site, $cookie_domain, $secure, true);
 			}
 		} else {
-			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, false, true);
-			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, false, true);
+			setcookie($cookie_name, $cookie, $expire, $cookie_path_plugins, $cookie_domain, $secure, true);
+			setcookie($cookie_name, $cookie, $expire, $cookie_path_admin, $cookie_domain, $secure, true);
 		}
 	}
 
