@@ -8,7 +8,7 @@
 
 ### WordPress
 * Requires at least: 3.5
-* Tested up to: 4.9.1
+* Tested up to: 5.02
 
 ### About
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
