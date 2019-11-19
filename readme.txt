@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: security, encryption, ssl, shared ssl, private ssl, public ssl, private ssl, http, https
 Requires at least: 3.5
 Tested up to: 4.9.1
-Stable tag: 3.4.2
+Stable tag: 3.4.1
 License: GPLv3
 
 WordPress HTTPS is intended to be an all-in-one solution to using SSL on WordPress sites.
@@ -104,16 +104,10 @@ add_filter('force_ssl', 'store_force_ssl', 10, 3);`
 2. Force SSL checkbox added to add/edit posts screen
 
 == Changelog ==
-= 3.4.2 =
-* [Bug] Patch issue causing insecure content errors. If you are still having issues after updating, please revert to 3.4.0 and let me know in the support forum.
+
 = 3.4.1 =
-* [Feature] Content Fixer is now optional in the plugin settings. This option should be on by default and is the preferred method to use the plugin.
-* [Feature] Output buffering optional via `wordpress_https_parser_ob` filter. <a href="https://github.com/mvied/wordpress-https/issues/56">#56</a>
-* [Bug] External resources being changed to local URL <a href="https://github.com/mvied/wordpress-https/issues/59">#59</a>
-* [Bug] Added RSS permalink to filtered URLs.
-* [Bug] Remove network defaults on uninstall.
-* [Bug] Fixed displaying of Admin CSS when `site_url` is HTTP. <a href="https://github.com/mvied/wordpress-https/issues/58">#58</a>
-* [Bug] Fixed issues displaying and resetting network settings introduced by 3.4.0.
+* Integrated feedback system
+
 = 3.4.0 =
 * Tested with WordPress v4.9.1
 * Many improvements to performance. Special thanks to <a href="https://github.com/heshiming">He Shiming</a> for help with profiling and improvements.
